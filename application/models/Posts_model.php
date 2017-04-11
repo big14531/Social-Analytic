@@ -334,16 +334,16 @@ class Posts_model extends CI_Model
 		$this->db->select_sum( 'haha' );
 		$this->db->select_sum( 'sad' );
 		$this->db->select_sum( 'angry' );
-		$this->db->select( "list.* , COUNT(post.post_id) as count" );
+		$this->db->select( "list.name , COUNT(post.post_id) as count" );
 
 		$this->db->from('fb_facebook_post as post');
 		$this->db->group_by('list.name');
-		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id' , 'INNER');
 		$this->db->where('list.is_active',1);
 		$this->db->where('post.created_time >',$min_date);
 		$this->db->where('post.created_time <',$max_date);
-
-
+		// echo $this->db->get_compiled_select();
+		// exit();
 		$result = $this->db->get();
 
 		return $result->result();

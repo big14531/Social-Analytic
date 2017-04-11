@@ -26,6 +26,10 @@ class Data_ctrl extends CI_Controller
 
     public function contabDataCrawler()
     {
+
+        $this->load->helper('file');
+        $result=write_file('last_crontab.txt',date('Y-m-d H:i:s'),'w+, ccs=UTF-8');
+        
         $minute=date('i');
         echo $minute;
         if($minute%30==0)

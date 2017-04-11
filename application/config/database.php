@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.52.53',
+	'hostname' => 'localhost',
 	'username' => 'social',
 	'password' => 'SoleTs3#',
 	'database' => 'SocialAnalytic',
