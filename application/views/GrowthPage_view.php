@@ -22,7 +22,71 @@
 	.legend-box{
 		margin-bottom: 5px;
 	}
-	
+	   .modal-dialog{
+        padding-top: 15%!important;
+    }
+    .sk-cube-grid {
+        width: 50px;
+        height: 50px;
+        margin: 100px auto;
+    }
+
+    .sk-cube-grid .sk-cube {
+      width: 33%;
+      height: 33%;
+      background-color: #FFF;
+      float: left;
+      -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+              animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+    }
+    .sk-cube-grid .sk-cube1 {
+      -webkit-animation-delay: 0.2s;
+              animation-delay: 0.2s; }
+    .sk-cube-grid .sk-cube2 {
+      -webkit-animation-delay: 0.3s;
+              animation-delay: 0.3s; }
+    .sk-cube-grid .sk-cube3 {
+      -webkit-animation-delay: 0.4s;
+              animation-delay: 0.4s; }
+    .sk-cube-grid .sk-cube4 {
+      -webkit-animation-delay: 0.1s;
+              animation-delay: 0.1s; }
+    .sk-cube-grid .sk-cube5 {
+      -webkit-animation-delay: 0.2s;
+              animation-delay: 0.2s; }
+    .sk-cube-grid .sk-cube6 {
+      -webkit-animation-delay: 0.3s;
+              animation-delay: 0.3s; }
+    .sk-cube-grid .sk-cube7 {
+      -webkit-animation-delay: 0s;
+              animation-delay: 0s; }
+    .sk-cube-grid .sk-cube8 {
+      -webkit-animation-delay: 0.1s;
+              animation-delay: 0.1s; }
+    .sk-cube-grid .sk-cube9 {
+      -webkit-animation-delay: 0.2s;
+              animation-delay: 0.2s; }
+
+    @-webkit-keyframes sk-cubeGridScaleDelay {
+      0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+                transform: scale3D(1, 1, 1);
+      } 35% {
+        -webkit-transform: scale3D(0, 0, 1);
+                transform: scale3D(0, 0, 1); 
+      }
+    }
+
+    @keyframes sk-cubeGridScaleDelay {
+      0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+                transform: scale3D(1, 1, 1);
+      } 35% {
+        -webkit-transform: scale3D(0, 0, 1);
+                transform: scale3D(0, 0, 1);
+      } 
+    }
+
 </style>
 
 <!-- Content Here -->
@@ -180,10 +244,10 @@
 
 	function getRandomColor( key , length) 
 	{
-		
-		var red = Math.floor(key+80%255);
-		var green = Math.floor(key+160%255);
-		var blue = Math.floor(key+240%255);
+			
+		var red = Math.floor(key*10%255);
+		var green = Math.floor(key*30%255);
+		var blue = Math.floor(key+150%255);
 		var color = rgbToHex( red , green , blue );
 		return color;
 	}
@@ -379,9 +443,9 @@
 	 		grid: 
 	 		{ 
 	 			hoverable: true,
-	 			borderColor: "#f3f3f3",
+	 			borderColor: "#555555",
 	 			borderWidth: 1,
-	 			tickColor: "#f3f3f3",
+	 			tickColor: "#555555",
 	 			margin: 10
 	 		}, 
 	 		points: 
@@ -487,7 +551,7 @@
 	 			hoverable: true,
 	 			borderColor: "#555555",
 	 			borderWidth: 1,
-	 			tickColor: "#eeeeee",
+	 			tickColor: "#555555",
 	 			margin: 10
 	 		}, 
 	 		points: 
