@@ -26,7 +26,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Tracking page data
+            Page Table
         </h1>
 
     </section>

@@ -6,22 +6,18 @@
             <!-- Main menu -->
             <li class="header">MAIN MENU</li>
 
-            <li class="treeview">
-                <a href="#">
+             <li class="treeview">
+                <a href="<?php echo base_url(); ?>growthPage">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
+                        <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>
                 </a>
-                <ul class="treeview-menu">
-                    <li><a href="dashboard"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                    <li><a href="dashboard"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                </ul>
             </li>
-            
+
             <li class="treeview">
                 <a href="<?php echo base_url(); ?>postGraph">
-                    <i class="fa fa-table"></i> <span>Post Graph</span>
+                    <i class="fa fa-line-chart"></i> <span>Post Graph</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>
@@ -38,23 +34,13 @@
             
             <li class="treeview">
                 <a href="<?php echo base_url(); ?>showPageTable">
-                    <i class="fa fa-table"></i> <span>Overview Page</span>
+                    <i class="fa fa-table"></i> <span>Page Table</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>
                 </a>
             </li>
-            
-           
-            <li class="treeview">
-                <a href="<?php echo base_url(); ?>growthPage">
-                    <i class="fa fa-level-up"></i> <span>Page Growth Rate</span>
-                    <span class="pull-right-container">
-                        <!-- <small class="label pull-right bg-green">1</small> -->
-                    </span>
-                </a>
-            </li>
-   
+ 
             
             <!-- Action menu -->
             <li class="header">Action</li>
