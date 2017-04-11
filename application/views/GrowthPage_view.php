@@ -2,34 +2,27 @@
 <?php $this->load->view( 'default/topMenu' ) ?>
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
-<!-- daterange picker -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.css">
-<!-- bootstrap datepicker -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/datepicker3.css">
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
+
 
 <style>
-	.graph_tab.active a{
-		background-color:#3c8dbc!important;
-	}
-	.graph_tab.active{
-		border-top:0px!important;
-	}
 	.full-width{
 		width:100%;
 	}
-	.box{
-		padding: 10px;
+	.control-box{
+		padding-top: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
-	.table-img{
+	.color-icon{
 		width:30px;
 		height:30px;
 		float: left;
 		margin-right: 5px;
 	}
-	.legend{
-		margin-bottom: 2px;
+	.legend-box{
+		margin-bottom: 5px;
 	}
+	
 </style>
 
 <!-- Content Here -->
@@ -47,7 +40,7 @@
 			<h4>Success!!</h4>
 			<p>This is a green callout.</p>
 		</div>  
-		<div class="box">
+		<div class="box control-box">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group">
@@ -154,32 +147,29 @@
 	</section>
 </div>
 
+ <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog" role="document" style="text-align: center;">
+            <div class="sk-cube-grid">
+              <div class="sk-cube sk-cube1"></div>
+              <div class="sk-cube sk-cube2"></div>
+              <div class="sk-cube sk-cube3"></div>
+              <div class="sk-cube sk-cube4"></div>
+              <div class="sk-cube sk-cube5"></div>
+              <div class="sk-cube sk-cube6"></div>
+              <div class="sk-cube sk-cube7"></div>
+              <div class="sk-cube sk-cube8"></div>
+              <div class="sk-cube sk-cube9"></div>
+            </div>
+
+            <h3 style="color: #FFF">Loading....</h3>
+        </div>
+    </div>
 
 
 
 <?php $this->load->view( 'default/bottom' ) ?>
 
-<!-- FLOT CHARTS -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.min.js"></script>
-<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.resize.min.js"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.pie.min.js"></script>
-<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.categories.min.js"></script>
-<!-- FLOT selection -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.selection.js"></script>
-<!-- FLOT TIME CHARTS -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.time.js"></script>
-<!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap datepicker -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/bootstrap-datepicker.js"></script>
-
-
 <script>
-
 	var is_first =1;
 	var dataset=[];
 
@@ -287,9 +277,9 @@
 		var choiceContainer = $("#legend-container");
 
 		$.each(data, function(key, val) {
-			choiceContainer.append("<div class='row legend'><input type='checkbox' name='" + val.page_name +
+			choiceContainer.append("<div class='row legend-box'><input type='checkbox' name='" + val.page_name +
 				"' checked='checked' id='id" + key + "'></input>" +
-				" <div class='table-img' style='background-color:"+dataset[key].color+"'></div> "+
+				" <div class='color-icon' style='background-color:"+dataset[key].color+"'></div> "+
 				"<label for='id" + key + "'>"
 				+ val.page_name + "</label></div>");
 		});
@@ -300,7 +290,8 @@
 	{
 		$('#search-btn').find('span').text('Searching.....');
 		$('#search-btn').addClass('disabled');
-		$('#search-btn').prop('disabled',true);
+		$('#search-btn').prop('disabled',true); 
+		$('#myModal').modal('show');
 		$.ajax({
 			url:  "<?php echo base_url()?>/getGrowthPage",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET    
@@ -312,6 +303,7 @@
 			dataType: 'json',
 			success:function(data)
 			{
+				$('#myModal').modal('hide');
 				$('.col-md-6').attr('hidden',false);
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
