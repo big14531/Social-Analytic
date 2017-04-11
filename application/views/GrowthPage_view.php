@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
 
 <style>
+/* Do something in  master*/
 	.graph_tab.active a{
 		background-color:#3c8dbc!important;
 	}
