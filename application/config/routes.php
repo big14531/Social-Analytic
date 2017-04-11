@@ -67,8 +67,8 @@ $route['updateFacebookPost/(:num)'] = 'data_ctrl/updateFacebookPost/$1';
 $route['updateTrackingPage'] = 'data_ctrl/updateTrackingPage';
 
 /*---------- update all interval , temp ----------*/
-// $route['update'] = 'data_ctrl/tempUpdateAll';
-$route['social-analytic-data-crawler'] = 'data_ctrl/contabDataCrawler';
+$route['update'] = 'data_ctrl/tempUpdateAll';
+$route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 
 ////////////////////////////////////////
 //              View Zone             //

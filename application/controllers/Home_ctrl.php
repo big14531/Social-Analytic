@@ -19,7 +19,6 @@ class Home_ctrl extends CI_Controller
     
     public function dashboard()
     {
-
         $this->load->view( 'Homepage_view' );
     }
 
