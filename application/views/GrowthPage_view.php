@@ -22,70 +22,90 @@
 	.legend-box{
 		margin-bottom: 5px;
 	}
-	   .modal-dialog{
-        padding-top: 15%!important;
-    }
-    .sk-cube-grid {
-        width: 50px;
-        height: 50px;
-        margin: 100px auto;
-    }
+	.modal-dialog{
+		padding-top: 15%!important;
+	}
+	.sk-cube-grid {
+		width: 50px;
+		height: 50px;
+		margin: 100px auto;
+	}
 
-    .sk-cube-grid .sk-cube {
-      width: 33%;
-      height: 33%;
-      background-color: #FFF;
-      float: left;
-      -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-              animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
-    }
-    .sk-cube-grid .sk-cube1 {
-      -webkit-animation-delay: 0.2s;
-              animation-delay: 0.2s; }
-    .sk-cube-grid .sk-cube2 {
-      -webkit-animation-delay: 0.3s;
-              animation-delay: 0.3s; }
-    .sk-cube-grid .sk-cube3 {
-      -webkit-animation-delay: 0.4s;
-              animation-delay: 0.4s; }
-    .sk-cube-grid .sk-cube4 {
-      -webkit-animation-delay: 0.1s;
-              animation-delay: 0.1s; }
-    .sk-cube-grid .sk-cube5 {
-      -webkit-animation-delay: 0.2s;
-              animation-delay: 0.2s; }
-    .sk-cube-grid .sk-cube6 {
-      -webkit-animation-delay: 0.3s;
-              animation-delay: 0.3s; }
-    .sk-cube-grid .sk-cube7 {
-      -webkit-animation-delay: 0s;
-              animation-delay: 0s; }
-    .sk-cube-grid .sk-cube8 {
-      -webkit-animation-delay: 0.1s;
-              animation-delay: 0.1s; }
-    .sk-cube-grid .sk-cube9 {
-      -webkit-animation-delay: 0.2s;
-              animation-delay: 0.2s; }
+	.sk-cube-grid .sk-cube {
+		width: 33%;
+		height: 33%;
+		background-color: #FFF;
+		float: left;
+		-webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+		animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+	}
+	.sk-cube-grid .sk-cube1 
+	{
+		-webkit-animation-delay: 0.2s;
+		animation-delay: 0.2s; 
+	}
+	.sk-cube-grid .sk-cube2 
+	{
+		-webkit-animation-delay: 0.3s;
+		animation-delay: 0.3s; 
+	}
+	.sk-cube-grid .sk-cube3 
+	{
+		-webkit-animation-delay: 0.4s;
+		animation-delay: 0.4s; 
+	}
+	.sk-cube-grid .sk-cube4 
+	{
+		-webkit-animation-delay: 0.1s;
+		animation-delay: 0.1s; 
+	}
+	.sk-cube-grid .sk-cube5 
+	{
+		-webkit-animation-delay: 0.2s;
+		animation-delay: 0.2s; 
+	}
+	.sk-cube-grid .sk-cube6 
+	{
+		-webkit-animation-delay: 0.3s;
+		animation-delay: 0.3s; 
+	}
+	.sk-cube-grid .sk-cube7 
+	{
+		-webkit-animation-delay: 0s;
+		animation-delay: 0s; 
+	}
+	.sk-cube-grid .sk-cube8 
+	{
+		-webkit-animation-delay: 0.1s;
+		animation-delay: 0.1s; 
+	}
+	.sk-cube-grid .sk-cube9 
+	{
+		-webkit-animation-delay: 0.2s;
+		animation-delay: 0.2s; 
+	}
 
-    @-webkit-keyframes sk-cubeGridScaleDelay {
-      0%, 70%, 100% {
-        -webkit-transform: scale3D(1, 1, 1);
-                transform: scale3D(1, 1, 1);
-      } 35% {
-        -webkit-transform: scale3D(0, 0, 1);
-                transform: scale3D(0, 0, 1); 
-      }
-    }
+	@-webkit-keyframes sk-cubeGridScaleDelay 
+	{
+		0%, 70%, 100% {
+			-webkit-transform: scale3D(1, 1, 1);
+			transform: scale3D(1, 1, 1);
+		} 35% {
+			-webkit-transform: scale3D(0, 0, 1);
+			transform: scale3D(0, 0, 1); 
+		}
+	}
 
-    @keyframes sk-cubeGridScaleDelay {
-      0%, 70%, 100% {
-        -webkit-transform: scale3D(1, 1, 1);
-                transform: scale3D(1, 1, 1);
-      } 35% {
-        -webkit-transform: scale3D(0, 0, 1);
-                transform: scale3D(0, 0, 1);
-      } 
-    }
+	@keyframes sk-cubeGridScaleDelay 
+	{
+		0%, 70%, 100% {
+			-webkit-transform: scale3D(1, 1, 1);
+			transform: scale3D(1, 1, 1);
+		} 35% {
+			-webkit-transform: scale3D(0, 0, 1);
+			transform: scale3D(0, 0, 1);
+		} 
+	}
 
 </style>
 
@@ -99,10 +119,9 @@
 	</section>
 
 	<section class="content"> 
-
-		<div id='callout' class="callout hidden">
-			<h4>Success!!</h4>
-			<p>This is a green callout.</p>
+	<div id='alert' class="alert alert-warning alert-dismissible hidden">
+			<h3>Success!!</h3>
+			<p>This is a green alert.</p>
 		</div>  
 		<div class="box control-box">
 			<div class="row">
@@ -147,7 +166,7 @@
 		</div>
 
 
-		
+
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box">
@@ -211,23 +230,23 @@
 	</section>
 </div>
 
- <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog" role="document" style="text-align: center;">
-            <div class="sk-cube-grid">
-              <div class="sk-cube sk-cube1"></div>
-              <div class="sk-cube sk-cube2"></div>
-              <div class="sk-cube sk-cube3"></div>
-              <div class="sk-cube sk-cube4"></div>
-              <div class="sk-cube sk-cube5"></div>
-              <div class="sk-cube sk-cube6"></div>
-              <div class="sk-cube sk-cube7"></div>
-              <div class="sk-cube sk-cube8"></div>
-              <div class="sk-cube sk-cube9"></div>
-            </div>
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog" role="document" style="text-align: center;">
+		<div class="sk-cube-grid">
+			<div class="sk-cube sk-cube1"></div>
+			<div class="sk-cube sk-cube2"></div>
+			<div class="sk-cube sk-cube3"></div>
+			<div class="sk-cube sk-cube4"></div>
+			<div class="sk-cube sk-cube5"></div>
+			<div class="sk-cube sk-cube6"></div>
+			<div class="sk-cube sk-cube7"></div>
+			<div class="sk-cube sk-cube8"></div>
+			<div class="sk-cube sk-cube9"></div>
+		</div>
 
-            <h3 style="color: #FFF">Loading....</h3>
-        </div>
-    </div>
+		<h3 style="color: #FFF">Loading....</h3>
+	</div>
+</div>
 
 
 
@@ -244,7 +263,7 @@
 
 	function getRandomColor( key , length) 
 	{
-			
+
 		var red = Math.floor(key*10%255);
 		var green = Math.floor(key*30%255);
 		var blue = Math.floor(key+150%255);
@@ -331,7 +350,7 @@
 			};
 			dataset.push( series );
 		}
-		
+
 
 		return dataset;
 	} 
@@ -711,14 +730,17 @@
 		}
 		else
 		{
-			$('#callout').removeClass( 'hidden');
-			$('#callout').removeClass( 'callout-success');
-			$('#callout').removeClass( 'callout-warning');
-			$('#callout').addClass( 'callout-warning');
-			$('#callout').find('h4').text( "ข้อมูลไม่ครบ!!" );
-			$('#callout').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
+			$('#alert').removeClass( 'hidden');
+			$('#alert').removeClass( 'alert-success');
+			$('#alert').removeClass( 'alert-warning');
+			$('#alert').addClass( 'alert-warning');
+			$('#alert').find('h3').text( "ข้อมูลไม่ครบ!!" );
+			$('#alert').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
 		}
-
+		$("#alert").fadeTo(2000, 500).slideUp(500, function()
+		{
+			$("#alert").slideUp(500);
+		});
 	});
 
 	// First time 
@@ -730,8 +752,10 @@
 		var min_date = moment().format('YYYY-MM-DD 23:59:59') ;
 		var max_date = moment().subtract(6, 'days').format('YYYY-MM-DD 00:00:00');
 		ajaxCall( max_date , min_date , type );
-
-		
+		$("#alert").fadeTo(2000, 500).slideUp(500, function()
+		{
+			$("#alert").slideUp(500);
+		});
 	});
 
 	$(function() 

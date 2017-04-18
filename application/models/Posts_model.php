@@ -334,10 +334,10 @@ class Posts_model extends CI_Model
 		$this->db->select_sum( 'haha' );
 		$this->db->select_sum( 'sad' );
 		$this->db->select_sum( 'angry' );
-		$this->db->select( "list.name , COUNT(post.post_id) as count" );
+		$this->db->select( "list.* , COUNT(post.post_id) as count" );
 
 		$this->db->from('fb_facebook_post as post');
-		$this->db->group_by('list.name');
+		$this->db->group_by('list.page_id');
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id' , 'INNER');
 		$this->db->where('list.is_active',1);
 		$this->db->where('post.created_time >',$min_date);
@@ -370,7 +370,7 @@ class Posts_model extends CI_Model
 				WHERE  created_time  >= '".$min_date."' 
 					AND created_time  <= '".$max_date."' 
 					AND  page_id =".$page_id." 
-				GROUP BY LEFT(created_time,10)";	
+				GROUP BY page , LEFT(created_time,10)";	
 
 		$result = $this->db->query( $query );
 

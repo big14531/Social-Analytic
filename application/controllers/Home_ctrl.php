@@ -236,12 +236,7 @@ public function postGraph()
 
 public function showPageTable()
 {
-    $min_date = date("Y-m-d 00:00:00");
-    $max_date = date("Y-m-d 23:59:59");
-
-    $result = $this->Posts_model->getActivePageSummary( $min_date , $max_date );
-    $data['page_list'] = $result; 
-    $this->load->view( 'PageTable_view',$data );
+    $this->load->view( 'PageTable_view' );
 }
 
 public function ajaxPageTable()
@@ -271,7 +266,6 @@ public function getGrowthPage()
 
     $min_date = $_POST['min_date'];
     $max_date = $_POST['max_date'];
-
     $pageList = $this->Posts_model->getActivePagelist();
     
 

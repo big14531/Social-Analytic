@@ -1,4 +1,4 @@
-    h1,h2,h3,h4,h5{
+    h1,h2,h4,h5{
         color: #b8c7ce!important;
     }
 
@@ -23,5 +23,5 @@
         border-bottom: 1px solid #4B4B4B!important;
     }
     .flot-text {
-        color: #b8c7ce !important
+        color: #b8c7ce !important;
     }
