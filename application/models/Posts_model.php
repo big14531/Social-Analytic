@@ -353,8 +353,8 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 		$query = "SELECT 
-					page,
-					left(created_time,10) as created_time,
+					page_id,
+					DATE_FORMAT( created_time,  '%Y-%m-%d' ) as created_time_out,
 					sum(likes) as likes, 
 					sum( love ) as love ,
 					sum( wow ) as wow ,
@@ -365,12 +365,12 @@ class Posts_model extends CI_Model
 					sum( comments ) as comments ,
 					( sum(shares)+sum(comments)+sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as total,
 					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
-					count(page) as page_count
+					count( post_id ) as post_count
 				FROM  fb_facebook_post  
 				WHERE  created_time  >= '".$min_date."' 
 					AND created_time  <= '".$max_date."' 
 					AND  page_id =".$page_id." 
-				GROUP BY page , LEFT(created_time,10)";	
+				GROUP BY created_time_out";	
 
 		$result = $this->db->query( $query );
 

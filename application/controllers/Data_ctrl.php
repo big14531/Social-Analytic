@@ -181,7 +181,6 @@ class Data_ctrl extends CI_Controller
             'page_id'       => '', /* primary Key */
             'post_id'       => '', /* primary Key */
             'type'          => '',
-            'page'          => $pageName,
             'message'       => '',    
             'description'   => '',        
             'link'          => '', 

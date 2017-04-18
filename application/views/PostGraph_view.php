@@ -49,11 +49,11 @@
 <section class="content">   
 
     <div id='alert' class="alert alert-dismissible hidden">
-        <h3>Success!!</h3>
+        <h3>Success!!</h3> 
         <p>This is a green alert.</p>
     </div>
 
-    <div class="box">
+    <div class="box gray-box">
         <div class="box-header">
         </div>
 
@@ -97,7 +97,7 @@
     </div>
 </div>
 
-<div class="box">
+<div class="box gray-box">
     <div class="row">
         <div class="graph-box">
             <div id="placeholder" style="width:100%;height:500px">

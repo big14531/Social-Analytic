@@ -5,6 +5,11 @@
 
 
 <style>
+	.overview-box{
+        background-color: #666666!important;
+        border-top : 0px!important;
+        color: #b8c7ce!important;
+	}
 	.full-width{
 		width:100%;
 	}
@@ -123,12 +128,12 @@
 			<h3>Success!!</h3>
 			<p>This is a green alert.</p>
 		</div>  
-		<div class="box control-box">
+		<div class="box gray-box control-box">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group">
 						<select class="selectpicker form-control" id="datatype-btn">
-							<option selected="selected">Page number</option>
+							<option selected="selected">Posts</option>
 							<option >Engagement</option>
 							<option >Share</option>
 							<option >Comments</option>
@@ -169,9 +174,9 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<div class="box">
+				<div class="box overview-box">
 					<div class="box-header with-border">
-						<h3 class="box-title">Overview Graph</h3>
+						<h2 class="box-title">Overview Graph</h2>
 
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -205,7 +210,7 @@
 			}
 
 			echo '<div class="col-md-6">';
-			echo '<div class="box">';
+			echo '<div class="box gray-box">';
 
 			echo '<div class="box-header with-border">';
 			echo '<h2 class="box-title" id="page_name_'.$value->id.'"></h2>';
@@ -264,19 +269,19 @@
 	function getRandomColor( key , length) 
 	{
 
-		var red = Math.floor(key*10%255);
-		var green = Math.floor(key*30%255);
-		var blue = Math.floor(key+150%255);
+		var red = 200;
+		var green = Math.floor(key*20%255);
+		var blue = Math.floor(key+15%255);
 		var color = rgbToHex( red , green , blue );
 		return color;
 	}
 
-	function makeSeriesData( data , data_type="page_count" )
+	function makeSeriesData( data , data_type="Posts" )
 	{
 		switch( data_type ){
 
-			case "Page number":
-			var data_type="page_count"
+			case "Posts":
+			var data_type="post_count"
 			break;
 
 			case "Engagement":

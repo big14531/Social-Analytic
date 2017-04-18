@@ -266,6 +266,7 @@ public function getGrowthPage()
 
     $min_date = $_POST['min_date'];
     $max_date = $_POST['max_date'];
+
     $pageList = $this->Posts_model->getActivePagelist();
     
 
@@ -292,7 +293,7 @@ public function getGrowthPage()
 
         foreach( $postData as $dailyData )
         {
-            $dailyData->created_time = strtotime( $dailyData->created_time )*1000;
+            $dailyData->created_time = strtotime( $dailyData->created_time_out )*1000;
         }
 
         $arrayPageValue['posts_array'] = $arrayPagePost;
