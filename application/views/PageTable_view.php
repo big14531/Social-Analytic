@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-6" id="post-rate-box">
                 <div class="small-box bg-yellow">
                     <div class="inner">
                         <h3 id="post_rate">0</h3>
@@ -327,7 +327,17 @@ $('#search-btn').click(function()
     var date = date_range.split(' to ');
     if ( Boolean(date_range) ) 
     {
-      ajaxCall( date[0] , date[1] );
+        var min_date = date[1].substr(0,10);
+        var max_date = date[0].substr(0,10);
+        if( min_date===max_date )
+        {
+            $("#post-rate-box").removeClass( 'hidden');
+        }
+        else
+        {
+            $("#post-rate-box").addClass( 'hidden');
+        }
+        ajaxCall( date[0] , date[1] );
     }
     else
     {
@@ -354,7 +364,7 @@ $('#search-btn').click(function()
     {
         var type = $('#datatype-btn').val();
         var min_date = moment().format('YYYY-MM-DD 23:59:59') ;
-        var max_date = moment().subtract(6, 'days').format('YYYY-MM-DD 00:00:00');
+        var max_date = moment().subtract(0, 'days').format('YYYY-MM-DD 00:00:00');
         ajaxCall( max_date , min_date , type );
         $("#alert").fadeTo(2000, 500).slideUp(500, function()
         {

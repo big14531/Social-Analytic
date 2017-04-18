@@ -42,7 +42,7 @@ class Data_ctrl extends CI_Controller
             $this->sweepFacebookPost(10,0);
         }
 
-        elseif($minute%10==0)
+        elseif($minute%2==0)
         {
             $this->updateFacebookPost(60);
         }
@@ -91,10 +91,10 @@ class Data_ctrl extends CI_Controller
             $this->Posts_model->updatePageLog( $result );
 
             /*----------------- For Debug ----------------*/
-            echo "<b>Update :".$value->name."</b><br>";
-            echo "Number Post : ". $result['posts']."<br>";
-            var_dump( $result );
-            echo "<br>";echo "<br>";echo "<br>";echo "<br>";
+            // echo "<b>Update :".$value->name."</b><br>";
+            // echo "Number Post : ". $result['posts']."<br>";
+            // var_dump( $result );
+            // echo "<br>";echo "<br>";echo "<br>";echo "<br>";
         }
     }
 
