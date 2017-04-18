@@ -68,7 +68,7 @@ $route['updateTrackingPage'] = 'data_ctrl/updateTrackingPage';
 
 /*---------- update all interval , temp ----------*/
 $route['update'] = 'data_ctrl/tempUpdateAll';
-
+$route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 
 ////////////////////////////////////////
 //              View Zone             //

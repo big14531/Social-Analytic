@@ -41,9 +41,10 @@
 
     <section class="content">   
 
-        <div id='callout' class="callout hidden">
-            <h4>Success!!</h4>
-            <p>This is a green callout.</p>
+        <div id='alert' class="alert alert-warning alert-dismissible hidden">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h3>Success!!</h3>
+            <p>This is a green alert.</p>
         </div>
 
         <div class="box">
@@ -295,20 +296,20 @@
                     var page_name = $('#page-selector').find(':selected').text();
 
                     if (data.length == 0) {
-                        $('#callout').removeClass( 'hidden');
-                        $('#callout').removeClass( 'callout-success');
-                        $('#callout').addClass( 'callout-warning');
-                        $('#callout').find('h4').text( "ไม่มีข้อมูลในช่วงเวลานี้ - "+page_name );
-                        $('#callout').find('p').text(  "Post from "+min_date+" - "+max_date+" " );
+                        $('#alert').removeClass( 'hidden');
+                        $('#alert').removeClass( 'alert-success');
+                        $('#alert').addClass( 'alert-warning');
+                        $('#alert').find('h3').text( "ไม่มีข้อมูลในช่วงเวลานี้ - "+page_name );
+                        $('#alert').find('p').text(  "Post from "+min_date+" - "+max_date+" " );
 
                       
                     }
                     else{
-                        $('#callout').removeClass( 'hidden');
-                        $('#callout').removeClass( 'callout-warning');
-                        $('#callout').addClass( 'callout-success');
-                        $('#callout').find('h4').text( "ค้นหาสำเร็จ!!" );
-                        $('#callout').find('p').text('');
+                        $('#alert').removeClass( 'hidden');
+                        $('#alert').removeClass( 'alert-warning');
+                        $('#alert').addClass( 'alert-success');
+                        $('#alert').find('h3').text( "ค้นหาสำเร็จ!!" );
+                        $('#alert').find('p').text('');
                         data = editData(data);
                         renderTable(data);
                     }
@@ -319,11 +320,11 @@
                 error:function(xhr, textStatus, errorThrown) 
                 {
                         $('#search-btn').prop('disabled',false);
-                        $('#callout').removeClass( 'hidden');
-                        $('#callout').removeClass( 'callout-success');
-                        $('#callout').addClass( 'callout-danger');
-                        $('#callout').find('h4').text( "Error!!" );
-                        $('#callout').find('p').text( textStatus+" "+errorThrown+" "+xhr );
+                        $('#alert').removeClass( 'hidden');
+                        $('#alert').removeClass( 'alert-success');
+                        $('#alert').addClass( 'alert-danger');
+                        $('#alert').find('h3').text( "Error!!" );
+                        $('#alert').find('p').text( textStatus+" "+errorThrown+" "+xhr );
                 }   
             });
     
@@ -341,12 +342,12 @@
       }
       else
       {
-                          $('#callout').removeClass( 'hidden');
-                          $('#callout').removeClass( 'callout-success');
-                          $('#callout').removeClass( 'callout-warning');
-                          $('#callout').addClass( 'callout-warning');
-                          $('#callout').find('h4').text( "Please set date and page name" );
-                          $('#callout').find('p').text( '' );
+                          $('#alert').removeClass( 'hidden');
+                          $('#alert').removeClass( 'alert-success');
+                          $('#alert').removeClass( 'alert-warning');
+                          $('#alert').addClass( 'alert-warning');
+                          $('#alert').find('h3').text( "Please set date and page name" );
+                          $('#alert').find('p').text( '' );
       }
       
   });

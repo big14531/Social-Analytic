@@ -31,14 +31,14 @@
 
     </section>
 
-   
+
 
     <!-- Main content -->
     <section class="content">
 
-        <div id='callout' class="callout hidden">
-            <h4>Success!!</h4>
-            <p>This is a green callout.</p>
+        <div id='alert' class="alert alert-warning alert-dismissible hidden">
+            <h3>Success!!</h3>
+            <p>This is a green alert.</p>
         </div>  
 
         <div class="row">
@@ -83,44 +83,44 @@
             <div class="col-md-6">
                 <div class="input-group full-width">
                     <button type="button" class="btn btn-lg btn-default pull-left full-width" id="daterange-btn">
-                    <span>
-                      <i class="fa fa-calendar"></i> Date range
-                    </span>
-                    <i class="fa fa-caret-down"></i>
-                    </button>
-                </div>
-            </div>
+                        <span>
+                          <i class="fa fa-calendar"></i> Date range
+                      </span>
+                      <i class="fa fa-caret-down"></i>
+                  </button>
+              </div>
+          </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
+          <div class="col-md-6">
+            <div class="form-group">
+                <button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
                     <span>
-                    <i class="fa fa-calendar"></i> Search
+                        <i class="fa fa-calendar"></i> Search
                     </span>
-                    </button>
-                </div>
+                </button>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table id="example1" class="display table table-bordered">
-                            
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example1" class="display table table-bordered">
+
+                    </table>
                 </div>
-                <!-- /.box -->
-
+                <!-- /.box-body -->
             </div>
-            <!-- /.col -->
+            <!-- /.box -->
+
         </div>
-        <!-- /.row -->
-    </section>
-    <!-- /.content -->
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
 </div>
 
 <?php $this->load->view( 'default/bottom' ) ?>
@@ -133,9 +133,10 @@
 
 
 <script>
-    function createDatepicker(){
-         $('#daterange-btn').daterangepicker(
-         {
+    function createDatepicker()
+    {
+       $('#daterange-btn').daterangepicker(
+       {
           ranges: {
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -143,29 +144,29 @@
             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
             'This Month': [moment().startOf('month'), moment().endOf('month')],
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            startDate: moment().subtract(29, 'days'),
-            endDate: moment()
         },
-        function (start, end) {
-          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-          $('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
-        }
-        );
-    }
+        startDate: moment().subtract(29, 'days'),
+        endDate: moment()
+    },
+    function (start, end) {
+      $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+      $('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
+  }
+  );
+   }
 
-    function ajaxCall( min_date=0 , max_date=0 )
-    {
-        $('#search-btn').find('span').text('Searching.....');
-        $('#search-btn').addClass('disabled');
-        $('#search-btn').prop('disabled',true);
-        $.ajax({
+   function ajaxCall( min_date=0 , max_date=0 )
+   {
+    $('#search-btn').find('span').text('Searching.....');
+    $('#search-btn').addClass('disabled');
+    $('#search-btn').prop('disabled',true);
+    $.ajax({
             url:  "<?php echo base_url()?>/ajaxPageTable",   //the url where you want to fetch the data 
             type: 'post', //type of request POST or GET    
             data: {  
-                    'min_date': min_date,
-                    'max_date': max_date 
-                }, 
+                'min_date': min_date,
+                'max_date': max_date 
+            }, 
             dataType: 'json',
             success:function(data)
             {
@@ -173,12 +174,12 @@
                 $('#search-btn').removeClass('disabled');
                 $('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
 
-                $('#callout').removeClass( 'hidden');
-                $('#callout').removeClass( 'callout-success');
-                $('#callout').removeClass( 'callout-warning');
-                $('#callout').addClass( 'callout-success');
-                $('#callout').find('h4').text( "สำเร็จ!!" );
-                $('#callout').find('p').text( '' );
+                $('#alert').removeClass( 'hidden');
+                $('#alert').removeClass( 'alert-success');
+                $('#alert').removeClass( 'alert-warning');
+                $('#alert').addClass( 'alert-success');
+                $('#alert').find('h3').text( "สำเร็จ!!" );
+                $('#alert').find('p').text( '' );
 
                 var result = editData(data )
                 renderTable( result );
@@ -186,19 +187,19 @@
             error:function(xhr, textStatus, errorThrown) 
             {
                 $('#search-btn').prop('disabled',false);
-                $('#callout').removeClass( 'hidden');
-                $('#callout').removeClass( 'callout-success');
-                $('#callout').addClass( 'callout-danger');
-                $('#callout').find('h4').text( "Error!!" );
-                $('#callout').find('p').text( textStatus+" "+errorThrown+" "+xhr );
+                $('#alert').removeClass( 'hidden');
+                $('#alert').removeClass( 'alert-success');
+                $('#alert').addClass( 'alert-danger');
+                $('#alert').find('h3').text( "Error!!" );
+                $('#alert').find('p').text( textStatus+" "+errorThrown+" "+xhr );
             }   
         }); 
-    }
+}
 
-    function renderTable(data)
-    {
-        datatable = $('#example1').DataTable();
-        datatable.clear().draw();
+function renderTable(data)
+{
+    datatable = $('#example1').DataTable();
+    datatable.clear().draw();
         datatable.rows.add( data ); // Add new data
         datatable.columns.adjust().draw(); // Redraw the DataTable
     }
@@ -224,121 +225,143 @@
         var dataset=[];
         for ( var key in data )
         {
-           var value = data[key];
-           var engagement =  parseInt (value.comments)+
-                             parseInt (value.likes )+ 
-                             parseInt (value.love )+ 
-                             parseInt (value.wow )+ 
-                             parseInt (value.haha )+ 
-                             parseInt (value.sad )+  
-                             parseInt (value.angry )+ 
-                             parseInt (value.shares );
+         var value = data[key];
+         var engagement =  parseInt (value.comments)+
+         parseInt (value.likes )+ 
+         parseInt (value.love )+ 
+         parseInt (value.wow )+ 
+         parseInt (value.haha )+ 
+         parseInt (value.sad )+  
+         parseInt (value.angry )+ 
+         parseInt (value.shares );
 
-          var reaction =     parseInt (value.likes )+ 
-                             parseInt (value.love )+ 
-                             parseInt (value.wow )+ 
-                             parseInt (value.haha )+ 
-                             parseInt (value.sad )+  
-                             parseInt (value.angry );
+         var reaction =     parseInt (value.likes )+ 
+         parseInt (value.love )+ 
+         parseInt (value.wow )+ 
+         parseInt (value.haha )+ 
+         parseInt (value.sad )+  
+         parseInt (value.angry );
 
-          var rate =  Math.ceil( value.count / date );             
+         var rate =  Math.ceil( value.count / date );             
 
-           dataset[key] = 
-           [
-           value.picture,
-           value.name,
-           parseInt ( value.fan_count ).toLocaleString('en-US'),
-           parseInt ( value.count ).toLocaleString('en-US'),
-           rate,
-           engagement.toLocaleString('en-US'),
-           parseInt ( value.shares ).toLocaleString('en-US'),
-           parseInt ( value.comments ).toLocaleString('en-US'),
-           reaction.toLocaleString('en-US'),
-           parseInt ( value.likes ).toLocaleString('en-US'),
-           parseInt ( value.love ).toLocaleString('en-US'),
-           parseInt ( value.wow ).toLocaleString('en-US'),
-           parseInt ( value.haha ).toLocaleString('en-US'),
-           parseInt ( value.sad ).toLocaleString('en-US'),
-           parseInt ( value.angry ).toLocaleString('en-US'),
-           value.website,
-           value.link 
-           ];
+         dataset[key] = 
+         [
+         value.picture,
+         value.name,
+         parseInt ( value.fan_count ).toLocaleString('en-US'),
+         parseInt ( value.count ).toLocaleString('en-US'),
+         rate,
+         engagement.toLocaleString('en-US'),
+         parseInt ( value.shares ).toLocaleString('en-US'),
+         parseInt ( value.comments ).toLocaleString('en-US'),
+         reaction.toLocaleString('en-US'),
+         parseInt ( value.likes ).toLocaleString('en-US'),
+         parseInt ( value.love ).toLocaleString('en-US'),
+         parseInt ( value.wow ).toLocaleString('en-US'),
+         parseInt ( value.haha ).toLocaleString('en-US'),
+         parseInt ( value.sad ).toLocaleString('en-US'),
+         parseInt ( value.angry ).toLocaleString('en-US'),
+         value.website,
+         value.link 
+         ];
 
-            page_count += 1;
-            total_post += parseInt ( value.count );
-            post_rate += rate;
-        }
-
-        $('#page_count').text( page_count.toLocaleString('en-US') );
-        $('#total_post').text( total_post.toLocaleString('en-US') );
-        $('#post_rate').text( post_rate.toLocaleString('en-US') );
-
-        return dataset;
+         page_count += 1;
+         total_post += parseInt ( value.count );
+         post_rate += rate;
      }
 
-    function createTable( data ) {
+     $('#page_count').text( page_count.toLocaleString('en-US') );
+     $('#total_post').text( total_post.toLocaleString('en-US') );
+     $('#post_rate').text( post_rate.toLocaleString('en-US') );
 
-        $('#example1').DataTable( {
-            columns: [
+     return dataset;
+ }
 
-            { title: "Image" ,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                     $(nTd).html("<image class='table-img' src='"+sData+"' />");
-                }},
-            { title: "Name" },
-            { title: "Fanpage" },
-            { title: "Post" },
-            { title: "Post rate" },
-            { title: "Engage" },
-            { title: "Share" },
-            { title: "Comments" },
-            { title: "Reaction" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
-            { title: "<i class='fa fa-globe' aria-hidden='true'>" ,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                     $(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-                }
-            },
-            { title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                     $(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-                }
-            }
-           
-            ],
-            "iDisplayLength": 20
-        } );
+ function createTable( data ) {
+
+    $('#example1').DataTable( {
+        columns: [
+
+        { title: "Image" ,
+        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+           $(nTd).html("<image class='table-img' src='"+sData+"' />");
+       }},
+       { title: "Name" },
+       { title: "Fanpage" },
+       { title: "Post" },
+       { title: "Post rate" },
+       { title: "Engage" },
+       { title: "Share" },
+       { title: "Comments" },
+       { title: "Reaction" },
+       { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
+       { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
+       { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
+       { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
+       { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
+       { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
+       { title: "<i class='fa fa-globe' aria-hidden='true'>" ,
+       "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+           $(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+       }
+   },
+   { title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
+   "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+       $(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+   }
+}
+
+],
+"iDisplayLength": 20,
+"autoWidth":false
+} );
+}
+
+
+
+
+$('#search-btn').click(function()
+{
+
+    var date_range = $('#daterange-btn').val();
+    var date = date_range.split(' to ');
+    if ( Boolean(date_range) ) 
+    {
+      ajaxCall( date[0] , date[1] );
+    }
+    else
+    {
+        $('#alert').removeClass( 'hidden');
+        $('#alert').removeClass( 'alert-success');
+        $('#alert').removeClass( 'alert-warning');
+        $('#alert').addClass( 'alert-warning');
+        $('#alert').find('h3').text( "ข้อมูลไม่ครบ!!" );
+        $('#alert').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
+
     }
 
-
-    
-
-    $('#search-btn').click(function()
+    $("#alert").fadeTo(2000, 500).slideUp(500, function()
     {
-
-        var date_range = $('#daterange-btn').val();
-        var date = date_range.split(' to ');
-        if ( Boolean(date_range) ) 
-        {
-          ajaxCall( date[0] , date[1] );
-        }
-        else
-        {
-            $('#callout').removeClass( 'hidden');
-            $('#callout').removeClass( 'callout-success');
-            $('#callout').removeClass( 'callout-warning');
-            $('#callout').addClass( 'callout-warning');
-            $('#callout').find('h4').text( "ข้อมูลไม่ครบ!!" );
-            $('#callout').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
-        }
-        
+        $("#alert").slideUp(500);
     });
 
+});
+
+        // First time 
+    //
+    
+    $(document).ready(function() 
+    {
+        var type = $('#datatype-btn').val();
+        var min_date = moment().format('YYYY-MM-DD 23:59:59') ;
+        var max_date = moment().subtract(6, 'days').format('YYYY-MM-DD 00:00:00');
+        ajaxCall( max_date , min_date , type );
+        $("#alert").fadeTo(2000, 500).slideUp(500, function()
+        {
+            $("#alert").slideUp(500);
+        });
+    });
+    
     createTable();
     createDatepicker();
 

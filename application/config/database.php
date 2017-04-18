@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.52.134',
-	'username' => 'kom',
-	'password' => 'chadkomluek',
-	'database' => 'test',
+	'hostname' => 'localhost',
+	'username' => 'social',
+	'password' => 'SoleTs3#',
+	'database' => 'SocialAnalytic',
 	//'database' => 'db_komchadluek',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

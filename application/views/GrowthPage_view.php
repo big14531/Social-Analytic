@@ -2,34 +2,111 @@
 <?php $this->load->view( 'default/topMenu' ) ?>
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
-<!-- daterange picker -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.css">
-<!-- bootstrap datepicker -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/datepicker3.css">
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
+
 
 <style>
-	.graph_tab.active a{
-		background-color:#3c8dbc!important;
-	}
-	.graph_tab.active{
-		border-top:0px!important;
-	}
 	.full-width{
 		width:100%;
 	}
-	.box{
-		padding: 10px;
+	.control-box{
+		padding-top: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
-	.table-img{
+	.color-icon{
 		width:30px;
 		height:30px;
 		float: left;
 		margin-right: 5px;
 	}
-	.legend{
-		margin-bottom: 2px;
+	.legend-box{
+		margin-bottom: 5px;
 	}
+	.modal-dialog{
+		padding-top: 15%!important;
+	}
+	.sk-cube-grid {
+		width: 50px;
+		height: 50px;
+		margin: 100px auto;
+	}
+
+	.sk-cube-grid .sk-cube {
+		width: 33%;
+		height: 33%;
+		background-color: #FFF;
+		float: left;
+		-webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+		animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+	}
+	.sk-cube-grid .sk-cube1 
+	{
+		-webkit-animation-delay: 0.2s;
+		animation-delay: 0.2s; 
+	}
+	.sk-cube-grid .sk-cube2 
+	{
+		-webkit-animation-delay: 0.3s;
+		animation-delay: 0.3s; 
+	}
+	.sk-cube-grid .sk-cube3 
+	{
+		-webkit-animation-delay: 0.4s;
+		animation-delay: 0.4s; 
+	}
+	.sk-cube-grid .sk-cube4 
+	{
+		-webkit-animation-delay: 0.1s;
+		animation-delay: 0.1s; 
+	}
+	.sk-cube-grid .sk-cube5 
+	{
+		-webkit-animation-delay: 0.2s;
+		animation-delay: 0.2s; 
+	}
+	.sk-cube-grid .sk-cube6 
+	{
+		-webkit-animation-delay: 0.3s;
+		animation-delay: 0.3s; 
+	}
+	.sk-cube-grid .sk-cube7 
+	{
+		-webkit-animation-delay: 0s;
+		animation-delay: 0s; 
+	}
+	.sk-cube-grid .sk-cube8 
+	{
+		-webkit-animation-delay: 0.1s;
+		animation-delay: 0.1s; 
+	}
+	.sk-cube-grid .sk-cube9 
+	{
+		-webkit-animation-delay: 0.2s;
+		animation-delay: 0.2s; 
+	}
+
+	@-webkit-keyframes sk-cubeGridScaleDelay 
+	{
+		0%, 70%, 100% {
+			-webkit-transform: scale3D(1, 1, 1);
+			transform: scale3D(1, 1, 1);
+		} 35% {
+			-webkit-transform: scale3D(0, 0, 1);
+			transform: scale3D(0, 0, 1); 
+		}
+	}
+
+	@keyframes sk-cubeGridScaleDelay 
+	{
+		0%, 70%, 100% {
+			-webkit-transform: scale3D(1, 1, 1);
+			transform: scale3D(1, 1, 1);
+		} 35% {
+			-webkit-transform: scale3D(0, 0, 1);
+			transform: scale3D(0, 0, 1);
+		} 
+	}
+
 </style>
 
 <!-- Content Here -->
@@ -42,12 +119,11 @@
 	</section>
 
 	<section class="content"> 
-
-		<div id='callout' class="callout hidden">
-			<h4>Success!!</h4>
-			<p>This is a green callout.</p>
+	<div id='alert' class="alert alert-warning alert-dismissible hidden">
+			<h3>Success!!</h3>
+			<p>This is a green alert.</p>
 		</div>  
-		<div class="box">
+		<div class="box control-box">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group">
@@ -90,7 +166,7 @@
 		</div>
 
 
-		
+
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box">
@@ -154,32 +230,29 @@
 	</section>
 </div>
 
+<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog" role="document" style="text-align: center;">
+		<div class="sk-cube-grid">
+			<div class="sk-cube sk-cube1"></div>
+			<div class="sk-cube sk-cube2"></div>
+			<div class="sk-cube sk-cube3"></div>
+			<div class="sk-cube sk-cube4"></div>
+			<div class="sk-cube sk-cube5"></div>
+			<div class="sk-cube sk-cube6"></div>
+			<div class="sk-cube sk-cube7"></div>
+			<div class="sk-cube sk-cube8"></div>
+			<div class="sk-cube sk-cube9"></div>
+		</div>
+
+		<h3 style="color: #FFF">Loading....</h3>
+	</div>
+</div>
 
 
 
 <?php $this->load->view( 'default/bottom' ) ?>
 
-<!-- FLOT CHARTS -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.min.js"></script>
-<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.resize.min.js"></script>
-<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.pie.min.js"></script>
-<!-- FLOT CATEGORIES PLUGIN - Used to draw bar charts -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.categories.min.js"></script>
-<!-- FLOT selection -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.selection.js"></script>
-<!-- FLOT TIME CHARTS -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.time.js"></script>
-<!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap datepicker -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/bootstrap-datepicker.js"></script>
-
-
 <script>
-
 	var is_first =1;
 	var dataset=[];
 
@@ -190,10 +263,10 @@
 
 	function getRandomColor( key , length) 
 	{
-		
-		var red = Math.floor(key+80%255);
-		var green = Math.floor(key+160%255);
-		var blue = Math.floor(key+240%255);
+
+		var red = Math.floor(key*10%255);
+		var green = Math.floor(key*30%255);
+		var blue = Math.floor(key+150%255);
 		var color = rgbToHex( red , green , blue );
 		return color;
 	}
@@ -277,7 +350,7 @@
 			};
 			dataset.push( series );
 		}
-		
+
 
 		return dataset;
 	} 
@@ -287,9 +360,9 @@
 		var choiceContainer = $("#legend-container");
 
 		$.each(data, function(key, val) {
-			choiceContainer.append("<div class='row legend'><input type='checkbox' name='" + val.page_name +
+			choiceContainer.append("<div class='row legend-box'><input type='checkbox' name='" + val.page_name +
 				"' checked='checked' id='id" + key + "'></input>" +
-				" <div class='table-img' style='background-color:"+dataset[key].color+"'></div> "+
+				" <div class='color-icon' style='background-color:"+dataset[key].color+"'></div> "+
 				"<label for='id" + key + "'>"
 				+ val.page_name + "</label></div>");
 		});
@@ -300,7 +373,8 @@
 	{
 		$('#search-btn').find('span').text('Searching.....');
 		$('#search-btn').addClass('disabled');
-		$('#search-btn').prop('disabled',true);
+		$('#search-btn').prop('disabled',true); 
+		$('#myModal').modal('show');
 		$.ajax({
 			url:  "<?php echo base_url()?>/getGrowthPage",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET    
@@ -312,6 +386,7 @@
 			dataType: 'json',
 			success:function(data)
 			{
+				$('#myModal').modal('hide');
 				$('.col-md-6').attr('hidden',false);
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
@@ -387,9 +462,9 @@
 	 		grid: 
 	 		{ 
 	 			hoverable: true,
-	 			borderColor: "#f3f3f3",
+	 			borderColor: "#555555",
 	 			borderWidth: 1,
-	 			tickColor: "#f3f3f3",
+	 			tickColor: "#555555",
 	 			margin: 10
 	 		}, 
 	 		points: 
@@ -495,7 +570,7 @@
 	 			hoverable: true,
 	 			borderColor: "#555555",
 	 			borderWidth: 1,
-	 			tickColor: "#eeeeee",
+	 			tickColor: "#555555",
 	 			margin: 10
 	 		}, 
 	 		points: 
@@ -655,14 +730,17 @@
 		}
 		else
 		{
-			$('#callout').removeClass( 'hidden');
-			$('#callout').removeClass( 'callout-success');
-			$('#callout').removeClass( 'callout-warning');
-			$('#callout').addClass( 'callout-warning');
-			$('#callout').find('h4').text( "ข้อมูลไม่ครบ!!" );
-			$('#callout').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
+			$('#alert').removeClass( 'hidden');
+			$('#alert').removeClass( 'alert-success');
+			$('#alert').removeClass( 'alert-warning');
+			$('#alert').addClass( 'alert-warning');
+			$('#alert').find('h3').text( "ข้อมูลไม่ครบ!!" );
+			$('#alert').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
 		}
-
+		$("#alert").fadeTo(2000, 500).slideUp(500, function()
+		{
+			$("#alert").slideUp(500);
+		});
 	});
 
 	// First time 
@@ -674,8 +752,10 @@
 		var min_date = moment().format('YYYY-MM-DD 23:59:59') ;
 		var max_date = moment().subtract(6, 'days').format('YYYY-MM-DD 00:00:00');
 		ajaxCall( max_date , min_date , type );
-
-		
+		$("#alert").fadeTo(2000, 500).slideUp(500, function()
+		{
+			$("#alert").slideUp(500);
+		});
 	});
 
 	$(function() 

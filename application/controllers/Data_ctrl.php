@@ -19,13 +19,34 @@ class Data_ctrl extends CI_Controller
         $this->load->helper('date');
     }
 
-    
     public function tempUpdateAll()
     {
-
         $this->load->view('UpdateInterval');
     }
 
+    public function contabDataCrawler()
+    {
+
+        $this->load->helper('file');
+        $result=write_file('last_crontab.txt',date('Y-m-d H:i:s'),'w+, ccs=UTF-8');
+        
+        $minute=date('i');
+        echo $minute;
+        if($minute%30==0)
+        {
+            $this->updateTrackingPage();
+        }
+
+        elseif($minute%6==0)
+        {
+            $this->sweepFacebookPost(10,0);
+        }
+
+        elseif($minute%10==0)
+        {
+            $this->updateFacebookPost(60);
+        }
+    }
 
     public function getAllTrackPageID()
     {
@@ -68,7 +89,7 @@ class Data_ctrl extends CI_Controller
 
             $this->Posts_model->updateTrackingPage( $id , $result );     
             $this->Posts_model->updatePageLog( $result );
-            
+
             /*----------------- For Debug ----------------*/
             echo "<b>Update :".$value->name."</b><br>";
             echo "Number Post : ". $result['posts']."<br>";
@@ -100,7 +121,7 @@ class Data_ctrl extends CI_Controller
                 $this->extractPostData( $rawData,$pageName );  
 
                 array_push( $total_result, $rawData['data']);
-                 $_SESSION['post_count']++;
+                $_SESSION['post_count']++;
             }
         }
         echo json_encode( $rawData['data'] );
@@ -121,7 +142,7 @@ class Data_ctrl extends CI_Controller
             {
                 echo "<br><br>Last Update".$value->last_update_time."<br><br>";
                 $post_id =  $value->page_id."_".$value->post_id;
-               
+
                 $rawData = $this->kcl_facebook_analytic->getReactionPost( $post_id );
                 $rawData['last_update_time'] = Date("Y-m-d H:i:00");
                 $rawData['post_id'] = $value->post_id;
@@ -132,7 +153,7 @@ class Data_ctrl extends CI_Controller
                 $this->updatePost( $total_result );  
             } 
 
-             
+
         }
         echo json_encode( $total_result );
     }
@@ -149,69 +170,69 @@ class Data_ctrl extends CI_Controller
     {   
 
        $this->Posts_model->updatePost( $data );
-    }
+   }
 
-    public function extractPostData( $data,$pageName )
+   public function extractPostData( $data,$pageName )
+   {
+    $total_result = array();
+    foreach( $data['data'] as $key => $value )
     {
-        $total_result = array();
-        foreach( $data['data'] as $key => $value )
-        {
-            $post_result = array(
-                'page_id'       => '', /* primary Key */
-                'post_id'       => '', /* primary Key */
-                'type'          => '',
-                'page'          => $pageName,
-                'message'       => '',    
-                'description'   => '',        
-                'link'          => '', 
-                'permalink_url' => '',          
-                'object_id'     => '',      
-                'picture'       => '',    
-                'name'          => '', 
-                'icon'          => '', 
-                'shares'        => '0',   
-                'comments'      => '0',
-                'created_time'  => ''
+        $post_result = array(
+            'page_id'       => '', /* primary Key */
+            'post_id'       => '', /* primary Key */
+            'type'          => '',
+            'page'          => $pageName,
+            'message'       => '',    
+            'description'   => '',        
+            'link'          => '', 
+            'permalink_url' => '',          
+            'object_id'     => '',      
+            'picture'       => '',    
+            'name'          => '', 
+            'icon'          => '', 
+            'shares'        => '0',   
+            'comments'      => '0',
+            'created_time'  => ''
             );
 
-            foreach( $value as $key => $inner_value)
-            {
-                if($key=='id')
-                { 
-                    $id = explode( '_' ,$inner_value );
-                    $post_result['page_id'] = $id[0]; 
-                    $post_result['post_id'] = $id[1];
-                }
+        foreach( $value as $key => $inner_value)
+        {
+            if($key=='id')
+            { 
+                $id = explode( '_' ,$inner_value );
+                $post_result['page_id'] = $id[0]; 
+                $post_result['post_id'] = $id[1];
+            }
 
-                elseif($key=='shares')
+            elseif($key=='shares')
                 { $post_result[$key] = $inner_value['count']; }
 
-                elseif($key=='comments')
+            elseif($key=='comments')
                 { $post_result[$key] = $inner_value['summary']['total_count']; }
 
-                elseif($key=='created_time')
-                { 
-                    /* Convert date */
-                    $created_time = nice_date(  $inner_value, 'Y-m-d H:i');
-                    $post_result[$key] = $created_time; 
-
-                }
-
-
-                else
-                { 
-                    $inner_value = str_replace('"',"'",$inner_value);
-                    $post_result[$key] = $inner_value; 
-                }
+            elseif($key=='created_time')
+            { 
+                /* Convert date */
+                $created_time = nice_date(  $inner_value, 'Y-m-d H:i');
+                $post_result[$key] = $created_time; 
 
             }
-            /* Get reaction */
-            $post_result['reaction'] = $this->kcl_facebook_analytic->getReactionPost( $value['id'] );
 
-            /* Insert to database */
-            $this->Posts_model->insertPostData( $post_result );
-        } 
-    }
+
+            else
+            { 
+                $inner_value = str_replace('"',"'",$inner_value);
+                $post_result[$key] = $inner_value; 
+            }
+
+        }
+        /* Get reaction */
+        $post_result['reaction'] = $this->kcl_facebook_analytic->getReactionPost( $value['id'] );
+
+        /* Insert to database */
+        $this->Posts_model->insertPostData( $post_result );
+    } 
+}
 
 }
 ?>
