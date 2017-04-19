@@ -1,7 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Posts_model extends CI_Model
 {
-	var $query;
 	function __construct()
 	{
 		// Call the Model constructor

@@ -432,6 +432,10 @@ class Home_ctrl extends CI_Controller
 
 	/* ---------------- User page Section ---------------- */
 
+	/**
+	 * [userPage description]
+	 * 
+	 */
 	public function userPage()
 	{
 		checkAdminAutho($this->session->all_userdata());

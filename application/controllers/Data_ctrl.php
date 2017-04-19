@@ -1,13 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');    
 
-/**
- *  Data controller
- *
- *  controller about get , update -> post and page
- *  
- */
 class Data_ctrl extends CI_Controller
 {
+
 	function __construct()
 	{
 		parent::__construct(); 
@@ -46,8 +41,7 @@ class Data_ctrl extends CI_Controller
 		{
 			$this->updateFacebookPost(60);
 			$result=write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - updateFacebookPost\r\n",'a+');
-		}
-		
+		}		
 	}
 
 	public function getAllTrackPageID()
@@ -76,6 +70,11 @@ class Data_ctrl extends CI_Controller
 			$page_id = $value->page_id;
 			$result = $this->kcl_facebook_analytic->getRawPageDetail( $page_id );
 
+			if ( is_string($result['name'])==false ) 
+			{
+				write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - ERROR updateTrackingPage can't get data\r\n",'a+');
+				write_file('last_crontab.txt',$result,'a+');
+			}
 			$posts = $this->Posts_model->getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date );
 
 			$result['posts'] = $posts[0]->count;
@@ -168,7 +167,6 @@ class Data_ctrl extends CI_Controller
 
 	public function updatePost( $data )
 	{   
-
 		$this->Posts_model->updatePost( $data );
 	}
 
