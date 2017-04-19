@@ -126,9 +126,7 @@
 
 <script>
 
-
-
-    function convertTime( data )
+function convertTime( data )
     { 
         var temp_date = data.substr(0,10);
         var date = temp_date.split("-");
@@ -179,7 +177,7 @@
         var fan_dataset = generateData( data );
         var options = 
         {
-           legend:{
+         legend:{
             show:false
         },       
         series: {
@@ -221,7 +219,7 @@
     }).appendTo("body");
 
     placeholder.bind("plotclick", function (event, pos, item) {
-       if (item) {
+     if (item) {
         var index = item.dataIndex;
         var label = item.series.extraData[index].label;
         var page_id = label[2];

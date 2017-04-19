@@ -3,12 +3,12 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 
-
+<!-- Internal CSS Zone -->
 <style>
 	.overview-box{
-        background-color: #666666!important;
-        border-top : 0px!important;
-        color: #b8c7ce!important;
+		background-color: #666666!important;
+		border-top : 0px!important;
+		color: #b8c7ce!important;
 	}
 	.full-width{
 		width:100%;
@@ -111,11 +111,11 @@
 			transform: scale3D(0, 0, 1);
 		} 
 	}
-
 </style>
 
-<!-- Content Here -->
+<!-- Content Zone -->
 <div class="content-wrapper">
+
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
@@ -124,10 +124,12 @@
 	</section>
 
 	<section class="content"> 
-	<div id='alert' class="alert alert-warning alert-dismissible hidden">
+
+		<div id='alert' class="alert alert-warning alert-dismissible hidden">
 			<h3>Success!!</h3>
 			<p>This is a green alert.</p>
 		</div>  
+
 		<div class="box gray-box control-box">
 			<div class="row">
 				<div class="col-md-3">
@@ -170,8 +172,6 @@
 			</div>
 		</div>
 
-
-
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box overview-box">
@@ -200,37 +200,43 @@
 				</div>
 			</div>
 		</div>
-
+	
 		<?php
-		$count=0;
-		foreach( $page_list as $value )
-		{   
-			if ($count%2==0) {
-				echo '<div class="row">';
-			}
 
-			echo '<div class="col-md-6">';
-			echo '<div class="box gray-box">';
+			/**
+			 * PHP Create sub-graph from active page
+			 * 
+			 */
+		
+			$count=0;
+			foreach( $page_list as $value )
+			{   
+				if ($count%2==0) {
+					echo '<div class="row">';
+				}
 
-			echo '<div class="box-header with-border">';
-			echo '<h2 class="box-title" id="page_name_'.$value->id.'"></h2>';
-			echo '<div class="box-tools pull-right">';
-			echo '</button>';
-			echo '</div>';
-			echo '</div>';
+				echo '<div class="col-md-6">';
+				echo '<div class="box gray-box">';
 
-			echo '<div class="box-body" id="box_'.$value->id.'">';
-			echo '<div id="line-chart'.$value->id.'" style="height: 400px;"></div>';
-			echo '</div>';
-
-			echo '</div>';
-			echo '</div>';
-
-			if ($count%2==1) {
+				echo '<div class="box-header with-border">';
+				echo '<h2 class="box-title" id="page_name_'.$value->id.'"></h2>';
+				echo '<div class="box-tools pull-right">';
+				echo '</button>';
 				echo '</div>';
+				echo '</div>';
+
+				echo '<div class="box-body" id="box_'.$value->id.'">';
+				echo '<div id="line-chart'.$value->id.'" style="height: 400px;"></div>';
+				echo '</div>';
+
+				echo '</div>';
+				echo '</div>';
+
+				if ($count%2==1) {
+					echo '</div>';
+				}
+				$count+=1;
 			}
-			$count+=1;
-		}
 		?>
 	</section>
 </div>
@@ -253,31 +259,62 @@
 	</div>
 </div>
 
-
-
 <?php $this->load->view( 'default/bottom' ) ?>
 
 <script>
+
 	var is_first =1;
 	var dataset=[];
 
+	/**
+	 * [rgbToHex description]
+	 *
+	 * 		Convert RGB color format to hexcode color
+	 * 
+	 * @param  {[int]} r [ red color ]
+	 * @param  {[int]} g [ green color ]
+	 * @param  {[int]} b [blue color ]
+	 * @return {[string]} [ #FFFFFF ]
+	 */
 	function rgbToHex(r, g, b) 
 	{
 		return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 	}
 
+	/**
+	 * [getRandomColor description]
+	 *
+	 *		Random color of series line
+	 *
+	 * 		Choose color by length of each data
+	 * 
+	 * @param  {[type]} key    
+	 * @param  {[type]} length 
+	 * @return {[type]}	[#FFFFFF]
+	 */
 	function getRandomColor( key , length) 
 	{
-
 		var red = 200;
 		var green = Math.floor(key*20%255);
 		var blue = Math.floor(key+15%255);
 		var color = rgbToHex( red , green , blue );
+
 		return color;
 	}
 
+
+	/**
+	 * [makeSeriesData description]
+	 *
+	 *		Get RAW data from ajax and extract data to array. For flotchart to readable
+	 * 
+	 * @param  {[object]} data		[ data from ajax ]
+	 * @param  {String} data_type 	[ data type ]
+	 * @return {[type]}	dataset		[array]
+	 */
 	function makeSeriesData( data , data_type="Posts" )
 	{
+		// Check data type and set key, for get result from Raw data by key
 		switch( data_type ){
 
 			case "Posts":
@@ -360,6 +397,15 @@
 		return dataset;
 	} 
 
+	/**
+	 * [createCheckBox description]
+	 *
+	 *		Create Check box
+	 * 
+	 * @param  {[type]} data   
+	 * @param  {[type]} dataset
+	 * @return {[type]}        
+	 */
 	function createCheckBox( data, dataset ) 
 	{ 
 		var choiceContainer = $("#legend-container");
@@ -371,9 +417,17 @@
 				"<label for='id" + key + "'>"
 				+ val.page_name + "</label></div>");
 		});
-
 	}
 
+	/**
+	 * [ajaxCall description]
+	 *
+	 *		Ajax call data from controller
+	 * 
+	 * @param  {[type]} min_date 
+	 * @param  {[type]} max_date 
+	 * @param  {[type]} type     
+	 */
 	function ajaxCall( min_date , max_date ,type )
 	{
 		$('#search-btn').find('span').text('Searching.....');
@@ -381,7 +435,7 @@
 		$('#search-btn').prop('disabled',true); 
 		$('#myModal').modal('show');
 		$.ajax({
-			url:  "<?php echo base_url()?>/getGrowthPage",   //the url where you want to fetch the data 
+			url:  "<?php echo base_url()?>/ajaxGrowthPage",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET    
 			data: {  
 				'min_date': min_date,
@@ -407,7 +461,12 @@
 		}); 
 	}
 
-
+	/**
+	 * [plotGraphbyCheckbox description]
+	 *
+	 *		Redraw graph by checkbox
+	 * 
+	 */
 	function plotGraphbyCheckbox() 
 	{
 		var data = [];
@@ -456,8 +515,8 @@
 	 * @param  {[json]} input [ data from ajax ]
 	 * @return {[none]}       [plot graph]
 	 */
-	 function plotSubGraph( dataset )
-	 {
+	function plotSubGraph( dataset )
+	{
 	 	var option =
 	 	{   
 	 		legend:
@@ -548,7 +607,7 @@
 				}
 			});
 	 	}
-	 }
+	}
 
 	/**
 	 * [plotGraph description]
@@ -561,8 +620,8 @@
 	 * @param  {[json]} input [ data from ajax ]
 	 * @return {[none]}       [plot graph]
 	 */
-	 function plotOverviewGraph( dataset )
-	 {
+	function plotOverviewGraph( dataset )
+	{
 	 	var option =
 	 	{   
 	 		legend:
@@ -582,107 +641,107 @@
 	 		{
 	 			hoverable: true,
 	 			show: true,
-	 			radius: 5,
+	 			radius: 3,
 	 			symbol: "circle"
 	 		},
 	 		series: {            
 	 			lines: {
 	 				show: true,
-					// fill: true,
-					hoverable: true,
-				}
-			},
-			xaxis:
-			{
-				show: true,
-				mode: "time",
-				timeformat: "<b>%a</b> <br> %d-%b ",
-				timezone: "browser",
-				minTickSize: [1, "day"],
-				autoscaleMargin: 0.002
-			},
-			yaxis: 
-			{
-				show: true,
-				tickFormatter: function(x) 
-				{
-					return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
-				}
-			},
-			selection: {
-				mode: "xy"
-			}
-		};  
+	 				lineWidth: 5,
+	 				hoverable: true,
+	 			}
+	 		},
+	 		xaxis:
+	 		{
+	 			show: true,
+	 			mode: "time",
+	 			timeformat: "<b>%a</b> <br> %d-%b ",
+	 			timezone: "browser",
+	 			minTickSize: [1, "day"],
+	 			autoscaleMargin: 0.002
+	 		},
+	 		yaxis: 
+	 		{
+	 			show: true,
+	 			tickFormatter: function(x) 
+	 			{
+	 				return x.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+	 			}
+	 		},
+	 		selection: {
+	 			mode: "xy"
+	 		}
+	 	};  
 
-		var preview_option =
-		{   
-			legend:
-			{
-				show: false
-			},
-			points: 
-			{
-				show: true
-			},
-			series: {            
-				lines: {
-					show: true,
-				}
-			},
-			xaxis:
-			{
-				show: false
-			},
-			yaxis: 
-			{
-				show: false
-			},  
-			selection: {
-				mode: "xy"
-			}
-		};  
+	 	var preview_option =
+	 	{   
+	 		legend:
+	 		{
+	 			show: false
+	 		},
+	 		points: 
+	 		{
+	 			show: true
+	 		},
+	 		series: {            
+	 			lines: {
+	 				show: true,
+	 			}
+	 		},
+	 		xaxis:
+	 		{
+	 			show: false
+	 		},
+	 		yaxis: 
+	 		{
+	 			show: false
+	 		},  
+	 		selection: {
+	 			mode: "xy"
+	 		}
+	 	};  
 
-		var chart = $.plot("#overview-chart",dataset,option);
-		var overview = $.plot("#overview",dataset,preview_option);
+	 	var chart = $.plot("#overview-chart",dataset,option);
+	 	var overview = $.plot("#overview",dataset,preview_option);
 
-		$("#overview").bind("plotselected", function (event, ranges) 
-		{
-			if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {ranges.xaxis.to = ranges.xaxis.from + 0.00001;}
-			if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {ranges.yaxis.to = ranges.yaxis.from + 0.00001;}
-			plot = $.plot("#overview-chart", dataset,
-				$.extend(true, {}, option, {
-					xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
-					yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
-				})
-				);
-			overview.setSelection(ranges, true);
-		});
+	 	$("#overview").bind("plotselected", function (event, ranges) 
+	 	{
+	 		if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {ranges.xaxis.to = ranges.xaxis.from + 0.00001;}
+	 		if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {ranges.yaxis.to = ranges.yaxis.from + 0.00001;}
+	 		plot = $.plot("#overview-chart", dataset,
+	 			$.extend(true, {}, option, {
+	 				xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
+	 				yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
+	 			})
+	 			);
+	 		overview.setSelection(ranges, true);
+	 	});
 
-		$("#overview-chart").bind("plotselected", function (event, ranges) 
-		{
-			if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {ranges.xaxis.to = ranges.xaxis.from + 0.00001;}
-			if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {ranges.yaxis.to = ranges.yaxis.from + 0.00001;}
-			plot = $.plot("#overview-chart", dataset,
-				$.extend(true, {}, option, {
-					xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
-					yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
-				})
-				);
-			overview.setSelection(ranges, true);
-		});
+	 	$("#overview-chart").bind("plotselected", function (event, ranges) 
+	 	{
+	 		if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {ranges.xaxis.to = ranges.xaxis.from + 0.00001;}
+	 		if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {ranges.yaxis.to = ranges.yaxis.from + 0.00001;}
+	 		plot = $.plot("#overview-chart", dataset,
+	 			$.extend(true, {}, option, {
+	 				xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
+	 				yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
+	 			})
+	 			);
+	 		overview.setSelection(ranges, true);
+	 	});
 
-		$('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
-			position: "absolute",
-			display: "none",
-			opacity: 0.8
-		}).appendTo("body");
+	 	$('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+	 		position: "absolute",
+	 		display: "none",
+	 		opacity: 0.8
+	 	}).appendTo("body");
 
-		$("#overview-chart").bind("plothover", function (event, pos, item) 
-		{
-			if (item) 
-			{
-				var page_name = item.series.label;
-				var date = new Date(item.datapoint[0]);
+	 	$("#overview-chart").bind("plothover", function (event, pos, item) 
+	 	{
+	 		if (item) 
+	 		{
+	 			var page_name = item.series.label;
+	 			var date = new Date(item.datapoint[0]);
 					// Seconds part from the timestamp
 					var year = "0" + date.getFullYear();
 					// Seconds part from the timestamp
@@ -702,55 +761,58 @@
 					$("#line-chart-tooltip").hide();
 				}
 			});
-		
-	}
 
-	$('#daterange-btn').daterangepicker(
-	{
-		ranges: {
-			'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-			'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-			'This Month': [moment().startOf('month'), moment().endOf('month')],
-			'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-		},
-		startDate: moment().subtract(6, 'days'),
-		endDate: moment()
-	},
-	function (start, end) 
-	{
-		$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-		$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
-	}
-	);
+	 }
+
+	 $('#daterange-btn').daterangepicker(
+	 {
+	 	ranges: {
+	 		'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	 		'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	 		'This Month': [moment().startOf('month'), moment().endOf('month')],
+	 		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	 	},
+	 	startDate: moment().subtract(6, 'days'),
+	 	endDate: moment()
+	 },
+	 function (start, end) 
+	 {
+	 	$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	 	$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
+	 }
+	 );
 
 
-	$('#search-btn').click(function()
-	{
-		var type = $('#datatype-btn').val();
-		var date_range = $('#daterange-btn').val();
-		var date = date_range.split(' to ');
-		if ( Boolean(date_range) ) 
-		{
-			ajaxCall( date[0] , date[1] , type );
-		}
-		else
-		{
-			$('#alert').removeClass( 'hidden');
-			$('#alert').removeClass( 'alert-success');
-			$('#alert').removeClass( 'alert-warning');
-			$('#alert').addClass( 'alert-warning');
-			$('#alert').find('h3').text( "ข้อมูลไม่ครบ!!" );
-			$('#alert').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
-		}
-		$("#alert").fadeTo(2000, 500).slideUp(500, function()
-		{
-			$("#alert").slideUp(500);
-		});
-	});
+	 $('#search-btn').click(function()
+	 {
+	 	var type = $('#datatype-btn').val();
+	 	var date_range = $('#daterange-btn').val();
+	 	var date = date_range.split(' to ');
+	 	if ( Boolean(date_range) ) 
+	 	{
+	 		ajaxCall( date[0] , date[1] , type );
+	 	}
+	 	else
+	 	{
+	 		$('#alert').removeClass( 'hidden');
+	 		$('#alert').removeClass( 'alert-success');
+	 		$('#alert').removeClass( 'alert-warning');
+	 		$('#alert').addClass( 'alert-warning');
+	 		$('#alert').find('h3').text( "ข้อมูลไม่ครบ!!" );
+	 		$('#alert').find('p').text( 'กรุณาเลือกวันที่ต้องการค้นหา' );
+	 	}
+	 	$("#alert").fadeTo(2000, 500).slideUp(500, function()
+	 	{
+	 		$("#alert").slideUp(500);
+	 	});
+	 });
 
-	// First time 
-	//
-	
+	/**
+	* [description]
+	* 
+	* 	Call Ajax first time when open window
+	* 
+	*/
 	$(document).ready(function() 
 	{
 		var type = $('#datatype-btn').val();
@@ -763,6 +825,12 @@
 		});
 	});
 
+	/**
+	* [description]
+	*
+	*	Set callback for Checkbox
+	* 
+	*/
 	$(function() 
 	{
 		$( "#legend-container" ).delegate( "input", "click", function() {

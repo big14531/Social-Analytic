@@ -335,7 +335,7 @@
 
     function createPostTarget( data ) 
     {
-         var engagement = parseInt (data[0].likes )+ 
+        var engagement = parseInt (data[0].likes )+ 
                          parseInt (data[0].love )+ 
                          parseInt (data[0].wow )+ 
                          parseInt (data[0].haha )+ 

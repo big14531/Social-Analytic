@@ -95,7 +95,7 @@ $route['ajaxPageTable'] = 'home_ctrl/ajaxPageTable';
 
 /*---------- growth table  ----------*/
 $route['growthPage'] = 'home_ctrl/growthPage';
-$route['getGrowthPage'] = 'home_ctrl/getGrowthPage';
+$route['ajaxGrowthPage'] = 'home_ctrl/ajaxGrowthPage';
 
 /*---------- edit page  ----------*/
 $route['editPageList'] = 'home_ctrl/pagelist';
