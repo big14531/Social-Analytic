@@ -12,7 +12,6 @@ class Posts_model extends CI_Model
 	public function insertPostData( $posts )
 	{   
 
-		// var_dump( $posts );
 		$data = array( 
 			'page_id' => $posts['page_id'],
 			'post_id' => $posts['post_id'],

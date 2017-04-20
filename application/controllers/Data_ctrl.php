@@ -22,37 +22,120 @@ class Data_ctrl extends CI_Controller
 
 	public function contabDataCrawler()
 	{
-		$minute=date('i');
-		$result=write_file('last_crontab.txt',"RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
+		if( !isset($_SESSION['accessToken']) )
+		{
+			return false;
+		}
+
+		$minute = date('i');
+
+		write_file('last_crontab.txt',"\n"."--- RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
+
 		if($minute%30==0)
 		{
-			$this->updateTrackingPage();
-			$result=write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - updateTrackingPage\r\n",'a+');
+			$result = $this->updateTrackingPage();
+			write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - update Page\r\n",'a+');
 		}
 		if($minute%7==0)
 		{
-			$this->sweepFacebookPost(10,0);
-			$result=write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - sweepFacebookPost\r\n",'a+');
+			$result = $this->sweepFacebookPost(10,0);
+			write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - Sweep Post\r\n",'a+');
 		}
 
 		if($minute%1==0)
 		{
-			$this->updateFacebookPost(60);
-			$result=write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - updateFacebookPost\r\n",'a+');
+			$result = $this->updateFacebookPost(40);
+			write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
 		}		
 	}
 
-	public function getAllTrackPageID()
+	public function sweepFacebookPost( $limit , $offset )
 	{
-		$result = array();
-		$data = $this->Posts_model->getPageID();
-		$data = $data->result();
+		// get active page
+		$pageList = $this->Posts_model->getActivePagelist();
 
-		foreach( $data as $value )
+		// Get Post from active page
+		foreach( $pageList as $page )
 		{
-			array_push($result , $value->page_id ); 
+			$page_id = $page->page_id;
+			$raw_post_array = $this->kcl_facebook_analytic->getRawPostData( $page_id , $limit , $offset  );
+		
+			$raw_post_list = $raw_post_array['data'];
+
+			// Extract data from facebook_api and save to database
+			foreach ( $raw_post_list as $post ) 
+			{
+				$post = $this->extractPostData( $post );
+
+				// Write log when can't get data from dacebook
+				if ($post == false) 
+				{
+					write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - Sweep Fail ".$post['page_id']."_".$post['post_id']."\r\n",'a+');
+					continue;
+				}
+				$this->Posts_model->insertPostData( $post );
+			}			
 		}
-		return $result;
+	}
+
+	public function extractPostData( $value )
+	{
+		$post_result = array(
+			'page_id'       => '',
+			'post_id'       => '',
+			'type'          => '',
+			'message'       => '',    
+			'description'   => '',        
+			'link'          => '', 
+			'permalink_url' => '',          
+			'object_id'     => '',      
+			'picture'       => '',    
+			'name'          => '', 
+			'icon'          => '', 
+			'shares'        => '0',   
+			'comments'      => '0',
+			'created_time'  => ''
+			);
+
+		$post_reaction = $this->kcl_facebook_analytic->getReactionPost( $value['id'] );
+
+		// Case return error
+		if ( is_object( $post_reaction ) ) 
+		{
+			return $post_reaction;
+		}
+
+		$post_result['reaction'] = $post_reaction;
+
+		foreach( $value as $key => $inner_value)
+		{
+			if($key=='id')
+			{ 
+				$id = explode( '_' ,$inner_value );
+				$post_result['page_id'] = $id[0]; 
+				$post_result['post_id'] = $id[1];
+			}
+
+			elseif($key=='shares')
+				{ $post_result[$key] = $inner_value['count']; }
+
+			elseif($key=='comments')
+				{ $post_result[$key] = $inner_value['summary']['total_count']; }
+
+			elseif($key=='created_time')
+			{ 
+				$created_time = nice_date(  $inner_value, 'Y-m-d H:i');
+				$post_result[$key] = $created_time; 
+			}
+
+			else
+			{ 
+				$inner_value = str_replace('"',"'",$inner_value);
+				$post_result[$key] = $inner_value; 
+			}
+
+		}
+		return $post_result;		
 	}
 
 	public function updateTrackingPage()
@@ -67,14 +150,9 @@ class Data_ctrl extends CI_Controller
 			$id = $value->id;
 			$page_id = $value->page_id;
 			$result = $this->kcl_facebook_analytic->getRawPageDetail( $page_id );
-
-			if ( is_string($result['name'])==false ) 
-			{
-				write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - ERROR updateTrackingPage can't get data\r\n",'a+');
-				write_file('last_crontab.txt',$result,'a+');
-			}
+			print_r( $result );
+			echo "<br><br><br>";
 			$posts = $this->Posts_model->getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date );
-
 			$result['posts'] = $posts[0]->count;
 			$result['shares'] = $posts[0]->shares;
 			$result['comments'] = $posts[0]->comments;
@@ -97,43 +175,11 @@ class Data_ctrl extends CI_Controller
 		}
 	}
 
-	public function sweepFacebookPost( $limit , $offset )
-	{
-		/* Uncomment when debug API  */
-		//        echo "<b>Token Object   : </b><br>";
-		//        var_dump( $_SESSION['accessToken'] );
-		//        echo "<br><br><br>";
-		$total_result = array();
-		$pageNameArray = $this->getAllTrackPageID();
-
-		/* Check session */
-		if( isset($_SESSION['accessToken']) )
-		{
-
-			$_SESSION['post_count'] = 0;
-
-			foreach( $pageNameArray as $pageName )
-			{
-				$rawData = $this->kcl_facebook_analytic->getRawPostData( $pageName , $limit , $offset  );
-				// print_r( $rawData['data'] );
-				// echo "<br><br><br><br><br>";
-				$this->extractPostData( $rawData,$pageName );  
-
-				array_push( $total_result, $rawData['data']);
-				$_SESSION['post_count']++;
-			}
-		}
-		// echo json_encode( $rawData['data'] );
-	}
-
 	public function updateFacebookPost( $limit )
 	{
 		$total_result = array();
 		$date = Date("Y-m-d 00:00:00");
 		$postArray = $this->getLatedUpdatePost( $date , $limit );
-
-		// echo $date;
-		// print_r( $postArray );
 
 		if( isset($_SESSION['accessToken']) )
 		{
@@ -142,14 +188,21 @@ class Data_ctrl extends CI_Controller
 				// echo "<br><br>Last Update".$value->last_update_time."<br><br>";
 				$post_id =  $value->page_id."_".$value->post_id;
 
-				$rawData = $this->kcl_facebook_analytic->getReactionPost( $post_id );
-				$rawData['last_update_time'] = Date("Y-m-d H:i:00");
-				$rawData['post_id'] = $value->post_id;
-				$rawData['created_time'] = nice_date(  $rawData['created_time'] , 'Y-m-d H:i:00');
-				array_push( $total_result , $rawData );
+				$post_reaction = $this->kcl_facebook_analytic->getReactionPost( $post_id );
+
+				if ( is_object( $post_reaction ) ) 
+				{
+					write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - Update Fail ".$post_id."\r\n",'a+');
+					continue;
+				}
+
+				$post_reaction['last_update_time'] = Date("Y-m-d H:i:00");
+				$post_reaction['post_id'] = $value->post_id;
+				$post_reaction['created_time'] = nice_date(  $post_reaction['created_time'] , 'Y-m-d H:i:00');
+				array_push( $total_result , $post_reaction );
 			}
 			if ( count( $total_result )!=0 ) {
-				$this->updatePost( $total_result );  
+				$this->Posts_model->updatePost( $total_result );
 			} 
 		}
 		// echo json_encode( $total_result );
@@ -161,72 +214,6 @@ class Data_ctrl extends CI_Controller
 		$data = $this->Posts_model->getLatedUpdatePost( $date , $limit );
 		$data = $data->result();
 		return $data;
-	}
-
-	public function updatePost( $data )
-	{   
-		$this->Posts_model->updatePost( $data );
-	}
-
-	public function extractPostData( $data,$pageName )
-	{
-		$total_result = array();
-		foreach( $data['data'] as $key => $value )
-		{
-			$post_result = array(
-				'page_id'       => '', /* primary Key */
-				'post_id'       => '', /* primary Key */
-				'type'          => '',
-				'message'       => '',    
-				'description'   => '',        
-				'link'          => '', 
-				'permalink_url' => '',          
-				'object_id'     => '',      
-				'picture'       => '',    
-				'name'          => '', 
-				'icon'          => '', 
-				'shares'        => '0',   
-				'comments'      => '0',
-				'created_time'  => ''
-				);
-
-			foreach( $value as $key => $inner_value)
-			{
-				if($key=='id')
-				{ 
-					$id = explode( '_' ,$inner_value );
-					$post_result['page_id'] = $id[0]; 
-					$post_result['post_id'] = $id[1];
-				}
-
-				elseif($key=='shares')
-					{ $post_result[$key] = $inner_value['count']; }
-
-				elseif($key=='comments')
-					{ $post_result[$key] = $inner_value['summary']['total_count']; }
-
-				elseif($key=='created_time')
-				{ 
-					/* Convert date */
-					$created_time = nice_date(  $inner_value, 'Y-m-d H:i');
-					$post_result[$key] = $created_time; 
-
-				}
-
-
-				else
-				{ 
-					$inner_value = str_replace('"',"'",$inner_value);
-					$post_result[$key] = $inner_value; 
-				}
-
-			}
-			/* Get reaction */
-			$post_result['reaction'] = $this->kcl_facebook_analytic->getReactionPost( $value['id'] );
-
-			/* Insert to database */
-			$this->Posts_model->insertPostData( $post_result );
-		} 
 	}
 
 }

@@ -16,35 +16,11 @@ class Kcl_facebook_analytic{
         ]);
         $this->getToken();
         $this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
-
-        //        $this->helper = $this->fb_obj->getRedirectLoginHelper();
-        //
-        //        $_SESSION['FBRLH_state']=$_GET['state'];
-        //        
-        //        $permissions = ['email']; // Optional permissions
-        //        $loginUrl = $this->helper->getLoginUrl('http://kcldeomoversion.komchadluek.net/social-analytic/dashboard/callback', $permissions);
-        //
-        //        echo '<a href="' . htmlspecialchars($loginUrl) . '">Log in with Facebook!</a><br>';
-        //
-        //        $this->error = $this->getToken();
     }
 
     public function getToken()
     {
         $_SESSION['accessToken'] = "272658633175667|afmrK1I172gDdS-eXfc7jlJnzhU";
-
-        //        try {
-        //            $_SESSION['accessToken'] = $this->helper->getAccessToken();
-        //        } catch(Facebook\Exceptions\FacebookResponseException $e) {
-        //            // When Graph returns an error
-        //            echo 'Graph returned an error: ' . $e->getMessage();
-        //            exit;
-        //        } catch(Facebook\Exceptions\FacebookSDKException $e) {
-        //            // When validation fails or other local issues
-        //            echo 'Facebook SDK returned an error: ' . $e->getMessage();
-        //            exit;
-        //        }
-
     }
 
     public function getRawPostData( $pageName , $limit , $offset=0 )
@@ -69,47 +45,19 @@ class Kcl_facebook_analytic{
                 comments.limit(0).summary(true),
                 type';
 
-
-        $url = preg_replace('/\s+/', '', $url);
-
+        $url = preg_replace('/\s+/', '', $url); 
         $res = $this->fb_obj->get( $url );
-
         return $res->getDecodedBody();
     }
 
     /* Get Reaction Count */
     public function getReactionPost( $post_id )
     {
-
-        // Un comment when finish job
-        // 
-        // 
-        //  $result = array();
-        // try {
-        //      $react = $this->fb_obj->get( $post_id.'/?fields=reactions.type(LIKE).summary(total_count).limit(0).as(like),reactions.type(LOVE).summary(total_count).limit(0).as(love),reactions.type(WOW).summary(total_count).limit(0).as(wow),reactions.type(HAHA).summary(total_count).limit(0).as(haha),reactions.type(SAD).summary(total_count).limit(0).as(sad),reactions.type(ANGRY).summary(total_count).limit(0).as(angry)');
-
-        //     $react = $react->getDecodedBody();
-
-        //     foreach( $react as $key => $value)
-        //     {
-        //         if($key=='id')continue;
-        //         elseif ($key=='like') { $result['likes'] = $value['summary']['total_count']; }
-        //         else{ $result[$key] = $value['summary']['total_count'];  }
-        //     }
-        // } catch (Exception $e) {
-        //     $result = null;
-        // }
-       
-        // return $result;
-
-
-
         $result = array();
-        try {
-             $react = $this->fb_obj->get( $post_id.'/?fields=created_time,reactions.type(LIKE).summary(total_count).limit(0).as(like),reactions.type(LOVE).summary(total_count).limit(0).as(love),reactions.type(WOW).summary(total_count).limit(0).as(wow),reactions.type(HAHA).summary(total_count).limit(0).as(haha),reactions.type(SAD).summary(total_count).limit(0).as(sad),reactions.type(ANGRY).summary(total_count).limit(0).as(angry),shares,comments.limit(0).summary(true)');
-
+        try 
+        {
+            $react = $this->fb_obj->get( $post_id.'/?fields=created_time,reactions.type(LIKE).summary(total_count).limit(0).as(like),reactions.type(LOVE).summary(total_count).limit(0).as(love),reactions.type(WOW).summary(total_count).limit(0).as(wow),reactions.type(HAHA).summary(total_count).limit(0).as(haha),reactions.type(SAD).summary(total_count).limit(0).as(sad),reactions.type(ANGRY).summary(total_count).limit(0).as(angry),shares,comments.limit(0).summary(true)');
             $react = $react->getDecodedBody();
-
             foreach( $react as $key => $value)
             {
                 if($key=='id')continue;
@@ -118,9 +66,12 @@ class Kcl_facebook_analytic{
                 elseif ($key=='shares') { $result['shares'] = $value['count']; }
                 else{ $result[$key] = $value['summary']['total_count'];  }
             }
-        } catch (Exception $e) {
-            $result = null;
+        } 
+        catch (Exception $e) 
+        {
+            $result = $e;
         }
+
         return $result;
     }
 
@@ -160,8 +111,6 @@ class Kcl_facebook_analytic{
             $result = $e->getMessage();
             return $result;
         }
-
-        
         $key = array('about',
                      'fan_count',
                      'category_list',
