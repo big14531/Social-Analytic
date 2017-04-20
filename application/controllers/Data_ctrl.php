@@ -23,21 +23,19 @@ class Data_ctrl extends CI_Controller
 	public function contabDataCrawler()
 	{
 		$minute=date('i');
-
+		$result=write_file('last_crontab.txt',"RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
 		if($minute%30==0)
 		{
 			$this->updateTrackingPage();
-			$this->updateFacebookPost(60);
 			$result=write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - updateTrackingPage\r\n",'a+');
-
 		}
-		elseif($minute%7==0)
+		if($minute%7==0)
 		{
 			$this->sweepFacebookPost(10,0);
 			$result=write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - sweepFacebookPost\r\n",'a+');
 		}
 
-		elseif($minute%2==0)
+		if($minute%1==0)
 		{
 			$this->updateFacebookPost(60);
 			$result=write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - updateFacebookPost\r\n",'a+');

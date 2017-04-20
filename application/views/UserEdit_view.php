@@ -372,36 +372,36 @@
                 ajaxCreateTable();
             }
         }); 
-
     }
 
     function ajaxChangePassword( id , password )
     {
-        $.ajax({
-            url:  "<?php echo base_url()?>changePassword",   //the url where you want to fetch the data 
-            type: 'post', //type of request POST or GET    
-            data: { 
-                    'id' : id,
-                    'password': password
-                }, 
-            dataType: 'json',
-            async: true, 
-            success:function(data)
+        $.ajax(
             {
-                console.log(data);
-                $('#passModal').modal('toggle');
-                
-                $('#passform-modal')[0].reset();
-                $('#callout').removeClass( 'hidden');
-                $('#callout').removeClass( 'callout-success');
-                $('#callout').removeClass( 'callout-warning');
-                $('#callout').addClass( 'callout-success');
-                $('#callout').find('h4').text( "สำเร็จ!!" );
-                $('#callout').find('p').text( "แก้ไขรหัสผ่านสำเร็จ" );
-                ajaxCreateTable();
+                url:  "<?php echo base_url()?>changePassword",   //the url where you want to fetch the data 
+                type: 'post', //type of request POST or GET    
+                data: { 
+                        'id' : id,
+                        'password': password
+                    }, 
+                dataType: 'json',
+                async: true, 
+                success:function(data)
+                {
+                    console.log(data);
+                    $('#passModal').modal('toggle');
+                    
+                    $('#passform-modal')[0].reset();
+                    $('#callout').removeClass( 'hidden');
+                    $('#callout').removeClass( 'callout-success');
+                    $('#callout').removeClass( 'callout-warning');
+                    $('#callout').addClass( 'callout-success');
+                    $('#callout').find('h4').text( "สำเร็จ!!" );
+                    $('#callout').find('p').text( "แก้ไขรหัสผ่านสำเร็จ" );
+                    ajaxCreateTable();
+                }
             }
-        }); 
-
+            ); 
     }
 
     function ajaxCreateTable()
@@ -541,8 +541,6 @@
         } );
     }
 
-
-
     $('#check_box').click(function () 
     {
         if( $('#autho_manager').is(":checked") )
@@ -568,8 +566,6 @@
             $('#edit_autho_manager').iCheck('check'); 
         }
     });
-
-
 
     $('#btn_add').click(function()
     {
