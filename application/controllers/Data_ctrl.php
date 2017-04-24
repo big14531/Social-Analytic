@@ -13,11 +13,12 @@ class Data_ctrl extends CI_Controller
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
 		$this->load->helper('file');
+		$this->daily_log = "logs/log-".date('Y-m-d').".txt";
 	}
 
 	public function tempUpdateAll()
 	{
-		$this->load->view('UpdateInterval');
+		echo "test path";
 	}
 
 	public function contabDataCrawler()
@@ -29,14 +30,14 @@ class Data_ctrl extends CI_Controller
 
 		$minute = date('i');
 
-		write_file('last_crontab.txt',"\n"."--- RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
+		write_file($this->daily_log,"\n"."--- RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
 
 		if($minute%30==0)
 		{
 			$result = $this->updateTrackingPage();
 			if ( $result )
 			{
-				write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - update Page\r\n",'a+');
+				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Page\r\n",'a+');
 			}
 		}
 
@@ -45,7 +46,7 @@ class Data_ctrl extends CI_Controller
 			$result = $this->sweepFacebookPost(10,0);
 			if ( $result )
 			{
-				write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - Sweep Post\r\n",'a+');
+				write_file($this->daily_log,date('Y-m-d H:i:s')."  - Sweep Post\r\n",'a+');
 			}
 		}
 
@@ -54,7 +55,7 @@ class Data_ctrl extends CI_Controller
 			$result = $this->updateFacebookPost(40);
 			if ( $result ) 
 			{
-				write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
+				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
 			}
 		}		
 	}
@@ -80,7 +81,7 @@ class Data_ctrl extends CI_Controller
 				// Write log when can't get data from dacebook
 				if ( is_array($new_post) == false) 
 				{
-					write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - Sweep Fail \n".$new_post."\r\n",'a+');
+					write_file($this->daily_log,date('Y-m-d H:i:s')."  - Sweep Fail \n".$new_post."\r\n",'a+');
 					continue;
 				}
 				print_r( $new_post );
@@ -163,17 +164,18 @@ class Data_ctrl extends CI_Controller
 			$id = $value->id;
 			$page_id = $value->page_id;
 			$result = $this->kcl_facebook_analytic->getRawPageDetail( $page_id );
-
-			print_r( $result );
-			echo "<br><br><br>";
+			$posts = $this->Posts_model->getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date );
+			$post_rate = $this->Posts_model->getYesterdayPostRate( $page_id );
 
 			if ( is_array( $result )==false ) 
 			{
-				write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - Page Error\r\n ".$result."\r\n",'a+');
+				write_file($this->daily_log,date('Y-m-d H:i:s')."  - Page Error\r\n ".$result."\r\n",'a+');
 				continue;
 			}
 
-			$posts = $this->Posts_model->getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date );
+			$post_rate = empty($post_rate)==1?0:$post_rate[0]->post_rate;
+
+			$result['post_rate_p'] = $post_rate;
 			$result['posts'] = $posts[0]->count;
 			$result['shares'] = $posts[0]->shares;
 			$result['comments'] = $posts[0]->comments;
@@ -184,8 +186,6 @@ class Data_ctrl extends CI_Controller
 			$result['sad'] = $posts[0]->sad;
 			$result['angry'] = $posts[0]->angry;
 			$result['post_rate'] = $posts[0]->count/$hour;
-
-
 			
 			$this->Posts_model->updateTrackingPage( $id , $result );     
 			$this->Posts_model->updatePageLog( $result );
@@ -213,10 +213,13 @@ class Data_ctrl extends CI_Controller
 				$post_id =  $value->page_id."_".$value->post_id;
 
 				$post_reaction = $this->kcl_facebook_analytic->getReactionPost( $post_id );
+				print_r( $post_reaction );
+				echo "<br><br><br>";
 
 				if ( is_object( $post_reaction ) ) 
 				{
-					write_file('last_crontab.txt',date('Y-m-d H:i:s')."  - Update Fail ".$post_id."\r\n",'a+');
+					$this->Posts_model->setDeletedPost( $value->page_id , $value->post_id );
+					write_file($this->daily_log,date('Y-m-d H:i:s')."  - Update Fail ".$post_id."\r\n",'a+');
 					continue;
 				}
 

@@ -65,18 +65,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-3 col-xs-6" id="post-rate-box">
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h3 id="post_rate">0</h3>
-                        <p>posts / hour rate</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion-ios-pulse-strong"></i>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="row">
@@ -220,7 +208,6 @@ function renderTable(data)
         var date = date.getHours();
         var page_count = 0;
         var total_post = 0;
-        var post_rate = 0;
 
         var dataset=[];
         for ( var key in data )
@@ -242,15 +229,14 @@ function renderTable(data)
          parseInt (value.sad )+  
          parseInt (value.angry );
 
-         var rate =  Math.ceil( value.count / date );             
-
+         var rate =  Math.ceil( value.count / date );      
          dataset[key] = 
          [
          value.picture,
          value.name,
          parseInt ( value.fan_count ).toLocaleString('en-US'),
          parseInt ( value.count ).toLocaleString('en-US'),
-         rate,
+         parseInt ( value.post_rate_p ).toLocaleString('en-US'),
          engagement.toLocaleString('en-US'),
          parseInt ( value.shares ).toLocaleString('en-US'),
          parseInt ( value.comments ).toLocaleString('en-US'),
@@ -267,12 +253,10 @@ function renderTable(data)
 
          page_count += 1;
          total_post += parseInt ( value.count );
-         post_rate += rate;
      }
 
      $('#page_count').text( page_count.toLocaleString('en-US') );
      $('#total_post').text( total_post.toLocaleString('en-US') );
-     $('#post_rate').text( post_rate.toLocaleString('en-US') );
 
      return dataset;
  }
@@ -289,7 +273,7 @@ function renderTable(data)
        { title: "Name" },
        { title: "Fanpage" },
        { title: "Post" },
-       { title: "Post rate" },
+       { title: "Post / hours" },
        { title: "Engage" },
        { title: "Share" },
        { title: "Comments" },
@@ -329,14 +313,6 @@ $('#search-btn').click(function()
     {
         var min_date = date[1].substr(0,10);
         var max_date = date[0].substr(0,10);
-        if( min_date===max_date )
-        {
-            $("#post-rate-box").removeClass( 'hidden');
-        }
-        else
-        {
-            $("#post-rate-box").addClass( 'hidden');
-        }
         ajaxCall( date[0] , date[1] );
     }
     else

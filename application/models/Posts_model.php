@@ -117,6 +117,7 @@ class Posts_model extends CI_Model
 		$this->db->from('fb_facebook_post as post');
 		$this->db->where('post.last_update_time >',$date);
 		$this->db->where('post.created_time >',$date);
+		$this->db->where('post.is_delete =',0);
 		$result = $this->db->get();
 
 		return $result;
@@ -199,6 +200,7 @@ class Posts_model extends CI_Model
 			'name' => $result['name'],
 			'website' => $result['website'],
 			'page_id' => $result['id'],
+			'post_rate_p' => $result['post_rate_p'],
 			'picture' => $result['picture']['data']['url']
 			);
 		$this->db->where( 'id' , $id );
@@ -292,6 +294,36 @@ class Posts_model extends CI_Model
 		$result = $this->db->get();
 
 		return $result;
+	}
+
+	public function getYesterdayPostRate( $page_id )
+	{
+
+
+		$min_date = Date("Y-m-d 00:00:00",strtotime("-1 days"));
+		$max_date = Date("Y-m-d 23:59:59",strtotime("-1 days"));
+
+		$result = array();
+		$this->db->select( "(posts/24) as post_rate" );
+		$this->db->order_by('create_time', 'desc');
+		$this->db->where('create_time >',$min_date);
+		$this->db->where('create_time <',$max_date);
+		$this->db->where('page_id', $page_id);
+		$this->db->limit(1);
+		$result = $this->db->get( 'fb_page_log' );
+
+		return $result->result();
+	}
+
+	public function setDeletedPost( $page_id , $post_id )
+	{
+		$data = array
+		(
+			'is_delete' => 1
+			);
+		$this->db->where( 'page_id' , $page_id );
+		$this->db->where( 'post_id' , $post_id );
+		$this->db->update( 'fb_facebook_post' , $data );
 	}
 
 	public function getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date)
