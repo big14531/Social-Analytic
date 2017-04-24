@@ -79,11 +79,21 @@
 						</div>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<div class="form-group">
 							<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
 								<span>
 									<i class="fa fa-calendar"></i> Search
+								</span>
+							</button>
+						</div>
+					</div>
+
+					<div class="col-md-1">
+						<div class="form-group">
+							<button type="button" class="btn btn-lg btn-warning full-width" id="toggle-vis-btn">
+								<span>
+									<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>
 								</span>
 							</button>
 						</div>
@@ -128,65 +138,69 @@
 			{
 				columns: 
 				[
-					{ title: "Image" ,
-						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-						{
-							$(nTd).html("<image class='table-img' src='"+sData+"' />");
-						}
-					},
-					{ title: "Publish time" },
-					{ title: "Update time" },
-					{ title: "Name" },
-					{ title: "Engagement" },
-					{ title: "Share" },
-					{ title: "Comments" },
-					{ title: "Reaction" },
-					{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
-					{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
-					{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
-					{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
-					{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
-					{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
-					{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
-						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-						{
-							$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-						}
-					},
-					{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
+				{ title: "Image" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+				{
+					$(nTd).html("<image class='table-img' src='"+sData+"' />");
+				}
+				},
+				{ title: "Publish time" },
+				{ title: "Update time" },
+				{ title: "Name" },
+				{ title: "Engagement" },
+				{ title: "Share" },
+				{ title: "Comments" },
+				{ title: "Reaction" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
+				{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+				{
+					$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+				}
+						},
+						{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
 						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 						{
 							$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
 						}
 					},
 					{ title: "<i class='fa fa-line-chart' aria-hidden='true'>" ,
-						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-						{
-							$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
-						}
-					},
+					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+					{
+						$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
+					}
+				},
 				]
 			});
+			
+			// SET HIDE REACTIOn FIRST TIME
+			toggleColumnReaction();
+
 		});
 		
 		$('#daterange-btn').daterangepicker
 		(
-			{
-				ranges: {
-					'Today': [moment(), moment()],
-					'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-					'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-					'This Month': [moment().startOf('month'), moment().endOf('month')],
-					'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-				},
-				startDate: moment().subtract(29, 'days'),
-				endDate: moment()
+		{
+			ranges: {
+				'Today': [moment(), moment()],
+				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				'This Month': [moment().startOf('month'), moment().endOf('month')],
+				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			},
-			function (start, end) {
-				$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-				$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
-			}
+			startDate: moment().subtract(29, 'days'),
+			endDate: moment()
+		},
+		function (start, end) {
+			$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+			$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
+		}
 		);
 
 		function renderTable(data)
@@ -237,27 +251,48 @@
 				var last_update_time = convertTime( value.last_update_time );
 				dataset[key] = 
 				[
-					value.picture,
-					created_time,
-					last_update_time,
-					value.name,
-					engagement.toLocaleString('en-US'),
-					parseInt ( value.shares ).toLocaleString('en-US'),
-					parseInt ( value.comments ).toLocaleString('en-US'),
-					reaction.toLocaleString('en-US'),
-					parseInt ( value.likes ).toLocaleString('en-US'),
-					parseInt ( value.love ).toLocaleString('en-US'),
-					parseInt ( value.wow ).toLocaleString('en-US'),
-					parseInt ( value.haha ).toLocaleString('en-US'),
-					parseInt ( value.sad ).toLocaleString('en-US'),
-					parseInt ( value.angry ).toLocaleString('en-US'),
-					value.link,
-					value.permalink_url ,
-					analytic_link
+				value.picture,
+				created_time,
+				last_update_time,
+				value.name,
+				engagement.toLocaleString('en-US'),
+				parseInt ( value.shares ).toLocaleString('en-US'),
+				parseInt ( value.comments ).toLocaleString('en-US'),
+				reaction.toLocaleString('en-US'),
+				parseInt ( value.likes ).toLocaleString('en-US'),
+				parseInt ( value.love ).toLocaleString('en-US'),
+				parseInt ( value.wow ).toLocaleString('en-US'),
+				parseInt ( value.haha ).toLocaleString('en-US'),
+				parseInt ( value.sad ).toLocaleString('en-US'),
+				parseInt ( value.angry ).toLocaleString('en-US'),
+				value.link,
+				value.permalink_url ,
+				analytic_link
 				];
 
 			}
 			return dataset;
+		}
+
+		function toggleColumnReaction()
+		{
+			// Get the column API object
+	        var table = $('#example1').DataTable();
+
+	        var column_likes = table.column( 8 ).visible();
+	        var column_love = table.column( 9 ).visible();
+	        var column_wow = table.column( 10 ).visible();
+	        var column_haha = table.column( 11 ).visible();
+	        var column_sad = table.column( 12 ).visible();
+	        var column_angry = table.column( 13 ).visible();
+
+			// Hide a column
+			table.column( 8 ).visible( !column_likes );
+			table.column( 9 ).visible( !column_love );
+			table.column( 10 ).visible( !column_wow );
+			table.column( 11 ).visible( !column_haha );
+			table.column( 12 ).visible( !column_sad );
+			table.column( 13).visible( !column_angry );		
 		}
 
 		function ajaxCall( page_id , min_date , max_date )
@@ -266,7 +301,7 @@
 			$('#search-btn').addClass('disabled');
 			$('#search-btn').prop('disabled',true);
 			$.ajax(
-				{
+			{
 					url:  "<?php echo(base_url());?>ajaxPostList",   //the url where you want to fetch the data 
 					type: 'post', //type of request POST or GET   
 					data: { 
@@ -311,7 +346,7 @@
 						$('#alert').find('p').text( textStatus+" "+errorThrown+" "+xhr );
 					}   
 				}
-			);
+				);
 		}
 
 		$('#search-btn').click(function()
@@ -338,8 +373,14 @@
 			});
 		});
 
-	});
+		$('#toggle-vis-btn').click( function()
+		{
+	        toggleColumnReaction();
+		});
 
+
+	});
+	
 
 </script>
 
