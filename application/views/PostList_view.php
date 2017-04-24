@@ -79,7 +79,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-5">
+					<div class="col-md-4">
 						<div class="form-group">
 							<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
 								<span>
@@ -89,11 +89,11 @@
 						</div>
 					</div>
 
-					<div class="col-md-1">
+					<div class="col-md-2">
 						<div class="form-group">
 							<button type="button" class="btn btn-lg btn-warning full-width" id="toggle-vis-btn">
 								<span>
-									<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>
+									<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>Hide/Show
 								</span>
 							</button>
 						</div>
@@ -177,7 +177,7 @@
 				},
 				]
 			});
-			
+
 			// SET HIDE REACTIOn FIRST TIME
 			toggleColumnReaction();
 

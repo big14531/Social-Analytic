@@ -79,7 +79,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-5">
+			<div class="col-md-4">
 				<div class="form-group">
 					<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
 						<span>
@@ -89,11 +89,11 @@
 				</div>
 			</div>
 
-			<div class="col-md-1">
+			<div class="col-md-2">
 				<div class="form-group">
 					<button type="button" class="btn btn-lg btn-warning full-width" id="toggle-vis-btn">
 						<span>
-							<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>
+							<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>Hide/Show
 						</span>
 					</button>
 				</div>
@@ -294,39 +294,40 @@
 
 	function createTable( data ) {
 
-		$('#example1').DataTable( {
-			columns: [
+		$('#example1').DataTable( 
+		{
+			columns: 
+			[
+				{ title: "Image" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html("<image class='table-img' src='"+sData+"' />");
+				}},
+				{ title: "Name" },
+				{ title: "Fanpage" },
+				{ title: "Post" },
+				{ title: "Post / hours" },
+				{ title: "Engage" },
+				{ title: "Share" },
+				{ title: "Comments" },
+				{ title: "Reaction" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
+				{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+				}
+				},
+				{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+					$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+					}
+				}	
 
-			{ title: "Image" ,
-			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<image class='table-img' src='"+sData+"' />");
-			}},
-			{ title: "Name" },
-			{ title: "Fanpage" },
-			{ title: "Post" },
-			{ title: "Post / hours" },
-			{ title: "Engage" },
-			{ title: "Share" },
-			{ title: "Comments" },
-			{ title: "Reaction" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
-			{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
-			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-			}
-		},
-		{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
-		"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-			$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-		}
-	}
-
-	],
+			],
 	"iDisplayLength": 20,
 	"autoWidth":false
 } );
@@ -364,9 +365,6 @@
 
 	});
 
-		// First time 
-	//
-	
 	$(document).ready(function() 
 	{
 		var type = $('#datatype-btn').val();
@@ -381,7 +379,7 @@
 	
 	$('#toggle-vis-btn').click( function()
 	{
-        toggleColumnReaction();
+		toggleColumnReaction();
 	});
 
 	createTable();
