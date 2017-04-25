@@ -6,7 +6,7 @@
             <!-- Main menu -->
             <li class="header">MAIN MENU</li>
 
-             <li class="treeview">
+            <li class="treeview">
                 <a href="<?php echo base_url(); ?>growthPage">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
@@ -52,6 +52,15 @@
                 echo '<li class="treeview">
                     <a href="'.base_url().'editPageList">
                         <i class="fa fa-edit"></i> <span>Edit Page</span>
+                        <span class="pull-right-container">
+                            <!-- <small class="label pull-right bg-green">16</small> -->
+                        </span>
+                    </a>
+                </li>';
+
+                 echo '<li class="treeview">
+                    <a href="'.base_url().'postManageList">
+                        <i class="fa fa-tasks"></i> <span>Posts Management</span>
                         <span class="pull-right-container">
                             <!-- <small class="label pull-right bg-green">16</small> -->
                         </span>

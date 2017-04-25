@@ -103,6 +103,10 @@ $route['editPageList/save'] = 'home_ctrl/addPagelist';
 $route['editPageList/edit'] = 'home_ctrl/editPagelist';
 $route['editPageList/toggle/(:num)/(:num)'] = 'home_ctrl/toggleIsActivePage/$1/$2';
 
+/*---------- deleted post page  ----------*/
+$route['postManageList'] = 'home_ctrl/postManageList';
+$route['ajaxManageList'] = 'home_ctrl/ajaxManageList';
+$route['ajaxSetActivePost'] = 'home_ctrl/ajaxSetActivePost';
 
 ////////////////////////////////////////
 //              Admin Zone            //

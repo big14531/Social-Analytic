@@ -117,7 +117,7 @@ class Posts_model extends CI_Model
 		$this->db->from('fb_facebook_post as post');
 		$this->db->where('post.last_update_time >',$date);
 		$this->db->where('post.created_time >',$date);
-		$this->db->where('post.is_delete =',0);
+		// $this->db->where('post.is_delete =',0);
 		$result = $this->db->get();
 
 		return $result;
@@ -463,6 +463,29 @@ class Posts_model extends CI_Model
 		$this->db->where( 'user_id' , $id );
 		$check = $this->db->update( 'fb_user' , $data );
 		return $check;
+	}
+
+	public function getAllDeletedPost()
+	{
+		$result = array();
+		$this->db->order_by('last_update_time', 'DESC');
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where('post.is_delete =',1);
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
+	public function setActivePost( $page_id , $post_id )
+	{
+		$data = array
+		(
+			'is_delete' => 0
+			);
+		$this->db->where( 'page_id' , $page_id );
+		$this->db->where( 'post_id' , $post_id );
+		$this->db->update( 'fb_facebook_post' , $data );
+		return $this->db->error();
 	}
 
 	public function toggleIsActiveUser( $id , $is_active )

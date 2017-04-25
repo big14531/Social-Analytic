@@ -430,6 +430,50 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $arrayPage );
 	}
 
+	/* ---------------- Deleted post Section ---------------- */
+
+	/**
+	* [postDeletedList description]
+	*
+	*
+	*		Load deleted post View
+	* 
+	*/
+	public function postManageList()
+	{
+		$this->load->view( 'ManagePosts_view' );
+	}
+
+	/**
+	* [ajaxManageList description]
+	*
+	*		Callback for ajax 
+	*		return data by json
+	* 
+	* @return [type] [json]
+	*/
+	public function ajaxManageList()
+	{
+		$data = $this->Posts_model->getAllDeletedPost();
+		echo json_encode( $data );
+	}
+
+	/**
+	* [ajaxSetActivePost description]
+	*
+	*
+	* 
+	* @param  [int] $post_id [ Get from POST methods ] 
+	* @param  [int] $page_id [ Get from POST methods ]
+	*/
+	public function ajaxSetActivePost()
+	{
+		$post_id = $this->input->post('post_id');
+		$page_id = $this->input->post('page_id');
+		$result = $this->Posts_model->setActivePost( $page_id , $post_id );
+		echo json_encode( $result );
+	}
+
 	/* ---------------- User page Section ---------------- */
 
 	/**

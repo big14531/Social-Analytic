@@ -19,7 +19,6 @@ class Data_ctrl extends CI_Controller
 	public function tempUpdateAll()
 	{
 		echo "test path";
-		
 	}
 
 	public function contabDataCrawler()
