@@ -474,6 +474,33 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $result );
 	}
 
+
+	/* ---------------- Post Rate post Section ---------------- */
+
+	/**
+	* [postDeletedList description]
+	*
+	*
+	*		Load deleted post View
+	* 
+	*/
+	public function summaryTable()
+	{
+		$this->load->view( 'SummaryPost_view' );
+	}
+
+	public function ajaxSummaryPost()
+	{
+		$result = array();
+
+		$type = $this->input->post('type');
+		$min_date = $this->input->post('min_date');
+		$max_date = $this->input->post('max_date');
+		$result = $this->Posts_model->getAllPostsbyDate( $min_date , $max_date );
+
+		echo json_encode( $result );
+	}
+
 	/* ---------------- User page Section ---------------- */
 
 	/**

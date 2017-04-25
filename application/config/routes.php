@@ -108,6 +108,11 @@ $route['postManageList'] = 'home_ctrl/postManageList';
 $route['ajaxManageList'] = 'home_ctrl/ajaxManageList';
 $route['ajaxSetActivePost'] = 'home_ctrl/ajaxSetActivePost';
 
+/*---------- summary post page  ----------*/
+$route['summaryTable'] = 'home_ctrl/summaryTable';
+$route['ajaxSummaryPost'] = 'home_ctrl/ajaxSummaryPost';
+
+
 ////////////////////////////////////////
 //              Admin Zone            //
 ////////////////////////////////////////

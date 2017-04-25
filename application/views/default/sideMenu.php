@@ -16,6 +16,15 @@
             </li>
 
             <li class="treeview">
+                <a href="<?php echo base_url(); ?>summaryTable">
+                    <i class="fa fa-calendar"></i> <span>Summary Table</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
+            <li class="treeview">
                 <a href="<?php echo base_url(); ?>postGraph">
                     <i class="fa fa-line-chart"></i> <span>Post Graph</span>
                     <span class="pull-right-container">
@@ -25,7 +34,7 @@
             </li>
             <li class="treeview">
                 <a href="<?php echo base_url(); ?>postList">
-                    <i class="fa fa-table"></i> <span>Post Table</span>
+                    <i class="fa fa-list-ul"></i> <span>Post Table</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>

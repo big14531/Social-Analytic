@@ -113,11 +113,11 @@ class Posts_model extends CI_Model
 		$result = array();
 		$this->db->limit( $limit );
 		$this->db->order_by('last_update_time', 'ASC');
-		$this->db->select('page_id,post_id,last_update_time,created_time');
+		$this->db->select('page_id,post_id,last_update_time,created_time,is_delete');
 		$this->db->from('fb_facebook_post as post');
 		$this->db->where('post.last_update_time >',$date);
 		$this->db->where('post.created_time >',$date);
-		// $this->db->where('post.is_delete =',0);
+		$this->db->where('post.is_delete <',5);
 		$result = $this->db->get();
 
 		return $result;
@@ -278,6 +278,23 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
+	public function getAllPostsbyDate( $min_date , $max_date )
+	{
+		$result = array();
+
+		$this->db->select('post.*, list.name as page_name');
+		$this->db->from('fb_facebook_post as post');
+
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
+		$this->db->where('list.is_active',1);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 	public function getPostsbyPageNameandTime( $page_id , $min_date , $max_date)
 	{
 		$result = array();
@@ -315,11 +332,11 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
-	public function setDeletedPost( $page_id , $post_id )
+	public function setDeletedPost( $page_id , $post_id , $error_count )
 	{
 		$data = array
 		(
-			'is_delete' => 1
+			'is_delete' => 1 + $error_count
 			);
 		$this->db->where( 'page_id' , $page_id );
 		$this->db->where( 'post_id' , $post_id );
@@ -470,7 +487,7 @@ class Posts_model extends CI_Model
 		$result = array();
 		$this->db->order_by('last_update_time', 'DESC');
 		$this->db->from('fb_facebook_post as post');
-		$this->db->where('post.is_delete =',1);
+		$this->db->where('post.is_delete >',0);
 		$result = $this->db->get();
 
 		return $result->result();

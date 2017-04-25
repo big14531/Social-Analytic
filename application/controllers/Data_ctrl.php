@@ -210,15 +210,17 @@ class Data_ctrl extends CI_Controller
 			foreach ($postArray as $value) 
 			{
 				// echo "<br><br>Last Update".$value->last_update_time."<br><br>";
+				$error_count = $value->is_delete;
 				$post_id =  $value->page_id."_".$value->post_id;
 
 				$post_reaction = $this->kcl_facebook_analytic->getReactionPost( $post_id );
-				print_r( $post_reaction );
+				print_r( $value );
 				echo "<br><br><br>";
 
+				// incresing delete score
 				if ( is_object( $post_reaction ) ) 
 				{
-					$this->Posts_model->setDeletedPost( $value->page_id , $value->post_id );
+					$this->Posts_model->setDeletedPost( $value->page_id , $value->post_id , $error_count );
 					write_file($this->daily_log,date('Y-m-d H:i:s')."  - Update Fail ".$post_id."\r\n",'a+');
 					continue;
 				}
@@ -226,6 +228,7 @@ class Data_ctrl extends CI_Controller
 				$post_reaction['last_update_time'] = Date("Y-m-d H:i:00");
 				$post_reaction['post_id'] = $value->post_id;
 				$post_reaction['created_time'] = nice_date(  $post_reaction['created_time'] , 'Y-m-d H:i:00');
+				$post_reaction['is_delete'] = 0;
 				array_push( $total_result , $post_reaction );
 			}
 			if ( count( $total_result )!=0 ) {
