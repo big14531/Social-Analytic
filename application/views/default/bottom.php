@@ -21,6 +21,7 @@
 <!-- DataTables -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/datatables/extensions/FixedColumns/js/dataTables.fixedColumns.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 <!-- FLOT CHARTS -->

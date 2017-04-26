@@ -1,5 +1,4 @@
-<?php $this->load->view( 'default/header' ) ?>
-<?php $this->load->view( 'default/topMenu' ) ?>
+<?php $this->load->view( 'default/header' ) ?> <?php $this->load->view( 'default/topMenu' ) ?>
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
@@ -76,15 +75,15 @@
             url:  "<?php echo base_url()?>ajaxSetActivePost",   //the url where you want to fetch the data 
             type: 'post', //type of request POST or GET
 			data: {  
-                    'page_id': page_id ,
+                    'page_id': page_id,
                     'post_id': post_id
                 },     
             dataType: 'json',
             async: true, 
             success:function(data)
             {
+                console.log(data);
 				ajaxManageList();
-				console.log(data);
             }
         }); 
     }
@@ -144,21 +143,25 @@
                         {
                         	 $(nTd).html("<span class='label label-success' id='status'>Active</span>");
                         }
+                        if( sData<=4 )
+                        {
+                        $(nTd).html("<span class='label label-warning' id='status'>Not update</span>");
+                        }
                         else
                         {
-                        $(nTd).html("<span class='label label-danger' id='status'>Not update</span>");
+                        $(nTd).html("<span class='label label-danger' id='status'>Deleted</span>");   
                         }
                     }
                 },
                 { title: "Command" ,
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                         $(nTd).append(' <a class="btn btn-xs btn-success" onclick=ajaxSetActivePost('+oData[0]+','+oData[1]+'); ><i class="fa fa-check"></i>Set Active</a>');                                                
+                         $(nTd).append(' <a class="btn btn-xs btn-success" onclick=ajaxSetActivePost('+oData[1]+','+oData[2]+'); ><i class="fa fa-check"></i>Set Active</a>');                                                
                     }
                 }
            
             ],
 			"autoWidth": true,
-            'order': [[ 2, "desc" ]]
+            'order': [[ 3, "ASC" ]]
         } );
     } 
 

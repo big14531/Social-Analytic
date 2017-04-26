@@ -467,11 +467,11 @@ class Home_ctrl extends CI_Controller
 	* @param  [int] $page_id [ Get from POST methods ]
 	*/
 	public function ajaxSetActivePost()
-	{
+	{	
 		$post_id = $this->input->post('post_id');
 		$page_id = $this->input->post('page_id');
 		$result = $this->Posts_model->setActivePost( $page_id , $post_id );
-		echo json_encode( $result );
+		echo json_encode( $page_id." ".$post_id );
 	}
 
 
@@ -496,7 +496,16 @@ class Home_ctrl extends CI_Controller
 		$type = $this->input->post('type');
 		$min_date = $this->input->post('min_date');
 		$max_date = $this->input->post('max_date');
-		$result = $this->Posts_model->getAllPostsbyDate( $min_date , $max_date );
+		$page_list = $this->Posts_model->getActivePagelist();
+		// array_push( $result , $this->Posts_model->getAllPostsbyDate( $min_date , $max_date ); );
+		foreach ($page_list as $value) 
+		{
+			$page_data = $this->Posts_model->getPagebyPageID( $value->page_id );
+			array_push( $page_data , $this->Posts_model->getPageSummaryGroupbyHour( $value->page_id ,$min_date , $max_date ) );
+
+			array_push( $result , $page_data );
+		}
+		
 
 		echo json_encode( $result );
 	}

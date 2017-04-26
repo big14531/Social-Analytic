@@ -278,20 +278,12 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
-	public function getAllPostsbyDate( $min_date , $max_date )
+	public function getPagebyPageID( $page_id )
 	{
 		$result = array();
-
-		$this->db->select('post.*, list.name as page_name');
-		$this->db->from('fb_facebook_post as post');
-
-		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
-		$this->db->where('list.is_active',1);
-		$this->db->where('post.created_time >',$min_date);
-		$this->db->where('post.created_time <',$max_date);
-
+		$this->db->from('fb_page_list');
+		$this->db->where('page_id',$page_id);
 		$result = $this->db->get();
-
 		return $result->result();
 	}
 
@@ -421,6 +413,34 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function getPageSummaryGroupbyHour( $page_id , $min_date , $max_date)
+	{
+		$result = array();
+		$query = "SELECT 
+					page_id,
+					DATE_FORMAT( created_time,  '%H' ) as created_time_out,
+					sum(likes) as likes, 
+					sum( love ) as love ,
+					sum( wow ) as wow ,
+					sum( haha ) as haha ,
+					sum( sad ) as sad ,
+					sum( angry ) as angry ,
+					sum( shares ) as shares ,
+					sum( comments ) as comments ,
+					( sum(shares)+sum(comments)+sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as total,
+					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
+					count( post_id ) as posts
+				FROM  fb_facebook_post as post
+				WHERE  created_time  >= '".$min_date."' 
+					AND created_time  <= '".$max_date."' 
+					AND  page_id =".$page_id." 
+				GROUP BY created_time_out";	
+
+		$result = $this->db->query( $query );
+
+		return $result->result();
+	}
+
 	public function getPostbyTimeRangeandRegEx( $RegEx , $min_date , $max_date )
 	{
 		$result = array();
@@ -502,7 +522,8 @@ class Posts_model extends CI_Model
 		$this->db->where( 'page_id' , $page_id );
 		$this->db->where( 'post_id' , $post_id );
 		$this->db->update( 'fb_facebook_post' , $data );
-		return $this->db->error();
+		
+		return true;
 	}
 
 	public function toggleIsActiveUser( $id , $is_active )
