@@ -287,6 +287,41 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function getTopPostbyPageIDandDate( $page_id , $min_date , $max_date )
+	{
+		$result = array();
+		$query = "SELECT 
+					* ,
+					( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
+					( likes+love+wow+haha+sad+angry ) as reaction
+				FROM  fb_facebook_post  
+				WHERE  created_time  >= '".$min_date."' 
+					AND created_time  <= '".$max_date."' 
+					AND  page_id =".$page_id." 
+				ORDER BY reaction DESC
+				LIMIT 5";	
+
+		$result = $this->db->query( $query );
+		return $result->result();
+	}
+
+	public function getMinPostbyPageIDandDate( $page_id , $min_date , $max_date )
+	{
+		$result = array();
+		$query = "SELECT 
+					* ,
+					( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
+					( likes+love+wow+haha+sad+angry ) as reaction
+				FROM  fb_facebook_post  
+				WHERE  created_time  >= '".$min_date."' 
+					AND created_time  <= '".$max_date."' 
+					AND  page_id =".$page_id." 
+				ORDER BY reaction ASC
+				LIMIT 5";	
+
+		$result = $this->db->query( $query );
+		return $result->result();
+	}
 	public function getPostsbyPageNameandTime( $page_id , $min_date , $max_date)
 	{
 		$result = array();
@@ -335,7 +370,7 @@ class Posts_model extends CI_Model
 		$this->db->update( 'fb_facebook_post' , $data );
 	}
 
-	public function getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date)
+	public function getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date )
 	{
 		$result = array();
 		$this->db->select_sum( 'shares' );

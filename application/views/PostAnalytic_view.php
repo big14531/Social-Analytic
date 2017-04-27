@@ -723,6 +723,7 @@
 				$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
 			}},
 			],
+            "iDisplayLength": 20,
 			order: [[ 0, "desc" ]]
 		} 
 		);

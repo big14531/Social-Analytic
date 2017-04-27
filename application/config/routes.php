@@ -82,6 +82,11 @@ $route['dashboard'] = 'home_ctrl/dashboard';
 /*---------- dashboard ----------*/
 $route['postAnalytic/(:num)/(:num)'] = 'home_ctrl/postAnalytic/$1/$2';
 $route['ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';
+
+/*---------- ranks post ----------*/
+$route['rankPosts'] = 'home_ctrl/rankPosts';
+$route['ajaxRankPost'] = 'home_ctrl/ajaxRankPost';
+
 /*---------- post graph  ----------*/
 $route['postGraph'] = 'home_ctrl/postGraph';
 
