@@ -81,6 +81,18 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $result );
 	}
 
+	/**
+	* [ajaxGetActivePage description]
+	*
+	* 	Get active page 
+	* 	
+	*/
+	public function ajaxGetActivePage()
+	{
+		$page_list = $this->Posts_model->getActivePagelist();
+		echo json_encode( $page_list );
+	}
+
 	/* ---------------- Pagelist_view Zone ---------------- */
 
 	/**

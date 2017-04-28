@@ -12,8 +12,67 @@
 	.table-img{
 		width:30px;
 	}
+	.box-page-name{
+		font-size: 15px;
+		padding-top: 10px;
+		margin-left: 60px;
+		padding-right: 10px;
+	}
+	.page-icon{
+		float: left;
+	}
+	.box-header{
+		font-weight: 600;
+		color:#b8c7ce;
+	}
 	.box-body {   
 		padding-bottom: 0px;
+	}
+	.box-content{
+		background-color: #222d32;
+	}
+	.btn-choose{
+		color: #222d32;
+	}
+	.page-list{
+		padding: 10px;
+		padding-right: 10px;
+		background-color: gray;
+		background-color: #1a2226;
+		margin-bottom: 10px;
+	}
+	.ranking-number{
+		color: white;
+		padding-top: 5px;
+		font-size: 20px;
+		text-align: center;
+
+		float: left;
+		height: 40px;
+		width:40px;
+	}
+	.best.ranking-number{
+		background-color: #008d4c;		
+	}
+	.worst.ranking-number{
+		background-color: #c9302c;		
+	}
+	.post-detail{
+		padding-left: 10px;
+		padding-right: 10px;
+		float: left;
+	}
+	.post-img{
+		float: left;
+		width: 80px;
+	}
+	.black-box{
+		background-color: #222d32!important;
+	    border-top: 0px!important;
+	    color: #b8c7ce!important;
+	}
+	.detail-text{
+		margin: 0px;
 	}
 </style>
 
@@ -29,9 +88,32 @@
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>
+		<h1 style="float:left;margin-right: 20px;">
 			Ranking Page
 		</h1>
+		<!-- button row -->
+		<div class="row control-row">
+			<div class="col-md-3">
+				<div class="form-group">
+					<button type="button" class="btn btn-md btn-success full-width" id="best-btn">
+						<span>
+						<i class="fa fa-thumbs-up"></i> Select Best 5
+						</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="form-group">
+					<button type="button" class="btn btn-md btn-danger full-width" id="worst-btn">
+						<span>
+							<i class="fa fa-thumbs-down"></i> Select Worst 5
+						</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
 	</section>
 
 	<section class="content">   
@@ -65,30 +147,11 @@
 						</div>
 					</div>
 				</div>
-				<table id="example1" class="display table table-bordered" width="100%"></table>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-4">
-				<div class="box gray-box">
-					aaa
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="box gray-box">
-					aaa
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="box gray-box">
-					bbb
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="box gray-box">
-					aaa
-				</div>
-			</div>
+
+		
+		<div class="row card-row" id="card-row">
 		</div>
 
 	</section>
@@ -105,6 +168,93 @@
 
 <script>
 
+	function createEmptyBoxPage( data ) 
+	{
+		for (var i = 0; i < data.length; i++) 
+		{
+			var page_data = data[i];
+			var icon = page_data.picture;
+			var page_name = page_data.name;
+
+
+			var card_id = "card_"+page_data.page_id;
+			var box_id = "box_"+page_data.page_id;
+			var content_id = "content_"+page_data.page_id;
+
+			// Create Card in Row
+			var main_row = $("#card-row");
+			main_row.append('<div class="col-md-6" id="'+card_id+'"></div>');
+
+			// Create Box in Card
+			var main_card = $("#"+card_id);
+			main_card.append('<div class="box gray-box" id="'+box_id+'"></div>');
+
+			var box_card = $("#"+box_id);
+
+			box_card.append('<div class="box-header"><img class="page-icon" src="'+icon+'"><div class="box-page-name"><span class="page-name">'+page_name+'</span><button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="box-body" title="Collapse" style="margin-right: 5px;"><i class="fa fa-minus"></i></button></div></div><div id="best_'+content_id+'" class="best-box box-body box-content"></div><div id="worst_'+content_id+'" class="worst-box box-body box-content" hidden></div>');
+		}
+	}
+
+	function addContent( key , post_data , type )
+	{
+
+		var content_id = type+"_content_"+post_data.page_id;
+		var box_content_id = "box_"+content_id+"_"+key;
+		var content = $("#"+content_id);
+
+
+		var name 			= post_data.name;
+		var created_time	= post_data.created_time;
+		var engage 			= post_data.engage;
+		var description 	= post_data.description;
+		var message 		= post_data.message;
+		var comments 		= post_data.comments;
+		var picture 		= post_data.picture;
+		var likes 			= post_data.likes;
+		var love 			= post_data.love;
+		var wow 			= post_data.wow;
+		var haha 			= post_data.haha;
+		var sad 			= post_data.sad;
+		var angry 			= post_data.angry;
+		var shares 			= post_data.shares;
+		var link 			= post_data.link;
+		var permalink_url 	= post_data.permalink_url;
+
+
+
+		content.append( '<div class="col-xs-12 page-list"><div class="box black-box" id="'+box_content_id+'"><div class="'+type+' ranking-number">'+key+'</div></div></div>');
+
+		var box_content = $("#"+box_content_id);
+		var html = "<a href='"+link+"' target='_blank'><img class='post-img' src='"+picture+"'></a>"
+			+"<div class='post-detail'>"
+			+"<p class='detail-text'>name :"+name+"</p>"
+			+"<p class='detail-text'>created_time :"+created_time+"</p>"
+			+"<p class='detail-text'>engage :"+engage+"</p>"
+			+"<p class='detail-text'>comments :"+comments+"</p>"
+			+"<p class='detail-text'>shares :"+shares+"</p>"
+			+"</div>";
+		box_content.append( html );
+	}
+
+	function editBoxPage( data ) 
+	{
+		for (var i = 0; i < data[0].length; i++) 
+		{
+			var best_list = data[0][i];
+			var worst_list = data[1][i];
+
+			for ( var key in best_list )
+			{
+				var best_post = best_list[key];
+				var worst_post = worst_list[key];
+
+				addContent( parseInt(key)+1 ,best_post , 'best' );
+				addContent( parseInt(key)+1 ,worst_post , 'worst' );
+
+			}
+			
+		}
+	}
 
 	function ajaxRankPost( min_date , max_date )
 	{
@@ -129,6 +279,7 @@
 					$('#alert').find('h3').text( "ค้นหาสำเร็จ!!" );
 					$('#alert').find('p').text('');
 					$('#alert').removeClass( 'hidden');
+					editBoxPage(data);
 					console.log(data);
 				}
 				$('#search-btn').prop('disabled',false);
@@ -147,8 +298,23 @@
 		});
 	}
 
+	function ajaxCreatePageCard()
+	{		$.ajax({
+			url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
+			type: 'post', //type of request POST or GET   
+			dataType: 'json',
+			async: true, 
+			success:function(data)
+			{
+				createEmptyBoxPage(data);
+			}
+		});
+	}
+
 	$(document).ready(function() 
 	{
+		ajaxCreatePageCard();
+
 		$('#daterange-btn').daterangepicker({
 			singleDatePicker: true,
 			showDropdowns: true
@@ -158,15 +324,27 @@
 			$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
 		});
 
+		$('#best-btn').click(function()
+		{
+			$(".best-box").prop('hidden',false);
+			$(".worst-box").prop('hidden',true)
+		});
+
+		$('#worst-btn').click(function()
+		{	
+			$(".best-box").prop('hidden',true);
+			$(".worst-box").prop('hidden',false);
+		});
+
 		$('#search-btn').click(function()
 		{
 			var date_range = $('#daterange-btn').val();
-		 	var date = date_range.split(' to ');
+			var date = date_range.split(' to ');
 
-		 	if ( Boolean(date_range) ) 
-		 	{
-		 		ajaxRankPost( date[0] , date[1] );
-		 	}
+			if ( Boolean(date_range) ) 
+			{
+				ajaxRankPost( date[0] , date[1] );
+			}
 			else
 			{
 				$('#alert').removeClass( 'alert-info');
