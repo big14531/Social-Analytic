@@ -359,6 +359,22 @@
 		});
 	}
 
+	function updateFloatWidget()
+	{
+		$("#card-row > div").each(function(i){
+
+			if(i%2<=0){
+				$(this).removeClass('pull-right');
+				$(this).addClass('pull-left');
+			}else{
+				$(this).removeClass('pull-left');
+				$(this).addClass('pull-right');
+			}
+		});
+
+	}
+
+
 	function bestButtonCallback(argument) {
 		$(".worst-box").css('display','')
 		$(".best-box").prop('hidden',false);
@@ -423,30 +439,26 @@
 
 		$('#page-selector').change(function(){
 
+
+
 			var selected_page = $('#page-selector').val();
-			console.log( selected_page );
 			$("#card-row > div").each(function(){
 
 				var is_true = selected_page.includes( $(this).attr('page-name') );
 
 				if ( is_true )
 				{
-					console.log( $(this).attr('page-name') );
 					$(this).css("display","block");
 				}
 				else
 				{
-					console.log( $(this).attr('page-name') );
 					$(this).css("display","none");
 				}
-				
 
 			});
 
+			updateFloatWidget();
 
-
-
-			
 		});
 	});
 </script>
