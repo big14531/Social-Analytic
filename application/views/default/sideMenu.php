@@ -6,8 +6,8 @@
             <!-- Main menu -->
             <li class="header">MAIN MENU</li>
 
-             <li class="treeview">
-                <a href="<?php echo base_url(); ?>growthPage">
+            <li class="treeview">
+                <a href="<?php echo base_url(); ?>dashboard">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
@@ -16,8 +16,35 @@
             </li>
 
             <li class="treeview">
+                <a href="<?php echo base_url(); ?>growthPage">
+                    <i class="fa fa-line-chart"></i> <span>Overview Graph</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
+            <li class="treeview">
+                <a href="<?php echo base_url(); ?>rankPosts">
+                    <i class="fa fa-trophy"></i> <span>Top Ranks</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
+            <li class="treeview">
+                <a href="<?php echo base_url(); ?>summaryTable">
+                    <i class="fa fa-calendar"></i> <span>Data Per Hours</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
+            <li class="treeview">
                 <a href="<?php echo base_url(); ?>postGraph">
-                    <i class="fa fa-line-chart"></i> <span>Post Graph</span>
+                    <i class="fa fa-dot-circle-o "></i> <span>Posts Graph</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>
@@ -25,7 +52,7 @@
             </li>
             <li class="treeview">
                 <a href="<?php echo base_url(); ?>postList">
-                    <i class="fa fa-table"></i> <span>Post Table</span>
+                    <i class="fa fa-list-ul"></i> <span>All Post Table</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>
@@ -52,6 +79,15 @@
                 echo '<li class="treeview">
                     <a href="'.base_url().'editPageList">
                         <i class="fa fa-edit"></i> <span>Edit Page</span>
+                        <span class="pull-right-container">
+                            <!-- <small class="label pull-right bg-green">16</small> -->
+                        </span>
+                    </a>
+                </li>';
+
+                 echo '<li class="treeview">
+                    <a href="'.base_url().'postManageList">
+                        <i class="fa fa-tasks"></i> <span>Posts Management</span>
                         <span class="pull-right-container">
                             <!-- <small class="label pull-right bg-green">16</small> -->
                         </span>

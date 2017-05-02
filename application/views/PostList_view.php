@@ -3,22 +3,22 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
-    .graph_tab.active a{
-        background-color:#3c8dbc!important;
-    }
-    .graph_tab.active{
-        border-top:0px!important;
-    }
-    .full-width{
-        width:100%;
-    }
-    .table-icon{
-        width:20px;
-        margin: 0px;
-    }
-    .table-img{
-        width:100px;
-    }
+	.graph_tab.active a{
+		background-color:#3c8dbc!important;
+	}
+	.graph_tab.active{
+		border-top:0px!important;
+	}
+	.full-width{
+		width:100%;
+	}
+	.table-icon{
+		width:20px;
+		margin: 0px;
+	}
+	.table-img{
+		width:100px;
+	}
 </style>
 
 
@@ -31,82 +31,84 @@
 <!-- Content Here -->
 
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Post Table
-        </h1>
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>
+			Post Table
+		</h1>
 
-    </section>
+	</section>
 
-    <section class="content">   
+	<section class="content">   
 
-        <div id='alert' class="alert alert-warning alert-dismissible hidden">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h3>Success!!</h3>
-            <p>This is a green alert.</p>
-        </div>
+		<div id='alert' class="alert alert-warning alert-dismissible hidden">
+			<h3>Success!!</h3>
+			<p>This is a green alert.</p>
+		</div>
 
-        <div class="box">
-            <div class="box-header">
+		<div class="box">
+			<div class="box-header">
 
-             
-        </div>
-<!-- /.box-header -->
-<div class="box-body">
-    <div class="row">
-                <div class="col-md-3">
-                  <div class="input-group full-width">
-                      <button type="button" class="btn btn-lg btn-default pull-left full-width" id="daterange-btn">
-                        <span>
-                          <i class="fa fa-calendar"></i> Date range
-                      </span>
-                      <i class="fa fa-caret-down"></i>
-                  </button>
-                  </div>
-                  </div>
 
-                  <div class="col-md-3">
-                      <div class="form-group">
-                        <select class="btn btn-lg btn-default" id="page-selector" style="width: 100%;">
-                          <option selected="selected">--- Select Page ---</option>
-                          <?php 
-                          foreach ($page_list as $value) 
-                          {
-                            echo "<option id='".$value->page_id."'>".$value->name."</option>";
-                        }
-                        ?>
-                        </select>
-                    </div>
-                </div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="input-group full-width">
+							<button type="button" class="btn btn-lg btn-default pull-left full-width" id="daterange-btn">
+								<span>
+									<i class="fa fa-calendar"></i> Date range
+								</span>
+								<i class="fa fa-caret-down"></i>
+							</button>
+						</div>
+					</div>
 
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
-                        <span>
-                          <i class="fa fa-calendar"></i> Search
-                      </span>
-                  </button>
-              </div>
-            </div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<select class="btn btn-lg btn-default" id="page-selector" style="width: 100%;">
+								<option selected="selected">--- Select Page ---</option>
+								<?php 
+								foreach ($page_list as $value) 
+								{
+									echo "<option id='".$value->page_id."'>".$value->name."</option>";
+								}
+								?>
+							</select>
+						</div>
+					</div>
 
-            </div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
+								<span>
+									<i class="fa fa-calendar"></i> Search
+								</span>
+							</button>
+						</div>
+					</div>
 
-    <table id="example1" class="display table table-bordered" width="100%"></table>
+					<div class="col-md-2">
+						<div class="form-group">
+							<button type="button" class="btn btn-lg btn-warning full-width" id="toggle-vis-btn">
+								<span>
+									<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>Hide/Show
+								</span>
+							</button>
+						</div>
+					</div>
 
+				</div>
+
+				<table id="example1" class="display table table-bordered" width="100%"></table>
+
+			</div>
+			<!-- /.box-body -->
+		</div>
+
+	</section>
 </div>
-<!-- /.box-body -->
-</div>
-
-</section>
-</div>
-
-
-
-
-
-
-
 
 <?php $this->load->view( 'default/bottom' ) ?>
 
@@ -128,232 +130,257 @@
 
 <script>
 
-  $(function () 
-  {
+	$(function () 
+	{
+		$(document).ready(function() 
+		{
+			$('#example1').DataTable( 
+			{
+				columns: 
+				[
+				{ title: "Image" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+				{
+					$(nTd).html("<image class='table-img' src='"+sData+"' />");
+				}
+				},
+				{ title: "Publish time" },
+				{ title: "Update time" },
+				{ title: "Name" },
+				{ title: "Engagement" },
+				{ title: "Share" },
+				{ title: "Comments" },
+				{ title: "Reaction" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
+				{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+				{
+					$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+				}
+						},
+						{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
+						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+						{
+							$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+						}
+					},
+					{ title: "<i class='fa fa-line-chart' aria-hidden='true'>" ,
+					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+					{
+						$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
+					}
+				},
+				]
+			});
+
+			// SET HIDE REACTIOn FIRST TIME
+			toggleColumnReaction();
+
+		});
+		
+		$('#daterange-btn').daterangepicker
+		(
+		{
+			ranges: {
+				'Today': [moment(), moment()],
+				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				'This Month': [moment().startOf('month'), moment().endOf('month')],
+				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},
+			startDate: moment().subtract(29, 'days'),
+			endDate: moment()
+		},
+		function (start, end) {
+			$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+			$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
+		}
+		);
+
+		function renderTable(data)
+		{
+			datatable = $('#example1').DataTable();
+
+			datatable.clear().draw();
+			datatable.rows.add( data ); // Add new data
+			datatable.columns.adjust().draw(); // Redraw the DataTable
+		}
+
+		function convertTime( data )
+		{ 
+			var temp_date = data.substr(0,10);
+			var date = temp_date.split("-");
+			var time = data.substr(11);
+			var result = date[2]+"-"+date[1]+"-"+date[0]+" "+time;
+			return result;
+		}
+
+		function editData(data)
+		{
+			console.log( data );
+
+			var dataset=[];
+			for ( var key in data )
+			{
+				var value = data[key];
+				var engagement =  parseInt (value.comments)+
+				parseInt (value.likes )+ 
+				parseInt (value.love )+ 
+				parseInt (value.wow )+ 
+				parseInt (value.haha )+ 
+				parseInt (value.sad )+  
+				parseInt (value.angry )+ 
+				parseInt (value.shares );
+
+				var reaction =     parseInt (value.likes )+ 
+				parseInt (value.love )+ 
+				parseInt (value.wow )+ 
+				parseInt (value.haha )+ 
+				parseInt (value.sad )+  
+				parseInt (value.angry );
+
+				var analytic_link = "<?php echo base_url() ?>"+"postAnalytic/"+value.page_id+"/"+value.post_id;
+
+				var created_time = convertTime( value.created_time );
+				var last_update_time = convertTime( value.last_update_time );
+				dataset[key] = 
+				[
+				value.picture,
+				created_time,
+				last_update_time,
+				value.name,
+				engagement.toLocaleString('en-US'),
+				parseInt ( value.shares ).toLocaleString('en-US'),
+				parseInt ( value.comments ).toLocaleString('en-US'),
+				reaction.toLocaleString('en-US'),
+				parseInt ( value.likes ).toLocaleString('en-US'),
+				parseInt ( value.love ).toLocaleString('en-US'),
+				parseInt ( value.wow ).toLocaleString('en-US'),
+				parseInt ( value.haha ).toLocaleString('en-US'),
+				parseInt ( value.sad ).toLocaleString('en-US'),
+				parseInt ( value.angry ).toLocaleString('en-US'),
+				value.link,
+				value.permalink_url ,
+				analytic_link
+				];
+
+			}
+			return dataset;
+		}
+
+		function toggleColumnReaction()
+		{
+			// Get the column API object
+	        var table = $('#example1').DataTable();
+
+	        var column_likes = table.column( 8 ).visible();
+	        var column_love = table.column( 9 ).visible();
+	        var column_wow = table.column( 10 ).visible();
+	        var column_haha = table.column( 11 ).visible();
+	        var column_sad = table.column( 12 ).visible();
+	        var column_angry = table.column( 13 ).visible();
+
+			// Hide a column
+			table.column( 8 ).visible( !column_likes );
+			table.column( 9 ).visible( !column_love );
+			table.column( 10 ).visible( !column_wow );
+			table.column( 11 ).visible( !column_haha );
+			table.column( 12 ).visible( !column_sad );
+			table.column( 13).visible( !column_angry );		
+		}
+
+		function ajaxCall( page_id , min_date , max_date )
+		{
+			$('#search-btn').find('span').text('Searching.....');
+			$('#search-btn').addClass('disabled');
+			$('#search-btn').prop('disabled',true);
+			$.ajax(
+			{
+					url:  "<?php echo(base_url());?>ajaxPostList",   //the url where you want to fetch the data 
+					type: 'post', //type of request POST or GET   
+					data: { 
+						'page_id': page_id, 
+						'min_date': min_date,
+						'max_date': max_date 
+					},
+					dataType: 'json',
+					async: true, 
+					success:function(data)
+					{
+						var page_name = $('#page-selector').find(':selected').text();
+						if (data.length == 0) 
+						{
+							$('#alert').removeClass( 'hidden');
+							$('#alert').removeClass( 'alert-success');
+							$('#alert').addClass( 'alert-warning');
+							$('#alert').find('h3').text( "ไม่มีข้อมูลในช่วงเวลานี้ - "+page_name );
+							$('#alert').find('p').text(  "Post from "+min_date+" - "+max_date+" " );
+						}
+						else
+						{
+							$('#alert').removeClass( 'hidden');
+							$('#alert').removeClass( 'alert-warning');
+							$('#alert').addClass( 'alert-success');
+							$('#alert').find('h3').text( "ค้นหาสำเร็จ!!" );
+							$('#alert').find('p').text('');
+							data = editData(data);
+							renderTable(data);
+						}
+						$('#search-btn').prop('disabled',false);
+						$('#search-btn').removeClass('disabled');
+						$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
+					},
+					error:function(xhr, textStatus, errorThrown) 
+					{
+						$('#search-btn').prop('disabled',false);
+						$('#alert').removeClass( 'hidden');
+						$('#alert').removeClass( 'alert-success');
+						$('#alert').addClass( 'alert-danger');
+						$('#alert').find('h3').text( "Error!!" );
+						$('#alert').find('p').text( textStatus+" "+errorThrown+" "+xhr );
+					}   
+				}
+				);
+		}
+
+		$('#search-btn').click(function()
+		{
+			var page_id = $('#page-selector').find(':selected').attr('id');
+			var date_range = $('#daterange-btn').val();
+			var date = date_range.split(' to ');
+			if ( Boolean(page_id) && Boolean(date_range) ) 
+			{
+				ajaxCall(  page_id , date[0] , date[1] );
+			}
+			else
+			{
+				$('#alert').removeClass( 'hidden');
+				$('#alert').removeClass( 'alert-success');
+				$('#alert').removeClass( 'alert-warning');
+				$('#alert').addClass( 'alert-warning');
+				$('#alert').find('h3').text( "Please set date and page name" );
+				$('#alert').find('p').text( '' );
+			}
+			$("#alert").fadeTo(2000, 500).slideUp(500, function()
+			{
+				$("#alert").slideUp(500);
+			});
+		});
+
+		$('#toggle-vis-btn').click( function()
+		{
+	        toggleColumnReaction();
+		});
 
 
-    $(document).ready(function() 
-    {
-        $('#example1').DataTable( {
-            columns: [
-            { title: "Image" ,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                     $(nTd).html("<image class='table-img' src='"+sData+"' />");
-                }
-            },
-            { title: "Publish time" },
-            { title: "Update time" },
-            { title: "Name" },
-            { title: "Engagement" },
-            { title: "Share" },
-            { title: "Comments" },
-            { title: "Reaction" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
-            { title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
-            { title: "<i class='fa fa-globe' aria-hidden='true'>" ,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                     $(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-                }
-            },
-            { title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                     $(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-                }
-            },
-            { title: "<i class='fa fa-line-chart' aria-hidden='true'>" ,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                     $(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
-                }
-            },
-            ]
-        } );
-    });
-    
-
-     //
-     //
-     //    Date range as a button
-     //
-     //
-     $('#daterange-btn').daterangepicker(
-     {
-      ranges: {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        startDate: moment().subtract(29, 'days'),
-        endDate: moment()
-    },
-    function (start, end) {
-      $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-      $('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
-    }
-    );
-    //
-    //
-    //Date range as a button End
-    //
-    //
-      
-
-     function renderTable(data)
-     {
-        datatable = $('#example1').DataTable();
-        
-        datatable.clear().draw();
-        datatable.rows.add( data ); // Add new data
-        datatable.columns.adjust().draw(); // Redraw the DataTable
-    }
-
-    function convertTime( data )
-    { 
-        var temp_date = data.substr(0,10);
-        var date = temp_date.split("-");
-        var time = data.substr(11);
-        var result = date[2]+"-"+date[1]+"-"+date[0]+" "+time;
-        return result;
-    }
-
-    function editData(data)
-    {
-        console.log( data );
-
-        var dataset=[];
-        for ( var key in data )
-        {
-           var value = data[key];
-           var engagement =  parseInt (value.comments)+
-                             parseInt (value.likes )+ 
-                             parseInt (value.love )+ 
-                             parseInt (value.wow )+ 
-                             parseInt (value.haha )+ 
-                             parseInt (value.sad )+  
-                             parseInt (value.angry )+ 
-                             parseInt (value.shares );
-
-          var reaction =     parseInt (value.likes )+ 
-                             parseInt (value.love )+ 
-                             parseInt (value.wow )+ 
-                             parseInt (value.haha )+ 
-                             parseInt (value.sad )+  
-                             parseInt (value.angry );
-
-          var analytic_link = "<?php echo base_url() ?>"+"postAnalytic/"+value.page_id+"/"+value.post_id;
-
-          var created_time = convertTime( value.created_time );
-          var last_update_time = convertTime( value.last_update_time );
-           dataset[key] = 
-           [
-           value.picture,
-           created_time,
-           last_update_time,
-           value.name,
-           engagement.toLocaleString('en-US'),
-           parseInt ( value.shares ).toLocaleString('en-US'),
-           parseInt ( value.comments ).toLocaleString('en-US'),
-           reaction.toLocaleString('en-US'),
-           parseInt ( value.likes ).toLocaleString('en-US'),
-           parseInt ( value.love ).toLocaleString('en-US'),
-           parseInt ( value.wow ).toLocaleString('en-US'),
-           parseInt ( value.haha ).toLocaleString('en-US'),
-           parseInt ( value.sad ).toLocaleString('en-US'),
-           parseInt ( value.angry ).toLocaleString('en-US'),
-           value.link,
-           value.permalink_url ,
-           analytic_link
-           ];
-
-         }
-         return dataset;
-     }
-
- function ajaxCall( page_id , min_date , max_date )
- {
-    $('#search-btn').find('span').text('Searching.....');
-    $('#search-btn').addClass('disabled');
-    $('#search-btn').prop('disabled',true);
-    $.ajax({
-                url:  "<?php echo(base_url());?>ajaxPostList",   //the url where you want to fetch the data 
-                type: 'post', //type of request POST or GET   
-                data: { 
-                    'page_id': page_id, 
-                    'min_date': min_date,
-                    'max_date': max_date 
-                },
-
-                dataType: 'json',
-                async: true, 
-                success:function(data)
-                {
-                    var page_name = $('#page-selector').find(':selected').text();
-
-                    if (data.length == 0) {
-                        $('#alert').removeClass( 'hidden');
-                        $('#alert').removeClass( 'alert-success');
-                        $('#alert').addClass( 'alert-warning');
-                        $('#alert').find('h3').text( "ไม่มีข้อมูลในช่วงเวลานี้ - "+page_name );
-                        $('#alert').find('p').text(  "Post from "+min_date+" - "+max_date+" " );
-
-                      
-                    }
-                    else{
-                        $('#alert').removeClass( 'hidden');
-                        $('#alert').removeClass( 'alert-warning');
-                        $('#alert').addClass( 'alert-success');
-                        $('#alert').find('h3').text( "ค้นหาสำเร็จ!!" );
-                        $('#alert').find('p').text('');
-                        data = editData(data);
-                        renderTable(data);
-                    }
-                    $('#search-btn').prop('disabled',false);
-                    $('#search-btn').removeClass('disabled');
-                    $('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
-                },
-                error:function(xhr, textStatus, errorThrown) 
-                {
-                        $('#search-btn').prop('disabled',false);
-                        $('#alert').removeClass( 'hidden');
-                        $('#alert').removeClass( 'alert-success');
-                        $('#alert').addClass( 'alert-danger');
-                        $('#alert').find('h3').text( "Error!!" );
-                        $('#alert').find('p').text( textStatus+" "+errorThrown+" "+xhr );
-                }   
-            });
-    
-  }
-
-  $('#search-btn').click(function()
-  {
-
-      var page_id = $('#page-selector').find(':selected').attr('id');
-      var date_range = $('#daterange-btn').val();
-      var date = date_range.split(' to ');
-      if ( Boolean(page_id) && Boolean(date_range) ) 
-      {
-        ajaxCall(  page_id , date[0] , date[1] );
-      }
-      else
-      {
-                          $('#alert').removeClass( 'hidden');
-                          $('#alert').removeClass( 'alert-success');
-                          $('#alert').removeClass( 'alert-warning');
-                          $('#alert').addClass( 'alert-warning');
-                          $('#alert').find('h3').text( "Please set date and page name" );
-                          $('#alert').find('p').text( '' );
-      }
-      
-  });
-
-});
-
+	});
+	
 
 </script>
 

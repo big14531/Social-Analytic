@@ -79,9 +79,17 @@ $route['logout'] = 'validation_ctrl/logout';
 /*---------- dashboard ----------*/
 $route['dashboard'] = 'home_ctrl/dashboard';
 
+/*---------- utility ajax ----------*/
+$route['ajaxGetActivePage'] = 'home_ctrl/ajaxGetActivePage';
+
 /*---------- dashboard ----------*/
 $route['postAnalytic/(:num)/(:num)'] = 'home_ctrl/postAnalytic/$1/$2';
 $route['ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';
+
+/*---------- ranks post ----------*/
+$route['rankPosts'] = 'home_ctrl/rankPosts';
+$route['ajaxRankPost'] = 'home_ctrl/ajaxRankPost';
+
 /*---------- post graph  ----------*/
 $route['postGraph'] = 'home_ctrl/postGraph';
 
@@ -95,13 +103,22 @@ $route['ajaxPageTable'] = 'home_ctrl/ajaxPageTable';
 
 /*---------- growth table  ----------*/
 $route['growthPage'] = 'home_ctrl/growthPage';
-$route['getGrowthPage'] = 'home_ctrl/getGrowthPage';
+$route['ajaxGrowthPage'] = 'home_ctrl/ajaxGrowthPage';
 
 /*---------- edit page  ----------*/
 $route['editPageList'] = 'home_ctrl/pagelist';
 $route['editPageList/save'] = 'home_ctrl/addPagelist';
 $route['editPageList/edit'] = 'home_ctrl/editPagelist';
 $route['editPageList/toggle/(:num)/(:num)'] = 'home_ctrl/toggleIsActivePage/$1/$2';
+
+/*---------- deleted post page  ----------*/
+$route['postManageList'] = 'home_ctrl/postManageList';
+$route['ajaxManageList'] = 'home_ctrl/ajaxManageList';
+$route['ajaxSetActivePost'] = 'home_ctrl/ajaxSetActivePost';
+
+/*---------- summary post page  ----------*/
+$route['summaryTable'] = 'home_ctrl/summaryTable';
+$route['ajaxSummaryPost'] = 'home_ctrl/ajaxSummaryPost';
 
 
 ////////////////////////////////////////
