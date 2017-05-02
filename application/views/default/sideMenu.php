@@ -7,8 +7,17 @@
             <li class="header">MAIN MENU</li>
 
             <li class="treeview">
-                <a href="<?php echo base_url(); ?>growthPage">
+                <a href="<?php echo base_url(); ?>dashboard">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
+            <li class="treeview">
+                <a href="<?php echo base_url(); ?>growthPage">
+                    <i class="fa fa-line-chart"></i> <span>Overview Graph</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>
@@ -35,7 +44,7 @@
 
             <li class="treeview">
                 <a href="<?php echo base_url(); ?>postGraph">
-                    <i class="fa fa-line-chart"></i> <span>Posts Graph</span>
+                    <i class="fa fa-dot-circle-o "></i> <span>Posts Graph</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>

@@ -3,6 +3,12 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	li{
+		color:black!important;
+	}
+	li.header{
+
+	}
 	.full-width{
 		width:100%;
 	}
@@ -63,16 +69,28 @@
 		float: left;
 	}
 	.post-img{
-		float: left;
-		width: 80px;
+		float: right;
+		width: 70px;
 	}
 	.black-box{
 		background-color: #222d32!important;
-	    border-top: 0px!important;
-	    color: #b8c7ce!important;
+		border-top: 0px!important;
+		color: #b8c7ce!important;
 	}
 	.detail-text{
 		margin: 0px;
+	}
+	.detail-box{
+		margin: 0px;
+		margin-right:10px; 
+		float: left;
+	}
+	.table-icon{
+		width:20px;
+	}
+	.control-box{
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 </style>
 
@@ -82,7 +100,8 @@
 <!-- bootstrap datepicker -->
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/datepicker3.css">
 <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
-
+<!-- Select2 -->
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
 <!-- Content Here -->
 
 <div class="content-wrapper">
@@ -93,25 +112,6 @@
 		</h1>
 		<!-- button row -->
 		<div class="row control-row">
-			<div class="col-md-3">
-				<div class="form-group">
-					<button type="button" class="btn btn-md btn-success full-width" id="best-btn">
-						<span>
-						<i class="fa fa-thumbs-up"></i> Select Best 5
-						</span>
-					</button>
-				</div>
-			</div>
-
-			<div class="col-md-3">
-				<div class="form-group">
-					<button type="button" class="btn btn-md btn-danger full-width" id="worst-btn">
-						<span>
-							<i class="fa fa-thumbs-down"></i> Select Worst 5
-						</span>
-					</button>
-				</div>
-			</div>
 		</div>
 
 	</section>
@@ -122,12 +122,13 @@
 			<h3>Success!!</h3> 
 			<p>This is a green alert.</p>
 		</div>
-		<div class="box gray-box">
+
+		<div class="box gray-box control-box">
 			<div class="box-body">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-8">
 						<div class="input-group full-width">
-							<button type="button" class="selectpicker btn btn-lg btn-default full-width" id="daterange-btn">
+							<button type="button" class="selectpicker btn btn-md btn-default full-width" id="daterange-btn">
 								<span>
 									<i class="fa fa-calendar"></i> Date range
 								</span>
@@ -136,10 +137,9 @@
 						</div>
 					</div>
 
-
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<div class="form-group">
-							<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
+							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 								<span>
 									<i class="fa fa-calendar"></i> Search
 								</span>
@@ -149,8 +149,39 @@
 				</div>
 			</div>
 		</div>
-
 		
+		<div class="box gray-box control-box ">
+			<div class="box-body">
+				<div class="row control-row">
+					<div class="col-md-3">
+						<div class="form-group">
+							<button type="button" class="btn btn-md btn-success full-width" id="best-btn">
+								<span>
+									<i class="fa fa-thumbs-up"></i> Select Best 5
+								</span>
+							</button>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group">
+							<button type="button" class="btn btn-md btn-danger full-width" id="worst-btn">
+								<span>
+									<i class="fa fa-thumbs-down"></i> Select Worst 5
+								</span>
+							</button>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="Select a Page" style="width: 100%;">
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<hr style="border-top: 3px solid #1a2226;">
 		<div class="row card-row" id="card-row">
 		</div>
 
@@ -165,7 +196,8 @@
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/bootstrap-datepicker.js"></script>
-
+<!-- Select2 -->
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.full.min.js"></script>
 <script>
 
 	function createEmptyBoxPage( data ) 
@@ -176,22 +208,35 @@
 			var icon = page_data.picture;
 			var page_name = page_data.name;
 
-
 			var card_id = "card_"+page_data.page_id;
 			var box_id = "box_"+page_data.page_id;
 			var content_id = "content_"+page_data.page_id;
 
 			// Create Card in Row
 			var main_row = $("#card-row");
-			main_row.append('<div class="col-md-6" id="'+card_id+'"></div>');
+			main_row.append('<div class="col-md-6" id="'+card_id+'" page-name="'+page_name+'"></div>');
 
 			// Create Box in Card
 			var main_card = $("#"+card_id);
-			main_card.append('<div class="box gray-box" id="'+box_id+'"></div>');
+			main_card.append('<div class="box gray-box collapsed-box" id="'+box_id+'"></div>');
 
 			var box_card = $("#"+box_id);
 
-			box_card.append('<div class="box-header"><img class="page-icon" src="'+icon+'"><div class="box-page-name"><span class="page-name">'+page_name+'</span><button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="box-body" title="Collapse" style="margin-right: 5px;"><i class="fa fa-minus"></i></button></div></div><div id="best_'+content_id+'" class="best-box box-body box-content"></div><div id="worst_'+content_id+'" class="worst-box box-body box-content" hidden></div>');
+			box_card.append('<div class="box-header"><img class="page-icon" src="'+icon+'"><div class="box-page-name"><span class="page-name">'+page_name+'</span><button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="box-body" title="Collapse" style="margin-right: 5px;"><i class="fa fa-plus"></i></button></div></div><div id="best_'+content_id+'" class="best-box box-body box-content"></div><div id="worst_'+content_id+'" class="worst-box box-body box-content" style="display:none;!important"></div>');
+		}
+	}
+
+	function createSelector( data ) 	
+	{
+		// Create Card in Row
+		var selector = $("#page-selector");
+
+		for (var i = 0; i < data.length; i++) 
+		{
+			var page_data = data[i];
+			var page_name = page_data.name;
+			var page_id = page_data.page_id;
+			selector.append('<option>'+page_name+'</option>');
 		}
 	}
 
@@ -220,24 +265,24 @@
 		var link 			= post_data.link;
 		var permalink_url 	= post_data.permalink_url;
 
-
-
 		content.append( '<div class="col-xs-12 page-list"><div class="box black-box" id="'+box_content_id+'"><div class="'+type+' ranking-number">'+key+'</div></div></div>');
 
 		var box_content = $("#"+box_content_id);
-		var html = "<a href='"+link+"' target='_blank'><img class='post-img' src='"+picture+"'></a>"
-			+"<div class='post-detail'>"
-			+"<p class='detail-text'>name :"+name+"</p>"
-			+"<p class='detail-text'>created_time :"+created_time+"</p>"
-			+"<p class='detail-text'>engage :"+engage+"</p>"
-			+"<p class='detail-text'>comments :"+comments+"</p>"
-			+"<p class='detail-text'>shares :"+shares+"</p>"
-			+"</div>";
+		var html = 
+		"<div class='post-detail col-xs-8'>"
+		+"<p class='detail-text'>"+name+"</p>"
+		+"<p class='detail-text'>Time :"+created_time+"</p>"
+		+"<div class='detail-box'><img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'> :"+engage+"</div>"
+		+"<div class='detail-box'><i class='fa fa-comment'></i> :"+comments+"</div>"
+		+"<div class='detail-box'><i class='fa fa-share'></i> :"+shares+"</div>"
+		+"</div>"
+		+"<a href='"+link+"' target='_blank'><img class='post-img' src='"+picture+"'></a>";
 		box_content.append( html );
 	}
 
 	function editBoxPage( data ) 
 	{
+		$(".box-content").empty();
 		for (var i = 0; i < data[0].length; i++) 
 		{
 			var best_list = data[0][i];
@@ -280,6 +325,7 @@
 					$('#alert').find('p').text('');
 					$('#alert').removeClass( 'hidden');
 					editBoxPage(data);
+					bestButtonCallback();
 					console.log(data);
 				}
 				$('#search-btn').prop('disabled',false);
@@ -299,21 +345,36 @@
 	}
 
 	function ajaxCreatePageCard()
-	{		$.ajax({
+	{		
+		$.ajax({
 			url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET   
 			dataType: 'json',
 			async: true, 
 			success:function(data)
 			{
+				createSelector(data);
 				createEmptyBoxPage(data);
 			}
 		});
 	}
 
+	function bestButtonCallback(argument) {
+		$(".worst-box").css('display','')
+		$(".best-box").prop('hidden',false);
+		$(".worst-box").prop('hidden',true)
+	}
+
+	function worstButtonCallback(argument) {
+		$(".best-box").css('display','')
+		$(".best-box").prop('hidden',true);
+		$(".worst-box").prop('hidden',false);
+	}
+
 	$(document).ready(function() 
 	{
 		ajaxCreatePageCard();
+		$(".select2").select2();
 
 		$('#daterange-btn').daterangepicker({
 			singleDatePicker: true,
@@ -325,15 +386,13 @@
 		});
 
 		$('#best-btn').click(function()
-		{
-			$(".best-box").prop('hidden',false);
-			$(".worst-box").prop('hidden',true)
+		{	
+			bestButtonCallback();
 		});
 
 		$('#worst-btn').click(function()
 		{	
-			$(".best-box").prop('hidden',true);
-			$(".worst-box").prop('hidden',false);
+			worstButtonCallback();
 		});
 
 		$('#search-btn').click(function()
@@ -361,6 +420,34 @@
 			});
 		});
 
+
+		$('#page-selector').change(function(){
+
+			var selected_page = $('#page-selector').val();
+			console.log( selected_page );
+			$("#card-row > div").each(function(){
+
+				var is_true = selected_page.includes( $(this).attr('page-name') );
+
+				if ( is_true )
+				{
+					console.log( $(this).attr('page-name') );
+					$(this).css("display","block");
+				}
+				else
+				{
+					console.log( $(this).attr('page-name') );
+					$(this).css("display","none");
+				}
+				
+
+			});
+
+
+
+
+			
+		});
 	});
 </script>
 

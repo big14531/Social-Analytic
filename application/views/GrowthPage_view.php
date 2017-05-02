@@ -35,7 +35,9 @@
 		height: 50px;
 		margin: 100px auto;
 	}
-
+	.form-group{
+		margin-bottom: 0px;
+	}
 	.sk-cube-grid .sk-cube {
 		width: 33%;
 		height: 33%;
@@ -113,6 +115,9 @@
 	}
 </style>
 
+<!-- Select2 -->
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
+
 <!-- Content Zone -->
 <div class="content-wrapper">
 
@@ -151,7 +156,7 @@
 				</div>
 				<div class="col-md-3">
 					<div class="input-group full-width">
-						<button type="button" class="btn btn-lg btn-default pull-left full-width" id="daterange-btn">
+						<button type="button" class="btn btn-md btn-default pull-left full-width" id="daterange-btn">
 							<span>
 								<i class="fa fa-calendar"></i> Date range
 							</span>
@@ -159,10 +164,15 @@
 						</button>
 					</div>
 				</div>
+	
+				<div class="col-md-4">
+					<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="Select a Page" style="width: 100%;">
+					</select>
+				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-2">
 					<div class="form-group">
-						<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
+						<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 							<span>
 								<i class="fa fa-calendar"></i> Search
 							</span>
@@ -186,15 +196,10 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 						<div class="row">
-							<div class="col-md-10">
+							<div class="col-md-12">
 								<div id="overview-chart" style="height: 700px;">
 								</div>
-							</div>
-							<div class="col-md-2">
-								<div id="overview" style="height: 300px;">
-								</div>
-								<div id="legend-container"></div>
-							</div>							
+							</div>			
 						</div>
 					</div>
 				</div>
@@ -260,6 +265,8 @@
 </div>
 
 <?php $this->load->view( 'default/bottom' ) ?>
+<!-- Select2 -->
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.full.min.js"></script>
 
 <script>
 
@@ -408,14 +415,12 @@
 	 */
 	function createCheckBox( data, dataset ) 
 	{ 
-		var choiceContainer = $("#legend-container");
+		// var choiceContainer = $("#legend-container");
+		var page_selector = $("#page-selector");
+
 
 		$.each(data, function(key, val) {
-			choiceContainer.append("<div class='row legend-box'><input type='checkbox' name='" + val.page_name +
-				"' checked='checked' id='id" + key + "'></input>" +
-				" <div class='color-icon' style='background-color:"+dataset[key].color+"'></div> "+
-				"<label for='id" + key + "'>"
-				+ val.page_name + "</label></div>");
+			page_selector.append("<option>"+val.page_name + "</option>");
 		});
 	}
 
@@ -461,13 +466,14 @@
 		}); 
 	}
 
+
 	/**
 	 * [plotGraphbyCheckbox description]
 	 *
 	 *		Redraw graph by checkbox
 	 * 
 	 */
-	function plotGraphbyCheckbox() 
+	function plotGraphbySelector() 
 	{
 		var data = [];
 		var new_dataset =[];
@@ -487,20 +493,17 @@
 		}
 
 
-		$("#legend-container").find("input:checked").each(function () 
-		{
-			var name = $(this).attr("name");
-			data.push( name );
-		});
+		var selected_page = $('#page-selector').val();
 
 		for( var key in dataset )
 		{
 			var series = dataset[key];
-			if( data.includes( series.label ) )
+			if( selected_page.includes( series.label ) )
 			{
 				new_dataset.push( series ); 
 			}
 		}
+
 		plotOverviewGraph( new_dataset );		
 	}
 
@@ -702,33 +705,8 @@
 	 	};  
 
 	 	var chart = $.plot("#overview-chart",dataset,option);
-	 	var overview = $.plot("#overview",dataset,preview_option);
 
-	 	$("#overview").bind("plotselected", function (event, ranges) 
-	 	{
-	 		if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {ranges.xaxis.to = ranges.xaxis.from + 0.00001;}
-	 		if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {ranges.yaxis.to = ranges.yaxis.from + 0.00001;}
-	 		plot = $.plot("#overview-chart", dataset,
-	 			$.extend(true, {}, option, {
-	 				xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
-	 				yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
-	 			})
-	 			);
-	 		overview.setSelection(ranges, true);
-	 	});
-
-	 	$("#overview-chart").bind("plotselected", function (event, ranges) 
-	 	{
-	 		if (ranges.xaxis.to - ranges.xaxis.from < 0.00001) {ranges.xaxis.to = ranges.xaxis.from + 0.00001;}
-	 		if (ranges.yaxis.to - ranges.yaxis.from < 0.00001) {ranges.yaxis.to = ranges.yaxis.from + 0.00001;}
-	 		plot = $.plot("#overview-chart", dataset,
-	 			$.extend(true, {}, option, {
-	 				xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
-	 				yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
-	 			})
-	 			);
-	 		overview.setSelection(ranges, true);
-	 	});
+	 	
 
 	 	$('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
 	 		position: "absolute",
@@ -815,6 +793,11 @@
 	*/
 	$(document).ready(function() 
 	{
+
+		$(".select2").select2();
+		$('#page-selector').change(function(){
+			plotGraphbySelector();
+		});
 		var type = $('#datatype-btn').val();
 		var min_date = moment().format('YYYY-MM-DD 23:59:59') ;
 		var max_date = moment().subtract(6, 'days').format('YYYY-MM-DD 00:00:00');
@@ -831,11 +814,11 @@
 	*	Set callback for Checkbox
 	* 
 	*/
-	$(function() 
-	{
-		$( "#legend-container" ).delegate( "input", "click", function() {
-			plotGraphbyCheckbox();
-		});
+	// $(function() 
+	// {
+	// 	$( "#legend-container" ).delegate( "input", "click", function() {
+	// 		plotGraphbyCheckbox();
+	// 	});
 
-	});
+	// });
 </script>
