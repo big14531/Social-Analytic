@@ -298,7 +298,7 @@ class Posts_model extends CI_Model
 				WHERE  created_time  >= '".$min_date."' 
 					AND created_time  <= '".$max_date."' 
 					AND  page_id =".$page_id." 
-				ORDER BY reaction DESC
+				ORDER BY engage DESC
 				LIMIT 5";	
 
 		$result = $this->db->query( $query );
@@ -316,7 +316,7 @@ class Posts_model extends CI_Model
 				WHERE  created_time  >= '".$min_date."' 
 					AND created_time  <= '".$max_date."' 
 					AND  page_id =".$page_id." 
-				ORDER BY reaction ASC
+				ORDER BY engage ASC
 				LIMIT 5";	
 
 		$result = $this->db->query( $query );

@@ -731,3 +731,6 @@
 	// ajaxCall(  page_id , date[0] , date[1] );
 
 </script>
+
+</body>
+</html>

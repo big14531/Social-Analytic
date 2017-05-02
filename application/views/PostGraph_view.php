@@ -3,6 +3,9 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	.form-group{
+		margin-bottom: 0px;
+	}
 	.graph_tab.active a{
 		background-color:#3c8dbc!important;
 	}
@@ -54,9 +57,6 @@
 		</div>
 
 		<div class="box gray-box">
-			<div class="box-header">
-			</div>
-
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-3">
@@ -86,7 +86,7 @@
 
 					<div class="col-md-6">
 						<div class="form-group">
-							<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
+							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 								<span>
 									<i class="fa fa-calendar"></i> Search
 								</span>
@@ -386,5 +386,8 @@
 		});
 	});
 </script>
+
+</body>
+</html>
 
 

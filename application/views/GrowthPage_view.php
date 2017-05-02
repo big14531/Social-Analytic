@@ -399,8 +399,6 @@
 			};
 			dataset.push( series );
 		}
-
-
 		return dataset;
 	} 
 
@@ -822,3 +820,6 @@
 
 	// });
 </script>
+
+</body>
+</html>

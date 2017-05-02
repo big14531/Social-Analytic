@@ -29,3 +29,6 @@
 
 <?php $this->load->view( 'default/bottom' ) ?>
 
+</body>
+</html>
+
