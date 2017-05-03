@@ -251,7 +251,7 @@ class Posts_model extends CI_Model
 		$result = $this->db->get( 'fb_page_log' );
 
 		return $result;
-	}
+	}	
 
 	public function getPostRateLog( $page )
 	{

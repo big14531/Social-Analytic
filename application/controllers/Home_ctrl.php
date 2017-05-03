@@ -32,6 +32,17 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function dashboard()
 	{
+		$output_array = array();
+		// GET ALL POST
+
+		// $page_id =  $_POST["page_id"];
+		// $min_date = date("0000-00-00 00:00:00");
+		// $max_date =  date( "Y-m-d H:i:s" );
+
+		$page_detail = $this->kcl_facebook_analytic->getFullPageDetail( 'komchadluek' );
+
+		array_push( $output_array , $page_detail );
+		// print_r( $output_array );
 		$this->load->view( 'Homepage_view' );
 	}
 

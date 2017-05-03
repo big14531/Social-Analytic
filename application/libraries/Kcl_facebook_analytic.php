@@ -123,6 +123,68 @@ class Kcl_facebook_analytic{
         return $result;
     }
 
+    public function getFullPageDetail( $pageName )
+    {
+        $this->fb_obj= new Facebook\Facebook([
+            'app_id' => '272658633175667',
+            'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
+            'default_graph_version' => 'v2.7'
+        ]);
+
+        $this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
+
+        /* API QUERY */
+        $url = '/'.$pageName.'
+            ?fields=
+                about,
+                fan_count,
+                category_list,
+                link,
+                website,
+                cover,
+                name,
+                category,
+                displayed_message_response_time,
+                engagement,
+                is_verified,
+                verification_status,
+                location,
+                talking_about_count,
+                picture.height(961){url}'
+            ;
+
+
+        $url = preg_replace('/\s+/', '', $url);
+
+        try {
+            $res = $this->fb_obj->get( $url );
+            $result = $res->getDecodedBody(); 
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            $result = $e->getMessage();
+            return $result;
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            $result = $e->getMessage();
+            return $result;
+        }
+        $key = array('about',
+                     'fan_count',
+                     'category_list',
+                     'link',
+                     'website',
+                     'cover',
+                     'name',
+                     'category',
+                     'displayed_message_response_time',
+                     'engagement',
+                     'is_verified',
+                     'verification_status',
+                     'location',
+                     'talking_about_count',
+                     'picture');
+        $result = $this->createEmptyKey( $key , $result );
+        return $result;
+    }
+
     public function createEmptyKey( $key , $data )
     {
         foreach( $key as $k_value )

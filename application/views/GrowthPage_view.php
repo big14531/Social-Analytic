@@ -459,6 +459,7 @@
 				
 				plotOverviewGraph( dataset );
 				plotSubGraph( dataset );
+				plotGraphbySelector();
 				is_first=0;
 			},
 		}); 
