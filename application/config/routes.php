@@ -78,7 +78,8 @@ $route['login'] = 'validation_ctrl/index';
 $route['logout'] = 'validation_ctrl/logout';
 /*---------- dashboard ----------*/
 $route['dashboard'] = 'home_ctrl/dashboard';
-
+$route['ajaxDashboard'] = 'home_ctrl/ajaxDashboard';
+$route['ajaxDashboardRankPost'] = 'home_ctrl/ajaxDashboardRankPost';
 /*---------- utility ajax ----------*/
 $route['ajaxGetActivePage'] = 'home_ctrl/ajaxGetActivePage';
 

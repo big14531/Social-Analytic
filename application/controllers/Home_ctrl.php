@@ -32,18 +32,45 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function dashboard()
 	{
-		$output_array = array();
-		// GET ALL POST
-
-		// $page_id =  $_POST["page_id"];
-		// $min_date = date("0000-00-00 00:00:00");
-		// $max_date =  date( "Y-m-d H:i:s" );
-
-		$page_detail = $this->kcl_facebook_analytic->getFullPageDetail( 'komchadluek' );
-
-		array_push( $output_array , $page_detail );
-		// print_r( $output_array );
 		$this->load->view( 'Homepage_view' );
+	}
+
+	public function ajaxDashboard()
+	{
+		$arrayPage = array();
+		$arrayPageValue = array();
+
+		$min_date = $this->input->post('min_date');
+		$max_date = $this->input->post('max_date');
+		$page_id = $this->input->post('page_id');
+
+		$page_detail = $this->kcl_facebook_analytic->getFullPageDetail( $page_id );
+		$postData = $this->Posts_model->getPageSummaryGroupbyDate( $page_id ,$min_date , $max_date );
+
+		echo json_encode( array( $postData,$page_detail ) );
+	}
+
+	/**
+	* [ajaxDashboardRankPost description]
+	*
+	*	Lazy too comment sry
+	* 
+	*/
+	public function ajaxDashboardRankPost()
+	{
+		$result = array();
+		$page_id = $this->input->post('page_id');
+		$min_date = $this->input->post('min_date');
+		$max_date = $this->input->post('max_date');
+
+
+		$top_array = $this->Posts_model->getTopPostbyPageIDandDate( $page_id , $min_date , $max_date );
+		$min_array = $this->Posts_model->getMinPostbyPageIDandDate( $page_id , $min_date , $max_date );
+
+		array_push( $result , $top_array );
+		array_push( $result , $min_array );
+
+		echo json_encode( $result );
 	}
 
 	/* ---------------- Rank posts Zone ---------------- */
@@ -319,16 +346,16 @@ class Home_ctrl extends CI_Controller
 	// 	return $result;
 	// }
 
-    public function removeUnnecessaryWord( $str_orignal )
-    {
-      if($str_orignal)
-      {
-         $nope_word = array('-','•','?',"&",".",'…','ฯ','ได้','ยัง','จึง','ไม่','ให้','กับ','แล้ว','และ','หรือ','ที่','คือ','!','#','$','%','*','()',')','“','”',"'",'"',"’","‘");
-         $str_orignal=str_replace($nope_word,array(' '),$str_orignal);
-         $str_orignal=@preg_replace('/[&\/\\#,+()$~%.\'"!:*?<>{}]/', ' ', $str_orignal);
-       }
-       return $str_orignal;
-    }
+	public function removeUnnecessaryWord( $str_orignal )
+	{
+		if($str_orignal)
+		{
+			$nope_word = array('-','•','?',"&",".",'…','ฯ','ได้','ยัง','จึง','ไม่','ให้','กับ','แล้ว','และ','หรือ','ที่','คือ','!','#','$','%','*','()',')','“','”',"'",'"',"’","‘");
+			$str_orignal=str_replace($nope_word,array(' '),$str_orignal);
+			$str_orignal=@preg_replace('/[&\/\\#,+()$~%.\'"!:*?<>{}]/', ' ', $str_orignal);
+		}
+		return $str_orignal;
+	}
 	/**
 	* [sortNestArray description]
 	*
@@ -413,21 +440,21 @@ class Home_ctrl extends CI_Controller
 
 
 	public function ajaxAnalyticPost()
-    {
-        $page_id = $_POST['page_id'];
-        $post_id = $_POST['post_id'];
-        $result = array();
-        $target_post = $this->Posts_model->getPostbyID( $page_id , $post_id );
+	{
+		$page_id = $_POST['page_id'];
+		$post_id = $_POST['post_id'];
+		$result = array();
+		$target_post = $this->Posts_model->getPostbyID( $page_id , $post_id );
 
-        $target_post_date = date("Y-m-d",strtotime($target_post[0]->created_time));
-        $min_date = $target_post_date." 00:00:00";
-        $max_date = $target_post_date." 23:59:59";
+		$target_post_date = date("Y-m-d",strtotime($target_post[0]->created_time));
+		$min_date = $target_post_date." 00:00:00";
+		$max_date = $target_post_date." 23:59:59";
 
         // $target_text_raw = $target_post[0]->message.$target_post[0]->description.$target_post[0]->name;
-        $target_text_raw = $target_post[0]->name.' '.$target_post[0]->description;
-        $target_text_raw = $this->removeUnnecessaryWord($target_text_raw );
-        $target_text = $this->splitThaiWord( $target_text_raw );
-        $target_text_name_only = $this->splitThaiWord( $this->removeUnnecessaryWord($target_post[0]->name) );
+		$target_text_raw = $target_post[0]->name.' '.$target_post[0]->description;
+		$target_text_raw = $this->removeUnnecessaryWord($target_text_raw );
+		$target_text = $this->splitThaiWord( $target_text_raw );
+		$target_text_name_only = $this->splitThaiWord( $this->removeUnnecessaryWord($target_post[0]->name) );
         // $target_text_name_only=explode(' ', $this->removeUnnecessaryWord($target_post[0]->name));
         // if(count($target_text_name_only)<=3)
         // {
@@ -435,175 +462,175 @@ class Home_ctrl extends CI_Controller
         // }
 
         //
-        $str_importan_word_raw='';
-        $str_importan_word='';
-        $array_importan_word=array();
-        @preg_match_all( '/"([^"]+)"|“([^“]+)”|\'([^\']+)\'|‘([^‘]+)’/' ,$target_post[0]->description.' '.$target_post[0]->name, $match );
-        if($match[0])
-        {
-            foreach($match[0] as $k =>$v)
-            {
-                $v=trim($v);
-                $v=$this->removeUnnecessaryWord($v);
-                $v_importan_word=explode(' ',$v);
-                foreach($v_importan_word as $v_sub_word)
-                {
+		$str_importan_word_raw='';
+		$str_importan_word='';
+		$array_importan_word=array();
+		@preg_match_all( '/"([^"]+)"|“([^“]+)”|\'([^\']+)\'|‘([^‘]+)’/' ,$target_post[0]->description.' '.$target_post[0]->name, $match );
+		if($match[0])
+		{
+			foreach($match[0] as $k =>$v)
+			{
+				$v=trim($v);
+				$v=$this->removeUnnecessaryWord($v);
+				$v_importan_word=explode(' ',$v);
+				foreach($v_importan_word as $v_sub_word)
+				{
 
-                  if($str_importan_word_raw)
-                  {
-                    $str_importan_word_raw.='|';
-                  }
-                  $str_importan_word_raw.=$v_sub_word;
-                  array_push($array_importan_word,$v_sub_word);
-                  array_push($array_importan_word,$v_sub_word."'");
-                  array_push($array_importan_word,$v_sub_word.'"');
-                  array_push($array_importan_word,"'".$v_sub_word);
-                  array_push($array_importan_word,'"'.$v_sub_word);
+					if($str_importan_word_raw)
+					{
+						$str_importan_word_raw.='|';
+					}
+					$str_importan_word_raw.=$v_sub_word;
+					array_push($array_importan_word,$v_sub_word);
+					array_push($array_importan_word,$v_sub_word."'");
+					array_push($array_importan_word,$v_sub_word.'"');
+					array_push($array_importan_word,"'".$v_sub_word);
+					array_push($array_importan_word,'"'.$v_sub_word);
                   //--------------------------------------
-                  array_push($array_importan_word,$v_sub_word."’");
-                  array_push($array_importan_word,$v_sub_word.'”');
-                  array_push($array_importan_word,"‘".$v_sub_word);
-                  array_push($array_importan_word,'“'.$v_sub_word);
-                }
-            }
-            $array_importan_word=array_unique($array_importan_word);
-            $str_importan_word= implode('|', $array_importan_word);
-            $target_text=array_merge($target_text,$array_importan_word);
-        }
+					array_push($array_importan_word,$v_sub_word."’");
+					array_push($array_importan_word,$v_sub_word.'”');
+					array_push($array_importan_word,"‘".$v_sub_word);
+					array_push($array_importan_word,'“'.$v_sub_word);
+				}
+			}
+			$array_importan_word=array_unique($array_importan_word);
+			$str_importan_word= implode('|', $array_importan_word);
+			$target_text=array_merge($target_text,$array_importan_word);
+		}
         //
-        $word_space=$this->removeUnnecessaryWord($target_post[0]->message.' '.$target_post[0]->description.' '.$target_post[0]->name);
-        $word_space=explode(" ",$word_space);
-        $word_space=array_unique($word_space);
-        $arr_word_space=array();
-        foreach($word_space as $v)
-        {
-          if($v)
-          {
-            if(mb_strlen($v)>2 && mb_strlen($v)<=8)
-            array_push($target_text,$v);
-            array_push($arr_word_space,$v);
-          }
+		$word_space=$this->removeUnnecessaryWord($target_post[0]->message.' '.$target_post[0]->description.' '.$target_post[0]->name);
+		$word_space=explode(" ",$word_space);
+		$word_space=array_unique($word_space);
+		$arr_word_space=array();
+		foreach($word_space as $v)
+		{
+			if($v)
+			{
+				if(mb_strlen($v)>2 && mb_strlen($v)<=8)
+					array_push($target_text,$v);
+				array_push($arr_word_space,$v);
+			}
 
-        }
+		}
         //
-        $target_text=array_unique($target_text);
+		$target_text=array_unique($target_text);
         //clear empty array
-        foreach($target_text as $k =>$v)
-        {
-          if(empty($v))
-          {
-            unset($target_text[$k]);
-          }
-          elseif(mb_strlen($v)<=1)
-          {
-            unset($target_text[$k]);
-          }
+		foreach($target_text as $k =>$v)
+		{
+			if(empty($v))
+			{
+				unset($target_text[$k]);
+			}
+			elseif(mb_strlen($v)<=1)
+			{
+				unset($target_text[$k]);
+			}
 
-        }
-        $regexp = implode('|', $target_text);
-        $comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
-        foreach($comp_post as $value)
-        {
+		}
+		$regexp = implode('|', $target_text);
+		$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
+		foreach($comp_post as $value)
+		{
 
-            $comp_text_raw = $value->name.' '.$value->description;
-            if($str_importan_word)
-            {
-              $comp_text = $comp_text_raw;
-            }
-            else
-            {
-              $comp_text = $this->removeUnnecessaryWord($comp_text_raw);
-            }
+			$comp_text_raw = $value->name.' '.$value->description;
+			if($str_importan_word)
+			{
+				$comp_text = $comp_text_raw;
+			}
+			else
+			{
+				$comp_text = $this->removeUnnecessaryWord($comp_text_raw);
+			}
 
             //new analytic
-             $v_check_match=preg_match_all('/'.$regexp.'/i',$comp_text, $match_count);
-             $check_total_match=0;
-             if(isset($match_count[0]))
-             {
-               $match_count[0]=array_unique($match_count[0]);
+			$v_check_match=preg_match_all('/'.$regexp.'/i',$comp_text, $match_count);
+			$check_total_match=0;
+			if(isset($match_count[0]))
+			{
+				$match_count[0]=array_unique($match_count[0]);
 
-               $check_total_match=count($match_count[0]);
-             }
-              if( $check_total_match >=3)
-              {
+				$check_total_match=count($match_count[0]);
+			}
+			if( $check_total_match >=3)
+			{
 
-                  array_push( $result , array ( $value, $check_total_match , "count"=>$check_total_match,"keyword"=>$regexp) );
-              }
-              elseif(!empty($str_importan_word_raw))
-              {
-                if(preg_match('/'.$str_importan_word_raw.'/i',$comp_text_raw))
-                {
-                    array_push( $result , array ( $value, $check_total_match , "count"=>$check_total_match,"keyword"=>$regexp) );
-                }
-              }
-        }
+				array_push( $result , array ( $value, $check_total_match , "count"=>$check_total_match,"keyword"=>$regexp) );
+			}
+			elseif(!empty($str_importan_word_raw))
+			{
+				if(preg_match('/'.$str_importan_word_raw.'/i',$comp_text_raw))
+				{
+					array_push( $result , array ( $value, $check_total_match , "count"=>$check_total_match,"keyword"=>$regexp) );
+				}
+			}
+		}
 
-        $result = $this->sortNestArray( $result );
-        $total_raw_result=count($result);
-        if($total_raw_result>25)
-        {
-          foreach($target_text_name_only as $k =>$v)
-          {
-            if(mb_strlen($v)<=3)
-            {
-              unset($target_text[$k]);
-            }
-          }
-          $regexp = implode('|', $target_text_name_only);
-          foreach($result as $k =>$v)
-          {
-            if($k>24)
-            {
+		$result = $this->sortNestArray( $result );
+		$total_raw_result=count($result);
+		if($total_raw_result>25)
+		{
+			foreach($target_text_name_only as $k =>$v)
+			{
+				if(mb_strlen($v)<=3)
+				{
+					unset($target_text[$k]);
+				}
+			}
+			$regexp = implode('|', $target_text_name_only);
+			foreach($result as $k =>$v)
+			{
+				if($k>24)
+				{
 
-              preg_match_all('/'.$regexp.'/i',$v[0]->name, $match_count);
-              if(count(array_unique($match_count[0]))<=2)
-              {
+					preg_match_all('/'.$regexp.'/i',$v[0]->name, $match_count);
+					if(count(array_unique($match_count[0]))<=2)
+					{
 
-                if(!preg_match_all('/'.$str_importan_word.'/i',$v[0]->name.' '.$v[0]->description) || empty($str_importan_word))
-                {
-                  unset($result[$k]);
-                }
-                else
-                {
+						if(!preg_match_all('/'.$str_importan_word.'/i',$v[0]->name.' '.$v[0]->description) || empty($str_importan_word))
+						{
+							unset($result[$k]);
+						}
+						else
+						{
                   //echo($str_importan_word.'<br>');
-                }
-              }
-              else
-              {
+						}
+					}
+					else
+					{
               //print_r($match_count);
-              }
-            }
-            else
-            {
+					}
+				}
+				else
+				{
 
-              preg_match_all('/'.$regexp.'/i',$v[0]->name, $match_count);
+					preg_match_all('/'.$regexp.'/i',$v[0]->name, $match_count);
 
-              if(count(array_unique($match_count[0]))<=2)
-              {
+					if(count(array_unique($match_count[0]))<=2)
+					{
                 //print_r($match_count);
-                if(!preg_match('/'.$str_importan_word.'/i',$v[0]->name.' '.$v[0]->description) || empty($str_importan_word) )
-                {
-                  unset($result[$k]);
-                }
-                else
-                {
+						if(!preg_match('/'.$str_importan_word.'/i',$v[0]->name.' '.$v[0]->description) || empty($str_importan_word) )
+						{
+							unset($result[$k]);
+						}
+						else
+						{
                   //print_r($match_count);
-                }
-              }
-              else
-              {
+						}
+					}
+					else
+					{
                 //print_r($v);
-              }
-            }
-          }
-        }
+					}
+				}
+			}
+		}
         //exit();
 
-        $result = $this->sortNestArray( $result);
-        $data['target_post'] = $target_post;
-        $data['match_post'] = $result;
-        echo json_encode( $data );
-    }
+		$result = $this->sortNestArray( $result);
+		$data['target_post'] = $target_post;
+		$data['match_post'] = $result;
+		echo json_encode( $data );
+	}
 
 
 

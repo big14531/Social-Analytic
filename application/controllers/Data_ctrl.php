@@ -202,7 +202,8 @@ class Data_ctrl extends CI_Controller
 	public function updateFacebookPost( $limit )
 	{
 		$total_result = array();
-		$date = Date("Y-m-d 00:00:00");
+		$date = Date("Y-m-d 00:00:00" , strtotime("-1 days"));
+		
 		$postArray = $this->getLatedUpdatePost( $date , $limit );
 
 		if( isset($_SESSION['accessToken']) )
