@@ -175,11 +175,21 @@
 						$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
 					}
 				},
-				]
+				],
+				'order': [[ 4, "ASC" ]]
 			});
 
+
+
+			// ajaxCall()
 			// SET HIDE REACTIOn FIRST TIME
 			toggleColumnReaction();
+
+
+			
+			var max_date = moment().format("YYYY-MM-DD 23:59:59");
+			var min_date = moment().format("YYYY-MM-DD 00:00:00");
+			ajaxCall( 208428464667 , min_date , max_date );
 
 		});
 		
