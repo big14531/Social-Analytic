@@ -459,7 +459,7 @@
 				
 				plotOverviewGraph( dataset );
 				plotSubGraph( dataset );
-				plotGraphbySelector();
+				plotGraphbySelector()
 				is_first=0;
 			},
 		}); 
@@ -597,8 +597,18 @@
 					// Will display date in DD/MM/YYYY format
 					var formattedDate = day.substr(1) + '-' + month + '-' + year.substr(1);
 
+					var weekday = new Array(7);
+					weekday[0] = "Sun";
+					weekday[1] = "Mon";
+					weekday[2] = "Tue";
+					weekday[3] = "Wed";
+					weekday[4] = "Thu";
+					weekday[5] = "Fri";
+					weekday[6] = "Sat";
 
-					var date = "Date : "+formattedDate;
+					var day_name = weekday[date.getDay()];
+
+					var date = day_name+" "+formattedDate;
 					y = item.datapoint[1].toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
 
 					$("#line-chart-tooltip").html(  date + "<br> " + " value : " + y)
@@ -728,7 +738,18 @@
 					// Will display date in DD/MM/YYYY format
 					var formattedDate = day.substr(1) + '-' + month + '-' + year.substr(1);
 
-					var date = "Date : "+formattedDate;
+					var weekday = new Array(7);
+					weekday[0] = "Sun";
+					weekday[1] = "Mon";
+					weekday[2] = "Tue";
+					weekday[3] = "Wed";
+					weekday[4] = "Thu";
+					weekday[5] = "Fri";
+					weekday[6] = "Sat";
+
+					var day_name = weekday[date.getDay()];
+
+					var date = day_name+" "+formattedDate;
 					y = item.datapoint[1].toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
 
 					$("#line-chart-tooltip").html( "<b>"+page_name+"</b>"+"<br>"+date + "<br> " + " value : " + y)

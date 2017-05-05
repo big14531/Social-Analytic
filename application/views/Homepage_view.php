@@ -57,7 +57,7 @@
 		
 	}
 	.page-logo{
-		width: 50%;
+		max-height: 200px;
 	}
 	.sk-cube-grid {
 		width: 50px;
@@ -159,12 +159,21 @@
 		<div class="box gray-box">
 			<div class="box-body control-box">
 				<div class="row">
-					<div class="col-md-8">
+					<div class="col-md-5">
 						<select id="page-selector" class="form-control" data-placeholder="Select a Page" style="width: 100%;">
 						</select>
 					</div>
-
-					<div class="col-md-4">
+					<div class="col-md-5">
+						<div class="input-group full-width">
+							<button type="button" class="btn btn-md btn-default pull-left full-width" id="daterange-btn">
+								<span>
+									<i class="fa fa-calendar"></i> Date range
+								</span>
+								<i class="fa fa-caret-down"></i>
+							</button>
+						</div>
+					</div>
+					<div class="col-md-2">
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 								<span>
@@ -272,7 +281,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Posts per Days <small>( last week )</small> </h2>
+						<h2 class="box-title">Posts per Days <small>( average )</small> </h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
@@ -289,7 +298,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Best of Week</h2>
+						<h2 class="box-title">Best of Posts</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
@@ -307,7 +316,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Worst of Week</h2>
+						<h2 class="box-title">Worst of Posts</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
@@ -386,28 +395,28 @@
 				var btn = 'danger';
 			}
 			var html = 	'<li class="item">'
-							+'<div class="product-img">'
-								+'<a href="'+value.permalink_url+'" target="_blank" class="product-title">'
-								+'<img src="'+value.picture+'" alt="Product Image">'
-								+'</a>'
-							+'</div>'
-							+'<div class="product-info">'
-								+value.name
-									+'<span class="label label-'+btn+' pull-right">'+value.type+'</span>'
-								+'<span class="product-description" style="color:white;">'
-									+value.description
-								+'</span>'
-								+'<span class="product-description" style="color:white;">'
-									+"<img class='small-icon' src='<?php echo(base_url());?>assets/images/like.png'>: "
-									+parseInt(value.engage).toLocaleString('en-US')
-									+"<i class='fa fa-comment small-icon'></i>: "
-									+parseInt(value.comments).toLocaleString('en-US')
-									+"<i class='fa fa-share small-icon'></i>: "
-									+parseInt(value.shares).toLocaleString('en-US')
+			+'<div class="product-img">'
+			+'<a href="'+value.permalink_url+'" target="_blank" class="product-title">'
+			+'<img src="'+value.picture+'" alt="Product Image">'
+			+'</a>'
+			+'</div>'
+			+'<div class="product-info">'
+			+value.name
+			+'<span class="label label-'+btn+' pull-right">'+value.type+'</span>'
+			+'<span class="product-description" style="color:white;">'
+			+value.description
+			+'</span>'
+			+'<span class="product-description" style="color:white;">'
+			+"<img class='small-icon' src='<?php echo(base_url());?>assets/images/like.png'>: "
+			+parseInt(value.engage).toLocaleString('en-US')
+			+"<i class='fa fa-comment small-icon'></i>: "
+			+parseInt(value.comments).toLocaleString('en-US')
+			+"<i class='fa fa-share small-icon'></i>: "
+			+parseInt(value.shares).toLocaleString('en-US')
 
-								+'</span>'
-							+'</div>'
-						+'</li>';
+			+'</span>'
+			+'</div>'
+			+'</li>';
 
 			box.append( html );
 		}
@@ -513,6 +522,45 @@
 		$("#new-fanpage-box").html( parseInt(new_fanpage).toLocaleString('en-US') );
 	}
 
+	function averageValueByDay( data ) 
+	{
+		var result = [];
+		var value_array =[[],[],[],[],[],[],[]];
+		var day_of_week =[];
+		for (var key in data) 
+		{
+			var row = data[key];
+			var day_name = row[0];
+			var value = row[1];
+			var index = day_of_week.indexOf( day_name );
+			if( index == -1 )
+			{
+				day_of_week.push( day_name );
+				index = day_of_week.indexOf( day_name );
+				value_array[index].push( value );
+			}
+			else
+			{
+				index = day_of_week.indexOf( day_name );
+				value_array[index].push( value );
+			}
+			
+		}
+
+		console.log(day_of_week);
+		console.log(value_array);
+		
+		for (var key2 in day_of_week) 
+		{
+			var day_value = value_array[key2];
+			let sum = day_value.reduce((x,y) => parseInt(x)+parseInt(y) );
+			sum = sum/day_value.length;
+			var data_array = [ day_of_week[key2] , Math.floor(sum) ];
+			result.push( data_array );
+		}
+		return result;
+	}
+
 	function createBarChart( data )
 	{
 		var result=[];
@@ -524,11 +572,12 @@
 			var dt = moment(raw_time);
 			var day_name = dt.format('ddd');
 			var value = row.post_count;
-
 			var data_array = [ day_name , value ];
-
 			result.push( data_array );
 		}
+
+		result = averageValueByDay( result );
+
 		var bar_data = {
 			data: result,
 			color: "#00c0ef"
@@ -622,21 +671,28 @@
 		return value;
 	}
 
-	function searchBtnCallback() 
+	function searchBtnCallback( min_date=0 , max_date=0 ) 
 	{
 		$('#myModal').modal('show');
 		var page_id = $('#page-selector').find(':selected').attr('id');
-		if ( Boolean(page_id) ) 
+
+		var date_range = $('#daterange-btn').val();
+		if ( date_range.length!=0 ) 
 		{
-			min_date = moment().subtract(1, 'weeks').startOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
-			max_date = moment().subtract(1, 'weeks').endOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
+			var date = date_range.split(' to ');
+			min_date = date[0];
+			max_date = date[1];
+		}
+		
 
-			text_min = moment().subtract(1, 'weeks').startOf('isoWeek').format("YYYY-MM-DD");
-			text_max = moment().subtract(1, 'weeks').endOf('isoWeek').format("YYYY-MM-DD");
+		if ( Boolean(page_id) && Boolean(min_date)  && Boolean(max_date) ) 
+		{
+			text_min = min_date.substr(0,10);
+			text_max = max_date.substr(0,10);
 
-			// min_date = moment().startOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
-			// max_date = moment().endOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
-			
+			min_date = min_date;
+			max_date = max_date;
+
 			ajaxDashboard( page_id , min_date , max_date );
 			ajaxDashboardRankPost(  page_id , min_date , max_date );
 			$("#time-range").html( 'ข้อมูลระหว่างวันที่ '+text_min+' ถึง '+text_max );
@@ -657,14 +713,40 @@
 		});
 	}
 
+	function createDatePicker() 
+	{
+		$('#daterange-btn').daterangepicker
+		(
+		{
+			ranges: {
+				'Today': [moment(), moment()],
+				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				'This Month': [moment().startOf('month'), moment().endOf('month')],
+				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},
+			startDate: moment().subtract(29, 'days'),
+			endDate: moment()
+		},
+		function (start, end) {
+			$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+			$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
+		}
+		);
+	}
+
 	$(document).ready(function() 
 	{
+
+		construct_min_date = moment().subtract(1, 'weeks').startOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
+		construct_max_date = moment().subtract(1, 'weeks').endOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
+
 		$('#myModal').modal('show');
-		createBarChart();
-		createPieChart();
+		createDatePicker();
 		updateFloatWidget();
 		ajaxCreatePageCard();
-		searchBtnCallback()
+		searchBtnCallback( construct_min_date , construct_max_date );
 
 
 
