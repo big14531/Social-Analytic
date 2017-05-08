@@ -483,7 +483,7 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 
-		$this->db->select('post.*, list.name as page_name , list.picture as page_picture , list.link as page_link');
+		$this->db->select('post.*,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact  ,  list.name as page_name , list.picture as page_picture , list.link as page_link');
 		$this->db->from('fb_facebook_post as post');
 
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
@@ -502,7 +502,7 @@ class Posts_model extends CI_Model
 	{
 
 		$result = array();
-		$this->db->select('post.*, list.name as page_name , list.picture as page_picture , list.link as page_link');
+		$this->db->select('post.*, ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact  , list.name as page_name , list.picture as page_picture , list.link as page_link');
 		$this->db->from('fb_facebook_post as post');
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
 		$this->db->where('post.page_id =',$page_id);

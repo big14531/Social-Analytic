@@ -126,15 +126,6 @@
 
 <script>
 
-	function convertTime( data )
-	{ 
-		var temp_date = data.substr(0,10);
-		var date = temp_date.split("-");
-		var time = data.substr(11);
-		var result = date[2]+"-"+date[1]+"-"+date[0]+" "+time;
-		return result;
-	}
-
 	function generateData ( data ) 
 	{
 		var result =[];

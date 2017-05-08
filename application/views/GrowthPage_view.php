@@ -214,6 +214,7 @@
 			 */
 		
 			$count=0;
+			$total = count( $page_list );
 			foreach( $page_list as $value )
 			{   
 				if ($count%2==0) {
@@ -226,7 +227,6 @@
 				echo '<div class="box-header with-border">';
 				echo '<h2 class="box-title" id="page_name_'.$value->id.'"></h2>';
 				echo '<div class="box-tools pull-right">';
-				echo '</button>';
 				echo '</div>';
 				echo '</div>';
 
@@ -237,7 +237,7 @@
 				echo '</div>';
 				echo '</div>';
 
-				if ($count%2==1) {
+				if ($count%2==1 || $total==$count+1 ) {
 					echo '</div>';
 				}
 				$count+=1;

@@ -3,6 +3,16 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	#line-chart-tooltip{
+		z-index: 10000;
+	}
+	.tooltip-inner{
+		min-width: 100px;
+		max-width: 300px;
+	}
+	.gray-box{
+		padding: 30px!important;
+	}
 	.graph_tab.active a{
 		background-color:#3c8dbc!important;
 	}
@@ -21,11 +31,11 @@
 		padding-top: 5px;
 		font-weight: 400;
 		font-size: 20px;
-		color: black;
+		color: black!important;
 	}
 	.box-font-head{
 		font-size: 20px;
-		color: black;
+		color: black!important;
 	}
 	.post-icon{
 		background-color: #f0f0f5;
@@ -41,7 +51,6 @@
 		height: 50px;
 		margin: 100px auto;
 	}
-
 	.sk-cube-grid .sk-cube {
 		width: 33%;
 		height: 33%;
@@ -301,6 +310,15 @@
 
 			</div>
 		</div>
+		
+		<div class="box gray-box">
+			<div class="row">
+				<div class="graph-box">
+					<div id="placeholder" style="width:100%;height:500px">
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!--  Match Post table  -->
 		<div class="row">
@@ -319,6 +337,12 @@
 </div>
 
 <?php $this->load->view( 'default/bottom' ) ?>
+<!-- FLOT CHARTS -->
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.min.js"></script>
+<!-- FLOT TIME CHARTS -->
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.time.js"></script>
+<!-- FLOT RESIZE -->
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.resize.min.js"></script>
 
 <script>
  
@@ -326,6 +350,7 @@
 	{
 		var page_id = '<?php echo $id['page_id']; ?>';
 		var post_id = '<?php echo $id['post_id']; ?>';
+
 		$('#myModal').modal('show')
 		$.ajax(
 		{
@@ -343,12 +368,188 @@
 				createPostTarget( data.target_post );
 				createTable( data.target_post );
 				renderTable( data.match_post );
+				plotGraph( data );
+				toggleColumnReaction();
 				$('#myModal').modal('hide')
 			}   
 		}
 		);      
 	}
 	);
+
+	function generateData ( data , color ) 
+	{
+		var result =[];
+		var label =[];
+		for (var i = 0; i < data.length; i++)
+		{
+			value = data[i][0];
+			var text = [
+			value.name,
+			value.page_name,
+			value.page_id,
+			value.post_id,
+			value.picture
+			];
+
+			result.push( [ value.shares , value.interact ] );
+			label.push( {label: text } );
+		}
+
+		var fan_dataset = 
+		{
+			data: result,
+			color: color,
+			label: "Post",   
+			extraData: label
+		};
+		return fan_dataset;
+	}
+
+	function generateDataTarget ( data , color ) 
+	{
+		var result =[];
+		var label =[];
+		value = data[0];
+		var text = [
+		value.name,
+		value.page_name,
+		value.page_id,
+		value.post_id,
+		value.picture
+		];
+
+		result.push( [ value.shares , value.interact ] );
+		label.push( {label: text } );
+
+		var fan_dataset = 
+		{
+			data: result,
+			color: color,
+			label: "Post",   
+			extraData: label
+		};
+		return fan_dataset;
+	}
+
+	function plotGraph( data ) 
+	{ 
+		var match_post = generateData( data.match_post , '#00c0ef');
+		var target_post = generateDataTarget( data.target_post , '#FF0000');
+		var options = 
+		{
+			legend:
+			{
+				show:false
+			},       
+			series: 
+			{
+				points: 
+				{
+					show: true,
+					radius: 5,
+					fill: true,
+					fillColor: false
+				}
+			},
+			grid: 
+			{
+				hoverable: true,
+				clickable: true
+
+			},
+			xaxis:
+			{
+				show: true,
+				autoscaleMargin: 0.05
+
+			},
+			yaxis: 
+			{
+				show: true,
+				autoscaleMargin: 0.05
+			}
+		};
+
+		var placeholder = $("#placeholder");
+		var plot = $.plot("#placeholder", [match_post , target_post] , options );
+
+
+		$('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
+			position: "absolute",
+			display: "none",
+			opacity: 1,
+		}).appendTo("body");
+
+		placeholder.bind("plothover", function (event, pos, item) 
+		{
+			if (item) 
+			{
+				var index = item.dataIndex;
+				var label = item.series.extraData[index].label;
+				var name = label[0]; 
+				var page_name = label[1];
+				var picture = label[4];
+
+				var date = new Date(item.datapoint[0]);
+					// Hours part from the timestamp    
+					var hours = date.getHours();
+					// Minutes part from the timestamp
+					var minutes = "0" + date.getMinutes();
+					// Seconds part from the timestamp
+					var seconds = "0" + date.getSeconds();
+					// Seconds part from the timestamp
+					var year = "0" + date.getFullYear();
+					// Seconds part from the timestamp
+					var month = "0" + date.getMonth();
+					var month = parseInt( month )+1;
+					// Seconds part from the timestamp
+					var day = "0" + date.getDate();
+					// Will display date in DD/MM/YYYY format
+					var formattedDate = day.substr(1) + '-' + month + '-' + year.substr(1);
+					// Will display time in 10:30:23 format
+					var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+					var date = "Date : "+formattedDate;
+					var time = "Time : "+formattedTime;
+					y = item.datapoint[1].toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
+
+					$("#line-chart-tooltip").html( 
+
+						'<div class="row"><div class="col-xs-6"><image class="table-img" src='+picture+' /></div><div class="col-xs-6">'+name+'<br>'+date+'<br>'+time+'<br> '+'likes : '+ y+'</div></div>'
+						)
+					.css({top: item.pageY - 155, left: item.pageX - 150 })
+					.fadeIn(200);
+				} 
+				else 
+				{
+					$("#line-chart-tooltip").hide();
+				}
+			});
+
+		
+	}   
+
+	function toggleColumnReaction()
+	{
+		// Get the column API object
+        var table = $('#example1').DataTable();
+
+        var column_likes = table.column( 10 ).visible();
+        var column_love = table.column( 11 ).visible();
+        var column_wow = table.column( 12 ).visible();
+        var column_haha = table.column( 13 ).visible();
+        var column_sad = table.column( 14 ).visible();
+        var column_angry = table.column( 15 ).visible();
+
+		// Hide a column
+		table.column( 10 ).visible( !column_likes );
+		table.column( 11 ).visible( !column_love );
+		table.column( 12 ).visible( !column_wow );
+		table.column( 13 ).visible( !column_haha );
+		table.column( 14 ).visible( !column_sad );
+		table.column( 15 ).visible( !column_angry );		
+	}
 
 	function createPostTarget( data ) 
 	{
@@ -629,8 +830,7 @@
 			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" ,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 
-				var diff = target_wow - sData;
-				diff = diff.toLocaleString('en-US');
+				var diff = target_wow - sData;				diff = diff.toLocaleString('en-US');
 
 				if ( parseInt( sData ) > parseInt( target_wow ) ) 
 				{

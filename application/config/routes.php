@@ -76,6 +76,10 @@ $route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 
 $route['login'] = 'validation_ctrl/index';
 $route['logout'] = 'validation_ctrl/logout';
+
+/*---------- dashboard ----------*/
+$route['socialDeck'] = 'home_ctrl/socialDeck';
+
 /*---------- dashboard ----------*/
 $route['dashboard'] = 'home_ctrl/dashboard';
 $route['ajaxDashboard'] = 'home_ctrl/ajaxDashboard';

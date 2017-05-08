@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Social Analytic Tool | Tracking Page List</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex,nofollow">
     <!-- social-analytic style -->
     <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/social-analytic.css?version=4">
 
@@ -35,6 +36,6 @@
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
     <!-- close tag is in bottom.php -->
-    <div class="wrapper">
+    <div class="wrapper" id="wrapper">

@@ -73,6 +73,14 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $result );
 	}
 
+
+	/* ---------------- Social Deck Zone ---------------- */
+	public function socialDeck()
+	{
+		$this->load->view( 'SocialDeck_view' );
+	}
+
+
 	/* ---------------- Rank posts Zone ---------------- */
 
 	/**
@@ -332,20 +340,6 @@ class Home_ctrl extends CI_Controller
 	* @return [type] $result [ output text ]
 	*
 	*/
-	// public function removeUnnecessaryWord( $array )
-	// {
-	// 	$nope_word = array( 'ฯ','และ','หรือ','ที่','คือ' );
-	// 	$result = array();
-	// 	foreach ($array as $value) 
-	// 	{
-	// 		if ( !in_array( $value, $nope_word ) ) 
-	// 		{
-	// 			array_push( $result , $value );
-	// 		}
-	// 	}
-	// 	return $result;
-	// }
-
 	public function removeUnnecessaryWord( $str_orignal )
 	{
 		if($str_orignal)
@@ -393,51 +387,6 @@ class Home_ctrl extends CI_Controller
 	* 
 	* @return [type] [json]
 	*/
-
-	// public function ajaxAnalyticPost()
-	// {
-	// 	$page_id = $_POST['page_id'];
-	// 	$post_id = $_POST['post_id'];   
-
-	// 	$result = array();
-
-	// 	$target_post = $this->Posts_model->getPostbyID( $page_id , $post_id );
-
-	// 	$target_post_date = date("Y-m-d",strtotime($target_post[0]->created_time));
-	// 	$min_date = $target_post_date." 00:00:00";
-	// 	$max_date = $target_post_date." 23:59:59";
-
-	// 	$target_text_raw = $target_post[0]->name;
-	// 	$target_text = $this->splitThaiWord( $target_text_raw );
-	// 	$target_text = $this->removeUnnecessaryWord( $target_text );
-	// 	$regexp = implode('|', $target_text);
-
-
-
-	// 	$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( $regexp ,  $min_date , $max_date );
-
-	// 	foreach ($comp_post as $value) 
-	// 	{
-	// 		$comp_text_raw = $value->name.$value->description;
-	// 		$comp_text = str_replace("!", " ", $comp_text_raw);
-	// 		$comp_text = $this->splitThaiWord( $comp_text );
-	// 		$match_count = array_intersect( $target_text , $comp_text  );
-
-	// 		if( count( $match_count ) >= 5 )
-	// 		{
-	// 			array_push( $result , array ( $value, $match_count , "count"=>count($match_count) ) );
-	// 		}
-
-	// 	}
-
-	// 	$result = $this->sortNestArray( $result );  
-
-	// 	$data['target_post'] = $target_post;
-	// 	$data['match_post'] = $result;
-
-	// 	echo json_encode( $data );
-	// }
-
 
 	public function ajaxAnalyticPost()
 	{
@@ -631,9 +580,6 @@ class Home_ctrl extends CI_Controller
 		$data['match_post'] = $result;
 		echo json_encode( $data );
 	}
-
-
-
 
 	/* ---------------- Table page list Section ---------------- */
 
