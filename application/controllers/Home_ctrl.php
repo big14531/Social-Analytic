@@ -75,11 +75,86 @@ class Home_ctrl extends CI_Controller
 
 
 	/* ---------------- Social Deck Zone ---------------- */
+
+	/**
+	* [socialDeck description]
+	*
+	* 		Load View
+	*
+	*/
 	public function socialDeck()
 	{
 		$this->load->view( 'SocialDeck_view' );
 	}
 
+	/**
+	* [ajaxFirstTimePost description]
+	*
+	*	Get Newest Post from database ( 15 Min ago )  
+	* 
+	* @return [json] [ post array ]
+	*/
+	public function ajaxFirstTimePost()
+	{
+		$result = array();
+		$page_id = $this->input->post('page_id');
+		foreach ($page_id as $value) 
+		{
+			$post_list = $this->Posts_model->getRecentPostbyPage( $value );
+			array_push( $result, $post_list );
+		}
+		echo json_encode( $result );
+	}
+
+	/**
+	* [ajaxEditPageCard description]
+	*
+	*	Get Newest Post ( One page ) and page data
+	* 
+	* @return [type] [description]
+	*/
+	public function ajaxEditPageCard()
+	{
+		$result = array();
+		$page_id = $this->input->post('page_id');
+
+		$post_list = $this->Posts_model->getRecentPostbyTimeandPage( $page_id );
+		$page_data = $this->Posts_model->getPagebyPageID( $page_id );
+
+		array_push( $result, $post_list );
+		array_push( $result, $page_data );
+
+		echo json_encode( $result );
+	}
+
+	public function ajaxGetNewPost()
+	{
+		$result = array();
+		$page_id = $this->input->post('page_id');
+		$min_date = $this->input->post('min_date');
+
+		foreach ($page_id as $key => $value) 
+		{
+			$post_list = $this->Posts_model->getRecentPostbyPageandTime( $value  , $min_date[$key] );
+			array_push( $result, $post_list );
+		}
+		
+		echo json_encode( $result );
+	}
+
+	public function ajaxUpdatePost()
+	{
+		$result = array();
+		$post_array = $this->input->post('post_array');
+
+		foreach ($post_array as $value) 
+		{
+			$reaction = $this->kcl_facebook_analytic->getReactionPost( $value );
+			array_push( $result , array( $value , $reaction ) );
+		}	
+
+		echo json_encode( $result );
+	}
 
 	/* ---------------- Rank posts Zone ---------------- */
 

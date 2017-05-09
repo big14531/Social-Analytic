@@ -79,6 +79,11 @@ $route['logout'] = 'validation_ctrl/logout';
 
 /*---------- dashboard ----------*/
 $route['socialDeck'] = 'home_ctrl/socialDeck';
+$route['ajaxFirstTimePost'] = 'home_ctrl/ajaxFirstTimePost';
+$route['ajaxUpdatePost'] = 'home_ctrl/ajaxUpdatePost';
+$route['ajaxEditPageCard'] = 'home_ctrl/ajaxEditPageCard';
+$route['ajaxGetNewPost'] = 'home_ctrl/ajaxGetNewPost';
+
 
 /*---------- dashboard ----------*/
 $route['dashboard'] = 'home_ctrl/dashboard';

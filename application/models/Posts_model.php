@@ -393,6 +393,38 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function getRecentPostbyPage( $page_id )
+	{
+		$result = array();
+
+		$this->db->select( "* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact" );
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where('post.page_id ',$page_id);
+		$this->db->order_by('created_time', 'DESC');
+		$this->db->limit( 10 );
+		// echo $this->db->get_compiled_select();
+		// exit();
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
+	public function getRecentPostbyPageandTime( $page_id , $min_date )
+	{
+		$result = array();
+
+		$this->db->select( "* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact" );
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where('post.page_id ',$page_id);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->order_by('created_time', 'DESC');
+		// echo $this->db->get_compiled_select();
+		// exit();
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 	public function getActivePageSummary( $min_date , $max_date)
 	{
 		$result = array();

@@ -181,6 +181,7 @@ class Kcl_facebook_analytic{
                      'location',
                      'talking_about_count',
                      'picture');
+
         $result = $this->createEmptyKey( $key , $result );
         return $result;
     }
@@ -192,7 +193,7 @@ class Kcl_facebook_analytic{
             $dataKey = array_keys( $data );
             if( in_array( $k_value , $dataKey ) == false)
             {
-                $data[$k_value]="nope";
+                $data[$k_value]=false;
             }
         }
         return $data;
