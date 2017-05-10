@@ -4,3 +4,7 @@ last_crontab\.txt
 logs/log-2017-04-24\.txt
 
 *.txt
+
+application/config/config\.php
+
+application/config/database\.php
