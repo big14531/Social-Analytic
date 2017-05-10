@@ -271,12 +271,12 @@
 		var html = 
 		"<div class='post-detail col-xs-8'>"
 		+"<p class='detail-text'>"+name+"</p>"
-		+"<p class='detail-text'>Time :"+created_time+"</p>"
-		+"<div class='detail-box'><img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'> :"+engage+"</div>"
-		+"<div class='detail-box'><i class='fa fa-comment'></i> :"+comments+"</div>"
-		+"<div class='detail-box'><i class='fa fa-share'></i> :"+shares+"</div>"
+		+"<p class='detail-text'>Time :"+created_time.substr(0,10)+"</p>"
+		+"<div class='detail-box'><img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'> :"+parseInt(engage).toLocaleString('en-US')+"</div>"
+		+"<div class='detail-box'><i class='fa fa-comment'></i> :"+parseInt(comments).toLocaleString('en-US')+"</div>"
+		+"<div class='detail-box'><i class='fa fa-share'></i> :"+parseInt(shares).toLocaleString('en-US')+"</div>"
 		+"</div>"
-		+"<a href='"+link+"' target='_blank'><img class='post-img' src='"+picture+"'></a>";
+		+"<a href='"+permalink_url+"' target='_blank'><img class='post-img' src='"+picture+"'></a>";
 		box_content.append( html );
 	}
 
@@ -359,6 +359,22 @@
 		});
 	}
 
+	function updateFloatWidget()
+	{
+		$("#card-row > div").each(function(i){
+
+			if(i%2<=0){
+				$(this).removeClass('pull-right');
+				$(this).addClass('pull-left');
+			}else{
+				$(this).removeClass('pull-left');
+				$(this).addClass('pull-right');
+			}
+		});
+
+	}
+
+
 	function bestButtonCallback(argument) {
 		$(".worst-box").css('display','')
 		$(".best-box").prop('hidden',false);
@@ -423,32 +439,29 @@
 
 		$('#page-selector').change(function(){
 
+
+
 			var selected_page = $('#page-selector').val();
-			console.log( selected_page );
 			$("#card-row > div").each(function(){
 
 				var is_true = selected_page.includes( $(this).attr('page-name') );
 
 				if ( is_true )
 				{
-					console.log( $(this).attr('page-name') );
 					$(this).css("display","block");
 				}
 				else
 				{
-					console.log( $(this).attr('page-name') );
 					$(this).css("display","none");
 				}
-				
 
 			});
 
+			updateFloatWidget();
 
-
-
-			
 		});
 	});
 </script>
 
-
+</body>
+</html>

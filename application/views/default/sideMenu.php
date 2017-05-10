@@ -6,6 +6,16 @@
             <!-- Main menu -->
             <li class="header">MAIN MENU</li>
 
+
+            <li class="treeview">
+                <a href="<?php echo base_url(); ?>socialDeck">
+                    <i class="fa fa-facebook"></i> <span>Facebook Feed</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
             <li class="treeview">
                 <a href="<?php echo base_url(); ?>dashboard">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -100,7 +110,7 @@
             <?php 
             // echo $_SESSION['permission_admin'];
             if ($_SESSION['permission_admin']) {
-                echo '<li class="treeview"><a href="userPage"><i class="fa fa-user"></i> <span>User Management</span><span class="pull-right-container"></a></li>';
+                echo '<li class="treeview"><a href="userPage"><i class="fa fa-user"></i> <span>User Management</span><span class="pull-right-container"></span></a></li>';
 
             }
             

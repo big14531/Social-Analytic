@@ -167,7 +167,7 @@ class Data_ctrl extends CI_Controller
 			$posts = $this->Posts_model->getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date );
 			$post_rate = $this->Posts_model->getYesterdayPostRate( $page_id );
 
-			if ( is_array( $result )==false ) 
+			if ( is_array( $result )==false || $result['link']==false || $result['name']==false || $result['id']==false ) 
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - Page Error\r\n ".$result."\r\n",'a+');
 				continue;
@@ -202,7 +202,8 @@ class Data_ctrl extends CI_Controller
 	public function updateFacebookPost( $limit )
 	{
 		$total_result = array();
-		$date = Date("Y-m-d 00:00:00");
+		$date = Date("Y-m-d 00:00:00" , strtotime("-1 days"));
+		
 		$postArray = $this->getLatedUpdatePost( $date , $limit );
 
 		if( isset($_SESSION['accessToken']) )

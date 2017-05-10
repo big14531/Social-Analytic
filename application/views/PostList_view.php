@@ -175,11 +175,21 @@
 						$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
 					}
 				},
-				]
+				],
+				'order': [[ 4, "ASC" ]]
 			});
 
+
+
+			// ajaxCall()
 			// SET HIDE REACTIOn FIRST TIME
 			toggleColumnReaction();
+
+
+			
+			var max_date = moment().format("YYYY-MM-DD 23:59:59");
+			var min_date = moment().format("YYYY-MM-DD 00:00:00");
+			ajaxCall( 208428464667 , min_date , max_date );
 
 		});
 		
@@ -189,7 +199,7 @@
 			ranges: {
 				'Today': [moment(), moment()],
 				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+				'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
 				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 				'This Month': [moment().startOf('month'), moment().endOf('month')],
 				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
@@ -384,4 +394,5 @@
 
 </script>
 
-
+</body>
+</html>
