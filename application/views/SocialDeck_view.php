@@ -31,6 +31,7 @@
 		height: 100%;
 		padding-right: 0px;
 		padding-left: 0px;
+		padding-bottom: 50px;
 	}
 	.feed-col{
 		padding-right: 0px;
@@ -106,9 +107,9 @@
 							+'</div>'
 
 							+'<div class="list-social">'
-								+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
-								+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
-								+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
+								+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="engage_number">'+post.engage+'</span></div>'
+								+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="comment_number">'+post.comments+'</span></div>'
+								+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="share_number">'+post.shares+'</span></div>'
 							+'</div>'
 						+'</div>'
 					+'</li>'
@@ -212,6 +213,16 @@
 		page_logo_obj.attr( 'src' ,data[0].picture );
 	}
 
+	function updatePost( data ) 
+	{
+		for (var i = 0; i < data.length; i++) {
+			var post = data[i];
+			var target = $("#post-"+post.id);
+			$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count);
+			$("#post-"+post.id).find( "#comments_number" ).text( post.comments.summary.total_count );
+			$("#post-"+post.id).find( "#shares_number" ).text( post.shares );
+		}
+	}
 
 
 	/**
@@ -266,6 +277,7 @@
 				success:function(data)	
 				{
 					createFirstTimePost(data);
+					removeOverPost();
 				}
 			});
 	}
@@ -292,21 +304,21 @@
 	{		
 		var post_array = $('.post-item').map(function(){
 		    return this.id.substr( 5 );
-		}).get()
+		}).get();
 
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxUpdatePost",   //the url where you want to fetch the data 
-				type: 'post', //type of request POST or GET   
-				dataType: 'json',
-				async: true, 
-				data: { 
-					'post_array': post_array
-				},
-				success:function(data)
-				{
-					console.log( data );
-				}
-			});
+			url:  "<?php echo(base_url());?>ajaxUpdatePost",
+			type: 'post',
+			dataType: 'json',
+			async: true, 
+			data: { 
+				'post_array': post_array
+			},
+			success:function(data)
+			{
+				updatePost( data );
+			}
+		});
 	}
 
 
@@ -346,6 +358,26 @@
 
 	}
 
+	function removeOverPost() 
+	{
+		for (var i = 0; i < 4; i++) 
+		{
+			var list_box = $("#list-box-"+i);
+			list_box.each(function() 
+			{
+				$(this).find( 'li' ).each(function( index )
+				{
+					if ( index>9 ) 
+					{
+						console.log( $( this ) );
+						$(this).remove();
+					}
+					
+				});
+			});
+		}
+	}
+
 	$(document).ready(function() 
 	{
 		
@@ -358,9 +390,12 @@
 		
 
 		setInterval(function(){ 
+			ajaxUpdatePost();
+			removeOverPost();
+		}, 40000);
+		setInterval(function(){ 
 			ajaxGetNewPost();
-			// ajaxUpdatePost();
-		}, 10000);
+		}, 60000);
 
 
 	});

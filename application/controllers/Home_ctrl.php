@@ -147,14 +147,11 @@ class Home_ctrl extends CI_Controller
 		$result = array();
 		$post_array = $this->input->post('post_array');
 
-		foreach ($post_array as $value) 
-		{
-			$reaction = $this->kcl_facebook_analytic->getReactionPost( $value );
-			array_push( $result , array( $value , $reaction ) );
-		}	
+		$reaction = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
 
-		echo json_encode( $result );
+		echo json_encode( $reaction );
 	}
+
 
 	/* ---------------- Rank posts Zone ---------------- */
 
