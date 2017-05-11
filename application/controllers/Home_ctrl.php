@@ -118,7 +118,7 @@ class Home_ctrl extends CI_Controller
 		$result = array();
 		$page_id = $this->input->post('page_id');
 
-		$post_list = $this->Posts_model->getRecentPostbyTimeandPage( $page_id );
+		$post_list = $this->Posts_model->getRecentPostbyPage( $page_id );
 		$page_data = $this->Posts_model->getPagebyPageID( $page_id );
 
 		array_push( $result, $post_list );
@@ -147,14 +147,11 @@ class Home_ctrl extends CI_Controller
 		$result = array();
 		$post_array = $this->input->post('post_array');
 
-		foreach ($post_array as $value) 
-		{
-			$reaction = $this->kcl_facebook_analytic->getReactionPost( $value );
-			array_push( $result , array( $value , $reaction ) );
-		}	
+		$reaction = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
 
-		echo json_encode( $result );
+		echo json_encode( $reaction );
 	}
+
 
 	/* ---------------- Rank posts Zone ---------------- */
 
