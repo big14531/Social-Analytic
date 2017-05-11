@@ -40,6 +40,13 @@
 	.mCSB_inside>.mCSB_container{
 		margin-right:10px!important;
 	}
+	.select2-container--default .select2-selection--single{
+    	background-color: transparent!important;
+	}
+	.select2-selection__rendered{
+		color: #fff!important;
+		
+	}
 	.page-btn,.page-btn:hover, .page-btn:active, .page-btn:focus{
 		background-color: transparent;
 		border: none;

@@ -118,7 +118,7 @@ class Home_ctrl extends CI_Controller
 		$result = array();
 		$page_id = $this->input->post('page_id');
 
-		$post_list = $this->Posts_model->getRecentPostbyTimeandPage( $page_id );
+		$post_list = $this->Posts_model->getRecentPostbyPage( $page_id );
 		$page_data = $this->Posts_model->getPagebyPageID( $page_id );
 
 		array_push( $result, $post_list );
