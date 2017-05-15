@@ -42,7 +42,7 @@
 		margin-right:10px!important;
 	}
 	.select2-container--default .select2-selection--single{
-    	background-color: transparent!important;
+		background-color: transparent!important;
 	}
 	.select2-selection__rendered{
 		color: #fff!important;
@@ -53,7 +53,28 @@
 		border: none;
 		color: white;
 	}
-
+	.list-txt{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		line-height: 16px;     /* fallback */
+		max-height: 48px;      /* fallback */
+		-webkit-line-clamp: 3; /* number of lines to show */
+		-webkit-box-orient: vertical;			
+	}
+	.highlight-post{
+		background-color: #3c8dbc;
+	}
+	.white{
+		color: white!important;
+	}
+	.highlight-txt{
+		margin-left: 30px;
+		margin-bottom: 5px; 
+		font-weight: 400;
+		margin-top: -5px;
+		color: white;
+	}
 </style>
 
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=5">
@@ -76,6 +97,25 @@
 					</div>
 					<div class="box-body mCustomScrollbar">
 						<ul class="list-box" id="list-box-<?=$i?>">
+							
+							<li class="highlight-post"> 
+								<div class="row highlight-txt" id="highlight-txt-<?=$i?>"><i>Highlight</i></div>
+								
+								<a href="#" class="user-pic"><img id="highlight-pic-<?=$i?>" src="" alt=""></a> 
+								<div class="list-right"> 
+									<p id="highlight-name-<?=$i?>" class=" list-name">Username<span id="highlight-date-<?=$i?>" class="white list-date">11/11/2017</span></p> 
+									<div id="highlight-description-<?=$i?>" class="list-txt"> 
+										Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+									</div> 
+
+									<div class="list-social"> 
+										<div class="white like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="highlight-like-<?=$i?>">10</span></div> 
+										<div class="white comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="highlight-comment-<?=$i?>">20</span></div> 
+										<div class="white shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="highlight-shared-<?=$i?>">100</span></div> 
+									</div> 
+								</div> 
+							</li> 
+
 						</ul>
 					</div>
 				</div>
@@ -97,22 +137,22 @@
 	{
 		var list_box = $("#list-box-"+col);
 		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
-						+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
-						+'<div class="list-right">'
-							+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
-							+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
-							+'</a>'
-							+'<div class="list-txt">'
-							+post.message	
-							+'</div>'
+		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
+		+'<div class="list-right">'
+		+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
+		+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
+		+'</a>'
+		+'<div class="list-txt">'
+		+post.message	
+		+'</div>'
 
-							+'<div class="list-social">'
-								+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="engage_number">'+post.engage+'</span></div>'
-								+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="comment_number">'+post.comments+'</span></div>'
-								+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="share_number">'+post.shares+'</span></div>'
-							+'</div>'
-						+'</div>'
-					+'</li>'
+		+'<div class="list-social">'
+		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="engage_number">'+post.engage+'</span></div>'
+		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="comment_number">'+post.comments+'</span></div>'
+		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="share_number">'+post.shares+'</span></div>'
+		+'</div>'
+		+'</div>'
+		+'</li>'
 		list_box.append( html );
 	}
 
@@ -120,22 +160,22 @@
 	{
 		var list_box = $("#list-box-"+col);
 		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
-						+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
-						+'<div class="list-right">'
-							+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
-							+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
-							+'</a>'
-							+'<div class="list-txt">'
-							+post.message	
-							+'</div>'
+		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
+		+'<div class="list-right">'
+		+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
+		+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
+		+'</a>'
+		+'<div class="list-txt">'
+		+post.message	
+		+'</div>'
 
-							+'<div class="list-social">'
-								+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
-								+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
-								+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
-							+'</div>'
-						+'</div>'
-					+'</li>'
+		+'<div class="list-social">'
+		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
+		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
+		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
+		+'</div>'
+		+'</div>'
+		+'</li>'
 		list_box.prepend( html );
 	}
 
@@ -170,7 +210,7 @@
 		
 		$(".js-example-basic-single").select2({
 			data: result
-			});
+		});
 
 		for (var i = 0; i < 4; i++) 
 		{
@@ -218,9 +258,21 @@
 		for (var i = 0; i < data.length; i++) {
 			var post = data[i];
 			var target = $("#post-"+post.id);
-			$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count);
-			$("#post-"+post.id).find( "#comments_number" ).text( post.comments.summary.total_count );
-			$("#post-"+post.id).find( "#shares_number" ).text( post.shares );
+
+			if( typeof (post.reaction.summary.total_count) !== 'undefined' )
+			{
+				$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count );
+			}
+
+			if( typeof (post.comments.summary.total_count) !== 'undefined' )
+			{
+				$("#post-"+post.id).find( "#comment_number" ).text( post.comments.summary.total_count );
+			}
+
+			if( typeof (post.shares) !== 'undefined' )
+			{
+				$("#post-"+post.id).find( "#share_number" ).text( post.shares.count );
+			}
 		}
 	}
 
@@ -243,6 +295,7 @@
 				},
 				success:function(data)	
 				{
+					console.log("Get : ");
 					console.log(data);
 					addNewPost(data);
 				}
@@ -294,6 +347,8 @@
 				},
 				success:function(data)
 				{
+					console.log("Edit : ");
+					console.log(data);
 					editOneNewPost( data[0] , target.substr(-1) );
 					editBoxHead( data[1] , target.substr(-1) );
 				}
@@ -303,7 +358,7 @@
 	function ajaxUpdatePost()
 	{		
 		var post_array = $('.post-item').map(function(){
-		    return this.id.substr( 5 );
+			return this.id.substr( 5 );
 		}).get();
 
 		$.ajax({
@@ -316,6 +371,8 @@
 			},
 			success:function(data)
 			{
+				console.log("Update : ");
+				console.log(data);
 				updatePost( data );
 			}
 		});
@@ -332,7 +389,7 @@
 	
 	function setTempDefault() 
 	{
-	 	$("#selector-0").val( '208428464667' ).trigger("change");
+		$("#selector-0").val( '208428464667' ).trigger("change");
 		$("#selector-1").val( '129558990394402' ).trigger("change");
 		$("#selector-2").val( '146406732438' ).trigger("change");
 		$("#selector-3").val( '401831669848423' ).trigger("change");
@@ -369,6 +426,7 @@
 				{
 					if ( index>9 ) 
 					{
+						console.log("Del : ");
 						console.log( $( this ) );
 						$(this).remove();
 					}

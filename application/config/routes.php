@@ -93,7 +93,7 @@ $route['ajaxDashboardRankPost'] = 'home_ctrl/ajaxDashboardRankPost';
 $route['ajaxGetActivePage'] = 'home_ctrl/ajaxGetActivePage';
 
 /*---------- dashboard ----------*/
-$route['postAnalytic/(:num)/(:num)'] = 'home_ctrl/postAnalytic/$1/$2';
+$route['postAnalytic/(:num)/(:num)/(:any)'] = 'home_ctrl/postAnalytic/$1/$2/$3';
 $route['ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';
 
 /*---------- ranks post ----------*/

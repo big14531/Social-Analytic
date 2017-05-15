@@ -350,7 +350,8 @@
 	{
 		var page_id = '<?php echo $id['page_id']; ?>';
 		var post_id = '<?php echo $id['post_id']; ?>';
-
+		var keyword = decodeURIComponent( '<?php echo $id['keyword'];?>' ).split(" ");
+		console.log( keyword );
 		$('#myModal').modal('show')
 		$.ajax(
 		{
@@ -358,7 +359,8 @@
 			type: 'post', //type of request POST or GET   
 			data: { 
 				'post_id': post_id, 
-				'page_id': page_id
+				'page_id': page_id,
+				'keyword': keyword
 			},
 			dataType: 'json',
 			async: true, 
