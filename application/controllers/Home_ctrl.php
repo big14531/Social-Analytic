@@ -472,94 +472,95 @@ class Home_ctrl extends CI_Controller
 		$min_date = $target_post_date." 00:00:00";
 		$max_date = $target_post_date." 23:59:59";
 
-		if ( $keyword[0]=='-' ) {
-		
-	        // $target_text_raw = $target_post[0]->message.$target_post[0]->description.$target_post[0]->name;
-			$target_text_raw = $target_post[0]->name.' '.$target_post[0]->description;
-			$target_text_raw = $this->removeUnnecessaryWord($target_text_raw );
-			$target_text = $this->splitThaiWord( $target_text_raw );
-			$target_text_name_only = $this->splitThaiWord( $this->removeUnnecessaryWord($target_post[0]->name) );
-	        // $target_text_name_only=explode(' ', $this->removeUnnecessaryWord($target_post[0]->name));
-	        // if(count($target_text_name_only)<=3)
-	        // {
-	        //   $target_text_name_only = $this->splitThaiWord( $this->removeUnnecessaryWord($target_post[0]->name) );
-	        // }
 
-	        //
-			$str_importan_word_raw='';
-			$str_importan_word='';
-			$array_importan_word=array();
-			@preg_match_all( '/"([^"]+)"|“([^“]+)”|\'([^\']+)\'|‘([^‘]+)’/' ,$target_post[0]->description.' '.$target_post[0]->name, $match );
-			if($match[0])
-			{
-				foreach($match[0] as $k =>$v)
-				{
-					$v=trim($v);
-					$v=$this->removeUnnecessaryWord($v);
-					$v_importan_word=explode(' ',$v);
-					foreach($v_importan_word as $v_sub_word)
-					{
+// 	WAIT FOR RECODE
+// 	
+		// if ( $keyword[0]=='-' ) {
+		// 				$regexp = substr( implode('|' ,$keyword),0,-1 );
+		// 	$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
 
-						if($str_importan_word_raw)
-						{
-							$str_importan_word_raw.='|';
-						}
-						$str_importan_word_raw.=$v_sub_word;
-						array_push($array_importan_word,$v_sub_word);
-						array_push($array_importan_word,$v_sub_word."'");
-						array_push($array_importan_word,$v_sub_word.'"');
-						array_push($array_importan_word,"'".$v_sub_word);
-						array_push($array_importan_word,'"'.$v_sub_word);
-	                  //--------------------------------------
-						array_push($array_importan_word,$v_sub_word."’");
-						array_push($array_importan_word,$v_sub_word.'”');
-						array_push($array_importan_word,"‘".$v_sub_word);
-						array_push($array_importan_word,'“'.$v_sub_word);
-					}
-				}
-				$array_importan_word=array_unique($array_importan_word);
-				$str_importan_word= implode('|', $array_importan_word);
-				$target_text=array_merge($target_text,$array_importan_word);
-			}
-	        //
-			$word_space=$this->removeUnnecessaryWord($target_post[0]->message.' '.$target_post[0]->description.' '.$target_post[0]->name);
-			$word_space=explode(" ",$word_space);
-			$word_space=array_unique($word_space);
-			$arr_word_space=array();
-			foreach($word_space as $v)
-			{
-				if($v)
-				{
-					if(mb_strlen($v)>2 && mb_strlen($v)<=8)
-						array_push($target_text,$v);
-					array_push($arr_word_space,$v);
-				}
 
-			}
-	        //
-			$target_text=array_unique($target_text);
-	        //clear empty array
-			foreach($target_text as $k =>$v)
-			{
-				if(empty($v))
-				{
-					unset($target_text[$k]);
-				}
-				elseif(mb_strlen($v)<=1)
-				{
-					unset($target_text[$k]);
-				}
 
-			}
-			$regexp = implode('|', $target_text);
-			$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
+        // $target_text_raw = $target_post[0]->message.$target_post[0]->description.$target_post[0]->name;
+		$target_text_raw = $target_post[0]->name.' '.$target_post[0]->description;
+		$target_text_raw = $this->removeUnnecessaryWord($target_text_raw );
+		$target_text = $this->splitThaiWord( $target_text_raw );
+		$target_text_name_only = $this->splitThaiWord( $this->removeUnnecessaryWord($target_post[0]->name) );
+        // $target_text_name_only=explode(' ', $this->removeUnnecessaryWord($target_post[0]->name));
+        // if(count($target_text_name_only)<=3)
+        // {
+        //   $target_text_name_only = $this->splitThaiWord( $this->removeUnnecessaryWord($target_post[0]->name) );
+        // }
 
-		}
-		else
+        //
+		$str_importan_word_raw='';
+		$str_importan_word='';
+		$array_importan_word=array();
+		@preg_match_all( '/"([^"]+)"|“([^“]+)”|\'([^\']+)\'|‘([^‘]+)’/' ,$target_post[0]->description.' '.$target_post[0]->name, $match );
+		if($match[0])
 		{
-			$regexp = substr( implode('|' ,$keyword),0,-1 );
-			$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
+			foreach($match[0] as $k =>$v)
+			{
+				$v=trim($v);
+				$v=$this->removeUnnecessaryWord($v);
+				$v_importan_word=explode(' ',$v);
+				foreach($v_importan_word as $v_sub_word)
+				{
+
+					if($str_importan_word_raw)
+					{
+						$str_importan_word_raw.='|';
+					}
+					$str_importan_word_raw.=$v_sub_word;
+					array_push($array_importan_word,$v_sub_word);
+					array_push($array_importan_word,$v_sub_word."'");
+					array_push($array_importan_word,$v_sub_word.'"');
+					array_push($array_importan_word,"'".$v_sub_word);
+					array_push($array_importan_word,'"'.$v_sub_word);
+                  //--------------------------------------
+					array_push($array_importan_word,$v_sub_word."’");
+					array_push($array_importan_word,$v_sub_word.'”');
+					array_push($array_importan_word,"‘".$v_sub_word);
+					array_push($array_importan_word,'“'.$v_sub_word);
+				}
+			}
+			$array_importan_word=array_unique($array_importan_word);
+			$str_importan_word= implode('|', $array_importan_word);
+			$target_text=array_merge($target_text,$array_importan_word);
 		}
+        //
+		$word_space=$this->removeUnnecessaryWord($target_post[0]->message.' '.$target_post[0]->description.' '.$target_post[0]->name);
+		$word_space=explode(" ",$word_space);
+		$word_space=array_unique($word_space);
+		$arr_word_space=array();
+		foreach($word_space as $v)
+		{
+			if($v)
+			{
+				if(mb_strlen($v)>2 && mb_strlen($v)<=8)
+					array_push($target_text,$v);
+				array_push($arr_word_space,$v);
+			}
+
+		}
+        //
+		$target_text=array_unique($target_text);
+        //clear empty array
+		foreach($target_text as $k =>$v)
+		{
+			if(empty($v))
+			{
+				unset($target_text[$k]);
+			}
+			elseif(mb_strlen($v)<=1)
+			{
+				unset($target_text[$k]);
+			}
+
+		}
+		$regexp = implode('|', $target_text);
+		$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
+
 		foreach($comp_post as $value)
 		{
 

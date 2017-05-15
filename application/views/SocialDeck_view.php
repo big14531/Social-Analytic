@@ -98,12 +98,12 @@
 					<div class="box-body mCustomScrollbar">
 						<ul class="list-box" id="list-box-<?=$i?>">
 							
-							<li class="highlight-post"> 
-								<div class="row highlight-txt" id="highlight-txt-<?=$i?>"><i>Highlight</i></div>
+							<li class="highlight-post" id="highlight-post-<?=$i?>"> 
+								<div class="row highlight-txt"><i>Highlight</i></div>
 								
 								<a href="#" class="user-pic"><img id="highlight-pic-<?=$i?>" src="" alt=""></a> 
 								<div class="list-right"> 
-									<p id="highlight-name-<?=$i?>" class=" list-name">Username<span id="highlight-date-<?=$i?>" class="white list-date">11/11/2017</span></p> 
+									<p id="highlight-name-<?=$i?>" class=" list-name"><span id="highlight-txt-<?=$i?>">Username</span><span id="highlight-date-<?=$i?>" class="white list-date">11/11/2017</span></p> 
 									<div id="highlight-description-<?=$i?>" class="list-txt"> 
 										Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
 									</div> 
@@ -132,6 +132,12 @@
 <script>
 
 	var last_time_update = []; 
+
+
+	function setHightlightOrder( number )
+	{
+		$("#list-box-"+number+" li:eq(0)").before($("#highlight-post-"+number));
+	}
 
 	function appendPost( post , col ) 
 	{
@@ -193,6 +199,7 @@
 			for (var key = 0; key < post_list.length; key++) {
 				var post = post_list[key];
 				prependPost( post , col );
+				setHightlightOrder( col );
 			}
 			last_time_update[col] = post_list[0].created_time;
 		}
@@ -424,7 +431,7 @@
 			{
 				$(this).find( 'li' ).each(function( index )
 				{
-					if ( index>9 ) 
+					if ( index>10 ) 
 					{
 						console.log("Del : ");
 						console.log( $( this ) );
