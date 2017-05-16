@@ -99,19 +99,17 @@
 						<ul class="list-box" id="list-box-<?=$i?>">
 							
 							<li class="highlight-post" id="highlight-post-<?=$i?>"> 
-								<div class="row highlight-txt"><i>Highlight</i></div>
+								<div class="row highlight-txt"><b>Highlight</b></div>
 								
-								<a href="#" class="user-pic"><img id="highlight-pic-<?=$i?>" src="" alt=""></a> 
+								<a target="_blank" href="#" class="user-pic" id="highlight-link-<?=$i?>"><img id="highlight-pic-<?=$i?>" ></a> 
 								<div class="list-right"> 
-									<p id="highlight-name-<?=$i?>" class=" list-name"><span id="highlight-txt-<?=$i?>">Username</span><span id="highlight-date-<?=$i?>" class="white list-date">11/11/2017</span></p> 
-									<div id="highlight-description-<?=$i?>" class="list-txt"> 
-										Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-									</div> 
+									<p id="highlight-name-<?=$i?>" class=" list-name"><span id="highlight-txt-<?=$i?>"></span><span id="highlight-date-<?=$i?>" class="white list-date"></span></p> 
+									<div id="highlight-description-<?=$i?>" class="list-txt"></div> 
 
 									<div class="list-social"> 
-										<div class="white like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="highlight-like-<?=$i?>">10</span></div> 
-										<div class="white comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="highlight-comment-<?=$i?>">20</span></div> 
-										<div class="white shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="highlight-shared-<?=$i?>">100</span></div> 
+										<div class="white like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="highlight-like-<?=$i?>"></span></div> 
+										<div class="white comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="highlight-comment-<?=$i?>"></span></div> 
+										<div class="white shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="highlight-shared-<?=$i?>"></span></div> 
 									</div> 
 								</div> 
 							</li> 
@@ -134,9 +132,12 @@
 	var last_time_update = []; 
 
 
-	function setHightlightOrder( number )
+	function setHightlightOrder()
 	{
-		$("#list-box-"+number+" li:eq(0)").before($("#highlight-post-"+number));
+		$("#list-box-"+0+" li:eq(0)").before($("#highlight-post-"+0));
+		$("#list-box-"+1+" li:eq(0)").before($("#highlight-post-"+1));
+		$("#list-box-"+2+" li:eq(0)").before($("#highlight-post-"+2));
+		$("#list-box-"+3+" li:eq(0)").before($("#highlight-post-"+3));
 	}
 
 	function appendPost( post , col ) 
@@ -199,7 +200,6 @@
 			for (var key = 0; key < post_list.length; key++) {
 				var post = post_list[key];
 				prependPost( post , col );
-				setHightlightOrder( col );
 			}
 			last_time_update[col] = post_list[0].created_time;
 		}
@@ -244,9 +244,26 @@
 		}	
 	}
 
+	function editHighlightPost( data ) 
+	{	
+		for (var key = 0; key < data.length; key++) 
+		{
+			var value = data[key][0];
+			
+			$("#highlight-txt-"+key).text( value.name  );
+			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  );
+			$("#highlight-pic-"+key).attr( 'src' , value.picture  );
+			$("#highlight-date-"+key).text( value.last_update_time  );
+			$("#highlight-description-"+key).text( value.message );
+			$("#highlight-like-"+key).text( value.engage );
+			$("#highlight-comment-"+key).text( value.comments );
+			$("#highlight-shared-"+key).text( value.shares );
+		}
+	}
+
 	function editOneNewPost( data , target ) 
 	{
-		$("#list-box-"+target).empty();		
+		$("#list-box-"+target+" li:not(:first)").remove();		
 		for (var key = 0; key < data.length; key++) 
 		{
 			var post = data[key];
@@ -283,7 +300,6 @@
 		}
 	}
 
-
 	/**
 	*	AJAX ZONE	
 	*/
@@ -305,6 +321,27 @@
 					console.log("Get : ");
 					console.log(data);
 					addNewPost(data);
+					setHightlightOrder();
+				}
+			});
+	}
+
+	function ajaxGetHighlightPost()
+	{
+		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ];
+		$.ajax({
+				url:  "<?php echo(base_url());?>ajaxGetHighlightPost",   //the url where you want to fetch the data 
+				type: 'post', //type of request POST or GET   
+				dataType: 'json',
+				async: true, 
+				data: { 
+					'page_id': page_id
+				},
+				success:function(data)	
+				{
+					console.log("Highlight : ");
+					console.log(data);
+					editHighlightPost( data );
 				}
 			});
 	}
@@ -358,6 +395,8 @@
 					console.log(data);
 					editOneNewPost( data[0] , target.substr(-1) );
 					editBoxHead( data[1] , target.substr(-1) );
+					ajaxGetHighlightPost();
+					setHightlightOrder();
 				}
 			});
 	}
@@ -367,7 +406,6 @@
 		var post_array = $('.post-item').map(function(){
 			return this.id.substr( 5 );
 		}).get();
-
 		$.ajax({
 			url:  "<?php echo(base_url());?>ajaxUpdatePost",
 			type: 'post',
@@ -419,7 +457,8 @@
 		ajaxCreatePageCard();
 		setTempDefault();
 		ajaxFirstTimePost();
-
+		setHightlightOrder();
+		ajaxGetHighlightPost();
 	}
 
 	function removeOverPost() 
@@ -457,10 +496,11 @@
 		setInterval(function(){ 
 			ajaxUpdatePost();
 			removeOverPost();
-		}, 40000);
+			ajaxGetHighlightPost();
+		}, 60000);
 		setInterval(function(){ 
 			ajaxGetNewPost();
-		}, 60000);
+		}, 120000);
 
 
 	});

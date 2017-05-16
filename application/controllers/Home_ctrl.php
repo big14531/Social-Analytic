@@ -146,12 +146,26 @@ class Home_ctrl extends CI_Controller
 	{
 		$result = array();
 		$post_array = $this->input->post('post_array');
-
 		$reaction = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
-
 		echo json_encode( $reaction );
+
+		// $batch = $this->Posts_model->editDataForUpdate( $reaction );
+		// $this->Posts_model->updatePost( $batch );
 	}
 
+	public function ajaxGetHighlightPost()
+	{
+		$result = array();
+		$page_id = $this->input->post('page_id');
+		$time = date("Y-m-d H:i:s", strtotime('30 minutes ago') );
+		foreach ($page_id as $key => $value) 
+		{
+			$post_list = $this->Posts_model->getBestReactionPostbyPageandTime( $value , $time );
+			array_push( $result, $post_list );
+		}
+		
+		echo json_encode( $result );
+	}
 
 	/* ---------------- Rank posts Zone ---------------- */
 
@@ -473,8 +487,8 @@ class Home_ctrl extends CI_Controller
 		$max_date = $target_post_date." 23:59:59";
 
 
-// 	WAIT FOR RECODE
-// 	
+	// 	WAIT FOR RECODE
+	// 	
 		// if ( $keyword[0]=='-' ) {
 		// 				$regexp = substr( implode('|' ,$keyword),0,-1 );
 		// 	$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );

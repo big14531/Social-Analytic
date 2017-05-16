@@ -52,8 +52,9 @@ class Data_ctrl extends CI_Controller
 
 		if($minute%1==0)
 		{
-			$result = $this->updateFacebookPost(40);
-			if ( $result ) 
+			$result = $this->updateBatchFacebookPost(50);
+			$result1 = $this->updateBatchFacebookPost(50);
+			if ( $result && $result1 ) 
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
 			}
@@ -239,43 +240,22 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
-	public function updateBatchFacebookPost( $limit )
+	public function updateBatchFacebookPost( $limit=40 )
 	{
-		$total_result = array();
+		$post_array = [];
 		$date = Date("Y-m-d 00:00:00" , strtotime("-1 days"));
-		
-		$postArray = $this->getLatedUpdatePost( $date , $limit );
+		$post = $this->getLatedUpdatePost( $date , $limit );
 
-		if( isset($_SESSION['accessToken']) )
+		foreach ($post as $key => $value) 
 		{
-			foreach ($postArray as $value) 
-			{
-				// echo "<br><br>Last Update".$value->last_update_time."<br><br>";
-				$error_count = $value->is_delete;
-				$post_id =  $value->page_id."_".$value->post_id;
-
-				$post_reaction = $this->kcl_facebook_analytic->getReactionPost( $post_id );
-				print_r( $value );
-				echo "<br><br><br>";
-
-				// incresing delete score
-				if ( is_object( $post_reaction ) ) 
-				{
-					$this->Posts_model->setDeletedPost( $value->page_id , $value->post_id , $error_count );
-					write_file($this->daily_log,date('Y-m-d H:i:s')."  - Update Fail ".$post_id."\r\n",'a+');
-					continue;
-				}
-
-				$post_reaction['last_update_time'] = Date("Y-m-d H:i:00");
-				$post_reaction['post_id'] = $value->post_id;
-				$post_reaction['created_time'] = nice_date(  $post_reaction['created_time'] , 'Y-m-d H:i:00');
-				$post_reaction['is_delete'] = 0;
-				array_push( $total_result , $post_reaction );
-			}
-			if ( count( $total_result )!=0 ) {
-				$this->Posts_model->updatePost( $total_result );
-			} 
+			$id = $value->page_id."_".$value->post_id;
+			array_push( $post_array , $id );
 		}
+
+		$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
+		$result = $this->Posts_model->editDataForUpdate( $batch );
+
+		$this->Posts_model->updatePost( $result );
 		return true;
 	}
 

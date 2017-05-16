@@ -249,6 +249,7 @@ class Kcl_facebook_analytic
 			}
 		}
 	}
+	
 	public function batchUpdatePostFacebook( $post_array )
 	{
 		$result = [];

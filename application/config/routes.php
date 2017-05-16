@@ -67,7 +67,7 @@ $route['updateFacebookPost/(:num)'] = 'data_ctrl/updateFacebookPost/$1';
 $route['updateTrackingPage'] = 'data_ctrl/updateTrackingPage';
 
 /*---------- update all interval , temp ----------*/
-$route['update'] = 'data_ctrl/tempUpdateAll';
+$route['updateBatchFacebookPost'] = 'data_ctrl/updateBatchFacebookPost';
 $route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 
 ////////////////////////////////////////
@@ -83,6 +83,7 @@ $route['ajaxFirstTimePost'] = 'home_ctrl/ajaxFirstTimePost';
 $route['ajaxUpdatePost'] = 'home_ctrl/ajaxUpdatePost';
 $route['ajaxEditPageCard'] = 'home_ctrl/ajaxEditPageCard';
 $route['ajaxGetNewPost'] = 'home_ctrl/ajaxGetNewPost';
+$route['ajaxGetHighlightPost'] = 'home_ctrl/ajaxGetHighlightPost';
 
 
 /*---------- dashboard ----------*/

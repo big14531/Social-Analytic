@@ -123,6 +123,29 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
+	public function editDataForUpdate( $data )
+	{
+		$result =[];
+		foreach( $data as $key => $value)
+		{
+			$post =[];
+			$post['shares'] 			= ( empty( $value->shares ) ? 0 : $value->shares->count );
+			$post['comments'] 			= ( empty( $value->comments ) ? 0 : $value->comments->summary->total_count );
+			$post['likes'] 				= $value->like->summary->total_count;
+			$post['love'] 				= $value->love->summary->total_count;
+			$post['wow'] 				= $value->wow->summary->total_count;
+			$post['haha'] 				= $value->haha->summary->total_count;
+			$post['sad'] 				= $value->sad->summary->total_count;
+			$post['angry'] 				= $value->angry->summary->total_count;
+			$post['last_update_time'] 	= Date("Y-m-d H:i:55");
+			$post['page_id'] 			= explode("_", $value->id )[0];
+			$post['post_id'] 			= explode("_", $value->id )[1];
+			$post['is_delete'] 			= 0;
+			array_push( $result , $post );
+		}
+		return $result;
+	}
+
 	public function updatePost( $data )
 	{
 		$this->db->update_batch('fb_facebook_post', $data, 'post_id');
@@ -408,6 +431,23 @@ class Posts_model extends CI_Model
 
 		return $result->result();
 	}
+
+	public function getBestReactionPostbyPageandTime ( $page_id , $time )
+	{
+		$result = array();
+		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage" );
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where('post.page_id ',$page_id);
+		$this->db->where('post.created_time >=',$time);
+		$this->db->order_by('post.likes', 'DESC'); 
+		$this->db->limit( 1 );
+		// echo $this->db->get_compiled_select();
+		// exit();
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 
 	public function getRecentPostbyPageandTime( $page_id , $min_date )
 	{
