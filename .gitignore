@@ -8,3 +8,5 @@ logs/log-2017-04-24\.txt
 application/config/config\.php
 
 application/config/database\.php
+
+sftp-config\.json

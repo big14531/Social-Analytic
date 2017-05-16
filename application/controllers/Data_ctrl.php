@@ -52,8 +52,9 @@ class Data_ctrl extends CI_Controller
 
 		if($minute%1==0)
 		{
-			$result = $this->updateFacebookPost(40);
-			if ( $result ) 
+			$result = $this->updateBatchFacebookPost(50);
+			$result1 = $this->updateBatchFacebookPost(50);
+			if ( $result && $result1 ) 
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
 			}
@@ -236,6 +237,25 @@ class Data_ctrl extends CI_Controller
 				$this->Posts_model->updatePost( $total_result );
 			} 
 		}
+		return true;
+	}
+
+	public function updateBatchFacebookPost( $limit=40 )
+	{
+		$post_array = [];
+		$date = Date("Y-m-d 00:00:00" , strtotime("-1 days"));
+		$post = $this->getLatedUpdatePost( $date , $limit );
+
+		foreach ($post as $key => $value) 
+		{
+			$id = $value->page_id."_".$value->post_id;
+			array_push( $post_array , $id );
+		}
+
+		$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
+		$result = $this->Posts_model->editDataForUpdate( $batch );
+
+		$this->Posts_model->updatePost( $result );
 		return true;
 	}
 
