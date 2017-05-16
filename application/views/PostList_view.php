@@ -3,6 +3,9 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	li{
+		color: black!important;
+	}
 	.graph_tab.active a{
 		background-color:#3c8dbc!important;
 	}
@@ -27,6 +30,8 @@
 <!-- bootstrap datepicker -->
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/datepicker3.css">
 <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
 
 <!-- Content Here -->
 
@@ -107,6 +112,33 @@
 			<!-- /.box-body -->
 		</div>
 
+		<!-- Edit Modal -->
+		<div class="modal modal-info fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Post Analytic Keyword <span id="editModal_name"></span></h4>
+					</div>
+
+					<div class="modal-body">
+						
+						<select id="tags" multiple="multiple" class="selector"  style="width: 100%;">
+						</select>
+						<span id="analytic-link"></span>
+					</div>	
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary btn_save" id="btn_submit">Save changes</button>	
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
 	</section>
 </div>
 
@@ -127,13 +159,20 @@
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/bootstrap-datepicker.js"></script>
-
+<!-- Select2 -->
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.full.min.js"></script>
 <script>
 
 	$(function () 
 	{
 		$(document).ready(function() 
 		{
+			$('#tags').select2({
+				tags: true,
+				tokenSeparators: [','], 
+				placeholder: "พิมพ์คำที่ต้องการเทียบ"
+			});
+
 			$('#example1').DataTable( 
 			{
 				columns: 
@@ -143,40 +182,40 @@
 				{
 					$(nTd).html("<image class='table-img' src='"+sData+"' />");
 				}
-				},
-				{ title: "Publish time" },
-				{ title: "Update time" },
-				{ title: "Name" },
-				{ title: "Engagement" },
-				{ title: "Share" },
-				{ title: "Comments" },
-				{ title: "Reaction" },
-				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
-				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
-				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
-				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
-				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
-				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
-				{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
+			},
+			{ title: "Publish time" },
+			{ title: "Update time" },
+			{ title: "Name" },
+			{ title: "Engagement" },
+			{ title: "Share" },
+			{ title: "Comments" },
+			{ title: "Reaction" },
+			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
+			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
+			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
+			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
+			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
+			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
+			{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
 				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 				{
 					$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
 				}
-						},
-						{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
-						"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-						{
-							$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-						}
-					},
-					{ title: "<i class='fa fa-line-chart' aria-hidden='true'>" ,
-					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-					{
-						$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-line-chart' aria-hidden='true'></a>");
-					}
-				},
-				],
-				'order': [[ 4, "ASC" ]]
+			},
+			{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
+			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+			{
+				$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+			}
+			},
+			{ title: "<i class='fa fa-line-chart' aria-hidden='true'>" ,
+			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+			{
+				$(nTd).html("<a class='open-modal' data-toggle='modal' data-target='#editModal' id='"+sData+"' ><i class='fa fa-line-chart' aria-hidden='true'></a>");
+			}
+			},
+			],
+			'order': [[ 4, "ASC" ]]
 			});
 
 
@@ -287,14 +326,14 @@
 		function toggleColumnReaction()
 		{
 			// Get the column API object
-	        var table = $('#example1').DataTable();
+			var table = $('#example1').DataTable();
 
-	        var column_likes = table.column( 8 ).visible();
-	        var column_love = table.column( 9 ).visible();
-	        var column_wow = table.column( 10 ).visible();
-	        var column_haha = table.column( 11 ).visible();
-	        var column_sad = table.column( 12 ).visible();
-	        var column_angry = table.column( 13 ).visible();
+			var column_likes = table.column( 8 ).visible();
+			var column_love = table.column( 9 ).visible();
+			var column_wow = table.column( 10 ).visible();
+			var column_haha = table.column( 11 ).visible();
+			var column_sad = table.column( 12 ).visible();
+			var column_angry = table.column( 13 ).visible();
 
 			// Hide a column
 			table.column( 8 ).visible( !column_likes );
@@ -385,12 +424,36 @@
 
 		$('#toggle-vis-btn').click( function()
 		{
-	        toggleColumnReaction();
+			toggleColumnReaction();
 		});
 
+		$(document).on("click", ".open-modal", function () {
+			$("#analytic-link").text ( $(this).attr('id') );
+		});
+
+		$('#btn_submit').click(function()
+		{
+			var link = $("#analytic-link").text()+"/";
+			var object = $("#tags");
+			if( object.val() !== null)
+			{
+				var keyword = object.val();
+				for (var i = 0; i < keyword.length; i++) 
+				{
+					link += keyword[i]+"%20";
+				}
+				window.open( link , '_blank' );
+			}
+			else
+			{
+				window.open( link+"-" , '_blank' );
+			}
+		});
+
+		
 
 	});
-	
+
 
 </script>
 

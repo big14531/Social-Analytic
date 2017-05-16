@@ -146,12 +146,26 @@ class Home_ctrl extends CI_Controller
 	{
 		$result = array();
 		$post_array = $this->input->post('post_array');
-
 		$reaction = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
-
 		echo json_encode( $reaction );
+
+		// $batch = $this->Posts_model->editDataForUpdate( $reaction );
+		// $this->Posts_model->updatePost( $batch );
 	}
 
+	public function ajaxGetHighlightPost()
+	{
+		$result = array();
+		$page_id = $this->input->post('page_id');
+		$time = date("Y-m-d H:i:s", strtotime('30 minutes ago') );
+		foreach ($page_id as $key => $value) 
+		{
+			$post_list = $this->Posts_model->getBestReactionPostbyPageandTime( $value , $time );
+			array_push( $result, $post_list );
+		}
+		
+		echo json_encode( $result );
+	}
 
 	/* ---------------- Rank posts Zone ---------------- */
 
@@ -377,9 +391,9 @@ class Home_ctrl extends CI_Controller
 	*		Load postAnalytic View
 	* 
 	*/
-	public function postAnalytic( $page_id , $post_id )
+	public function postAnalytic( $page_id , $post_id , $keyword1 )
 	{
-		$data['id'] = array( 'page_id' => $page_id , 'post_id' => $post_id );
+		$data['id'] = array( 'page_id' => $page_id , 'post_id' => $post_id , 'keyword' => $keyword1 );
 		$this->load->view( 'PostAnalytic_view' ,  $data ); 
 	}
 
@@ -464,12 +478,22 @@ class Home_ctrl extends CI_Controller
 	{
 		$page_id = $_POST['page_id'];
 		$post_id = $_POST['post_id'];
+		$keyword = $_POST['keyword'];
 		$result = array();
 		$target_post = $this->Posts_model->getPostbyID( $page_id , $post_id );
 
 		$target_post_date = date("Y-m-d",strtotime($target_post[0]->created_time));
 		$min_date = $target_post_date." 00:00:00";
 		$max_date = $target_post_date." 23:59:59";
+
+
+	// 	WAIT FOR RECODE
+	// 	
+		// if ( $keyword[0]=='-' ) {
+		// 				$regexp = substr( implode('|' ,$keyword),0,-1 );
+		// 	$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
+
+
 
         // $target_text_raw = $target_post[0]->message.$target_post[0]->description.$target_post[0]->name;
 		$target_text_raw = $target_post[0]->name.' '.$target_post[0]->description;
@@ -550,6 +574,7 @@ class Home_ctrl extends CI_Controller
 		}
 		$regexp = implode('|', $target_text);
 		$comp_post = $this->Posts_model->getPostbyTimeRangeandRegEx( addslashes($regexp) ,  $min_date , $max_date );
+
 		foreach($comp_post as $value)
 		{
 

@@ -42,7 +42,7 @@
 		margin-right:10px!important;
 	}
 	.select2-container--default .select2-selection--single{
-    	background-color: transparent!important;
+		background-color: transparent!important;
 	}
 	.select2-selection__rendered{
 		color: #fff!important;
@@ -53,7 +53,28 @@
 		border: none;
 		color: white;
 	}
-
+	.list-txt{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		line-height: 16px;     /* fallback */
+		max-height: 48px;      /* fallback */
+		-webkit-line-clamp: 3; /* number of lines to show */
+		-webkit-box-orient: vertical;			
+	}
+	.highlight-post{
+		background-color: #3c8dbc;
+	}
+	.white{
+		color: white!important;
+	}
+	.highlight-txt{
+		margin-left: 30px;
+		margin-bottom: 5px; 
+		font-weight: 400;
+		margin-top: -5px;
+		color: white;
+	}
 </style>
 
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=5">
@@ -76,6 +97,23 @@
 					</div>
 					<div class="box-body mCustomScrollbar">
 						<ul class="list-box" id="list-box-<?=$i?>">
+							
+							<li class="highlight-post" id="highlight-post-<?=$i?>"> 
+								<div class="row highlight-txt"><b>Highlight</b></div>
+								
+								<a target="_blank" href="#" class="user-pic" id="highlight-link-<?=$i?>"><img id="highlight-pic-<?=$i?>" ></a> 
+								<div class="list-right"> 
+									<p id="highlight-name-<?=$i?>" class=" list-name"><span id="highlight-txt-<?=$i?>"></span><span id="highlight-date-<?=$i?>" class="white list-date"></span></p> 
+									<div id="highlight-description-<?=$i?>" class="list-txt"></div> 
+
+									<div class="list-social"> 
+										<div class="white like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="highlight-like-<?=$i?>"></span></div> 
+										<div class="white comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="highlight-comment-<?=$i?>"></span></div> 
+										<div class="white shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="highlight-shared-<?=$i?>"></span></div> 
+									</div> 
+								</div> 
+							</li> 
+
 						</ul>
 					</div>
 				</div>
@@ -93,26 +131,35 @@
 
 	var last_time_update = []; 
 
+
+	function setHightlightOrder()
+	{
+		$("#list-box-"+0+" li:eq(0)").before($("#highlight-post-"+0));
+		$("#list-box-"+1+" li:eq(0)").before($("#highlight-post-"+1));
+		$("#list-box-"+2+" li:eq(0)").before($("#highlight-post-"+2));
+		$("#list-box-"+3+" li:eq(0)").before($("#highlight-post-"+3));
+	}
+
 	function appendPost( post , col ) 
 	{
 		var list_box = $("#list-box-"+col);
 		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
-						+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
-						+'<div class="list-right">'
-							+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
-							+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
-							+'</a>'
-							+'<div class="list-txt">'
-							+post.message	
-							+'</div>'
+		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
+		+'<div class="list-right">'
+		+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
+		+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
+		+'</a>'
+		+'<div class="list-txt">'
+		+post.message	
+		+'</div>'
 
-							+'<div class="list-social">'
-								+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="engage_number">'+post.engage+'</span></div>'
-								+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="comment_number">'+post.comments+'</span></div>'
-								+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="share_number">'+post.shares+'</span></div>'
-							+'</div>'
-						+'</div>'
-					+'</li>'
+		+'<div class="list-social">'
+		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span id="engage_number">'+post.engage+'</span></div>'
+		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span id="comment_number">'+post.comments+'</span></div>'
+		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span id="share_number">'+post.shares+'</span></div>'
+		+'</div>'
+		+'</div>'
+		+'</li>'
 		list_box.append( html );
 	}
 
@@ -120,22 +167,22 @@
 	{
 		var list_box = $("#list-box-"+col);
 		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
-						+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
-						+'<div class="list-right">'
-							+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
-							+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
-							+'</a>'
-							+'<div class="list-txt">'
-							+post.message	
-							+'</div>'
+		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
+		+'<div class="list-right">'
+		+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
+		+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
+		+'</a>'
+		+'<div class="list-txt">'
+		+post.message	
+		+'</div>'
 
-							+'<div class="list-social">'
-								+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
-								+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
-								+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
-							+'</div>'
-						+'</div>'
-					+'</li>'
+		+'<div class="list-social">'
+		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
+		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
+		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
+		+'</div>'
+		+'</div>'
+		+'</li>'
 		list_box.prepend( html );
 	}
 
@@ -170,7 +217,7 @@
 		
 		$(".js-example-basic-single").select2({
 			data: result
-			});
+		});
 
 		for (var i = 0; i < 4; i++) 
 		{
@@ -197,9 +244,26 @@
 		}	
 	}
 
+	function editHighlightPost( data ) 
+	{	
+		for (var key = 0; key < data.length; key++) 
+		{
+			var value = data[key][0];
+			
+			$("#highlight-txt-"+key).text( value.name  );
+			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  );
+			$("#highlight-pic-"+key).attr( 'src' , value.picture  );
+			$("#highlight-date-"+key).text( value.last_update_time  );
+			$("#highlight-description-"+key).text( value.message );
+			$("#highlight-like-"+key).text( value.engage );
+			$("#highlight-comment-"+key).text( value.comments );
+			$("#highlight-shared-"+key).text( value.shares );
+		}
+	}
+
 	function editOneNewPost( data , target ) 
 	{
-		$("#list-box-"+target).empty();		
+		$("#list-box-"+target+" li:not(:first)").remove();		
 		for (var key = 0; key < data.length; key++) 
 		{
 			var post = data[key];
@@ -218,12 +282,23 @@
 		for (var i = 0; i < data.length; i++) {
 			var post = data[i];
 			var target = $("#post-"+post.id);
-			$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count);
-			$("#post-"+post.id).find( "#comments_number" ).text( post.comments.summary.total_count );
-			$("#post-"+post.id).find( "#shares_number" ).text( post.shares );
+
+			if( typeof (post.reaction.summary.total_count) !== 'undefined' )
+			{
+				$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count );
+			}
+
+			if( typeof (post.comments.summary.total_count) !== 'undefined' )
+			{
+				$("#post-"+post.id).find( "#comment_number" ).text( post.comments.summary.total_count );
+			}
+
+			if( typeof (post.shares) !== 'undefined' )
+			{
+				$("#post-"+post.id).find( "#share_number" ).text( post.shares.count );
+			}
 		}
 	}
-
 
 	/**
 	*	AJAX ZONE	
@@ -243,8 +318,30 @@
 				},
 				success:function(data)	
 				{
+					console.log("Get : ");
 					console.log(data);
 					addNewPost(data);
+					setHightlightOrder();
+				}
+			});
+	}
+
+	function ajaxGetHighlightPost()
+	{
+		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ];
+		$.ajax({
+				url:  "<?php echo(base_url());?>ajaxGetHighlightPost",   //the url where you want to fetch the data 
+				type: 'post', //type of request POST or GET   
+				dataType: 'json',
+				async: true, 
+				data: { 
+					'page_id': page_id
+				},
+				success:function(data)	
+				{
+					console.log("Highlight : ");
+					console.log(data);
+					editHighlightPost( data );
 				}
 			});
 	}
@@ -294,8 +391,12 @@
 				},
 				success:function(data)
 				{
+					console.log("Edit : ");
+					console.log(data);
 					editOneNewPost( data[0] , target.substr(-1) );
 					editBoxHead( data[1] , target.substr(-1) );
+					ajaxGetHighlightPost();
+					setHightlightOrder();
 				}
 			});
 	}
@@ -303,9 +404,8 @@
 	function ajaxUpdatePost()
 	{		
 		var post_array = $('.post-item').map(function(){
-		    return this.id.substr( 5 );
+			return this.id.substr( 5 );
 		}).get();
-
 		$.ajax({
 			url:  "<?php echo(base_url());?>ajaxUpdatePost",
 			type: 'post',
@@ -316,6 +416,8 @@
 			},
 			success:function(data)
 			{
+				console.log("Update : ");
+				console.log(data);
 				updatePost( data );
 			}
 		});
@@ -332,7 +434,7 @@
 	
 	function setTempDefault() 
 	{
-	 	$("#selector-0").val( '208428464667' ).trigger("change");
+		$("#selector-0").val( '208428464667' ).trigger("change");
 		$("#selector-1").val( '129558990394402' ).trigger("change");
 		$("#selector-2").val( '146406732438' ).trigger("change");
 		$("#selector-3").val( '401831669848423' ).trigger("change");
@@ -355,7 +457,8 @@
 		ajaxCreatePageCard();
 		setTempDefault();
 		ajaxFirstTimePost();
-
+		setHightlightOrder();
+		ajaxGetHighlightPost();
 	}
 
 	function removeOverPost() 
@@ -367,8 +470,9 @@
 			{
 				$(this).find( 'li' ).each(function( index )
 				{
-					if ( index>9 ) 
+					if ( index>10 ) 
 					{
+						console.log("Del : ");
 						console.log( $( this ) );
 						$(this).remove();
 					}
@@ -392,10 +496,11 @@
 		setInterval(function(){ 
 			ajaxUpdatePost();
 			removeOverPost();
-		}, 40000);
+			ajaxGetHighlightPost();
+		}, 60000);
 		setInterval(function(){ 
 			ajaxGetNewPost();
-		}, 60000);
+		}, 120000);
 
 
 	});
