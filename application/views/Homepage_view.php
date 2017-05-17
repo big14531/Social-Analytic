@@ -146,7 +146,7 @@
 <div class="content-wrapper">
 	<section class="content-header">
 		<h1>
-			Dashboard - <small> facebook post analytic</small>
+			รายละเอียดของเพจ 
 		</h1>
 	</section>
 
@@ -167,7 +167,7 @@
 						<div class="input-group full-width">
 							<button type="button" class="btn btn-md btn-default pull-left full-width" id="daterange-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Date range
+									<i class="fa fa-calendar"></i> เลือกวันที่
 								</span>
 								<i class="fa fa-caret-down"></i>
 							</button>
@@ -177,7 +177,7 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Search
+									<i class="fa fa-calendar"></i> ค้นหา
 								</span>
 							</button>
 						</div>
@@ -206,7 +206,7 @@
 					<span class="info-box-icon bg-facebook"><i class="ion ion-person-stalker icon"></i></span>
 
 					<div class="info-box-content">
-						<span class="info-box-text">Fanpage</span>
+						<span class="info-box-text">จำนวนแฟนเพจ</span>
 						<span class="info-box-number" id="fanpage-box"></span>
 					</div>
 					<!-- /.info-box-content -->
@@ -219,7 +219,7 @@
 					<span class="info-box-icon bg-facebook"><i class="ion ion-speedometer icon"></i></span>
 
 					<div class="info-box-content">
-						<span class="info-box-text">Engagement</span>
+						<span class="info-box-text">จำนวน Engagement รวม</span>
 						<span class="info-box-number" id="engage-box"></span>
 					</div>
 					<!-- /.info-box-content -->
@@ -236,7 +236,7 @@
 					<span class="info-box-icon bg-facebook"><i class="ion ion-chatbubbles icon"></i></span>
 
 					<div class="info-box-content">
-						<span class="info-box-text">Posts</span>
+						<span class="info-box-text">จำนวนโพสต์</span>
 						<span class="info-box-number" id="post-box"></span>
 					</div>
 					<!-- /.info-box-content -->
@@ -249,7 +249,7 @@
 					<span class="info-box-icon bg-facebook"><i class="ion ion-person-add icon"></i></span>
 
 					<div class="info-box-content">
-						<span class="info-box-text">New Fanpage</span>
+						<span class="info-box-text">แฟนเพจใหม่</span>
 						<span class="info-box-number" id="new-fanpage-box"></span>
 					</div>
 					<!-- /.info-box-content -->
@@ -264,7 +264,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Type of Posts</h2>
+						<h2 class="box-title">ประเภทของโพสต์</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
@@ -281,7 +281,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Posts per Days <small>( average )</small> </h2>
+						<h2 class="box-title">จำนวนโพสเฉลี่ย</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
@@ -298,7 +298,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Best of Posts</h2>
+						<h2 class="box-title">โพสต์ดีที่สุด</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
@@ -316,7 +316,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Worst of Posts</h2>
+						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>

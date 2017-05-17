@@ -39,7 +39,7 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			Post Table
+			โพสต์ทั้งหมด
 		</h1>
 
 	</section>
@@ -63,7 +63,7 @@
 						<div class="input-group full-width">
 							<button type="button" class="btn btn-lg btn-default pull-left full-width" id="daterange-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Date range
+									<i class="fa fa-calendar"></i> เลือกวันที่
 								</span>
 								<i class="fa fa-caret-down"></i>
 							</button>
@@ -73,7 +73,7 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<select class="btn btn-lg btn-default" id="page-selector" style="width: 100%;">
-								<option selected="selected">--- Select Page ---</option>
+								<option selected="selected">เลือกเพจ</option>
 								<?php 
 								foreach ($page_list as $value) 
 								{
@@ -88,7 +88,7 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Search
+									<i class="fa fa-calendar"></i> ค้นหา
 								</span>
 							</button>
 						</div>
@@ -98,7 +98,7 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-lg btn-warning full-width" id="toggle-vis-btn">
 								<span>
-									<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>Hide/Show
+									<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>เปิด/ปิด
 								</span>
 							</button>
 						</div>
@@ -130,8 +130,8 @@
 					</div>	
 					
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary btn_save" id="btn_submit">Save changes</button>	
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary btn_save" id="btn_submit">ตกลง</button>	
+						<button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
 					</div>
 
 				</div>
@@ -177,15 +177,15 @@
 			{
 				columns: 
 				[
-				{ title: "Image" ,
+				{ title: "ภาพ" ,
 				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 				{
 					$(nTd).html("<image class='table-img' src='"+sData+"' />");
 				}
 			},
-			{ title: "Publish time" },
-			{ title: "Update time" },
-			{ title: "Name" },
+			{ title: "วันที" },
+			{ title: "เวลาอัพเดท" },
+			{ title: "ข้อความ" },
 			{ title: "Engagement" },
 			{ title: "Share" },
 			{ title: "Comments" },
@@ -236,12 +236,12 @@
 		(
 		{
 			ranges: {
-				'Today': [moment(), moment()],
-				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'Last 7 Days': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
-				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-				'This Month': [moment().startOf('month'), moment().endOf('month')],
-				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				'วันนี้': [moment(), moment()],
+				'เมื่อวาน': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'7 วันที่ผ่านมา': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+				'30 วันที่ผ่านมา': [moment().subtract(29, 'days'), moment()],
+				'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
+				'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			},
 			startDate: moment().subtract(29, 'days'),
 			endDate: moment()
@@ -346,7 +346,7 @@
 
 		function ajaxCall( page_id , min_date , max_date )
 		{
-			$('#search-btn').find('span').text('Searching.....');
+			$('#search-btn').find('span').text('กำลังค้นหา.....');
 			$('#search-btn').addClass('disabled');
 			$('#search-btn').prop('disabled',true);
 			$.ajax(
@@ -383,7 +383,7 @@
 						}
 						$('#search-btn').prop('disabled',false);
 						$('#search-btn').removeClass('disabled');
-						$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
+						$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
 					},
 					error:function(xhr, textStatus, errorThrown) 
 					{
@@ -413,7 +413,7 @@
 				$('#alert').removeClass( 'alert-success');
 				$('#alert').removeClass( 'alert-warning');
 				$('#alert').addClass( 'alert-warning');
-				$('#alert').find('h3').text( "Please set date and page name" );
+				$('#alert').find('h3').text( "กรุณาเลือกวันที่และชื่อเพจที่ต้องการ" );
 				$('#alert').find('p').text( '' );
 			}
 			$("#alert").fadeTo(2000, 500).slideUp(500, function()

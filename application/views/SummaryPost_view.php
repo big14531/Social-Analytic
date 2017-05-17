@@ -52,7 +52,7 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			Summary Posts
+			ตารางข้อมูลต่อเวลา
 		</h1>
 	</section>
 
@@ -73,7 +73,7 @@
 						<div class="input-group full-width">
 							<button type="button" class="selectpicker btn btn-lg btn-default full-width" id="daterange-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Date range
+									<i class="fa fa-calendar"></i> เลือกวันที่
 								</span>
 								<i class="fa fa-caret-down"></i>
 							</button>
@@ -102,7 +102,7 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-lg btn-info full-width" id="search-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Search
+									<i class="fa fa-calendar"></i> ค้นหา
 								</span>
 							</button>
 						</div>
@@ -181,7 +181,7 @@
 
 	function ajaxCall( type , min_date , max_date )
 	{
-		$('#search-btn').find('span').text('Searching.....');
+		$('#search-btn').find('span').text('กำลังค้นหา.....');
 		$('#search-btn').addClass('disabled');
 		$('#search-btn').prop('disabled',true);
 		$.ajax({
@@ -210,7 +210,7 @@
 				}
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
-				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
+				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
 			},
 			error:function(xhr, textStatus, errorThrown) 
 			{

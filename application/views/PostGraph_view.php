@@ -45,7 +45,7 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			Posts Graph
+			กราฟเวลาโพสของเพจ
 		</h1>
 	</section>
 
@@ -63,7 +63,7 @@
 						<div class="input-group full-width">
 							<button type="button" class="selectpicker btn btn-lg btn-default full-width" id="daterange-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Date range
+									<i class="fa fa-calendar"></i> เลือกเวลา
 								</span>
 								<i class="fa fa-caret-down"></i>
 							</button>
@@ -88,7 +88,7 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Search
+									<i class="fa fa-calendar"></i> ค้นหา
 								</span>
 							</button>
 						</div>
@@ -335,12 +335,12 @@
 		$('#daterange-btn').daterangepicker(
 		{
 			ranges: {
-				'Today': [moment(), moment()],
-				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-				'This Month': [moment().startOf('month'), moment().endOf('month')],
-				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				'วันนี้': [moment(), moment()],
+				'เมื่อวาน': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'7 วันที่ผ่านมา': [moment().subtract(6, 'days'), moment()],
+				'30 วันที่ผ่านมา': [moment().subtract(29, 'days'), moment()],
+				'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
+				'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			},
 			startDate: moment().subtract(29, 'days'),
 			endDate: moment()
@@ -367,7 +367,7 @@
 				$('#alert').removeClass( 'alert-success');
 				$('#alert').removeClass( 'alert-warning');
 				$('#alert').addClass( 'alert-warning');
-				$('#alert').find('h3').text( "Please set date and page name" );
+				$('#alert').find('h3').text( "กรุณากรอกข้อมูลให้ครบ" );
 				$('#alert').find('p').text( '' );
 			}
 			$("#alert").fadeTo(2000, 500).slideUp(500, function()

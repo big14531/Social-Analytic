@@ -91,7 +91,10 @@
 		-webkit-animation-delay: 0.2s;
 		animation-delay: 0.2s; 
 	}
-
+	.select2-container--default .select2-selection--multiple .select2-selection__choice
+	{
+		color:#000;
+	}
 	@-webkit-keyframes sk-cubeGridScaleDelay 
 	{
 		0%, 70%, 100% {
@@ -124,7 +127,7 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			Page Dashboard
+			กราฟภาพรวม
 		</h1>
 	</section>
 
@@ -158,7 +161,7 @@
 					<div class="input-group full-width">
 						<button type="button" class="btn btn-md btn-default pull-left full-width" id="daterange-btn">
 							<span>
-								<i class="fa fa-calendar"></i> Date range
+								<i class="fa fa-calendar"></i> เลือกวันที่
 							</span>
 							<i class="fa fa-caret-down"></i>
 						</button>
@@ -166,7 +169,7 @@
 				</div>
 	
 				<div class="col-md-4">
-					<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="Select a Page" style="width: 100%;">
+					<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="เลือกเพจ" style="width: 100%;">
 					</select>
 				</div>
 
@@ -174,7 +177,7 @@
 					<div class="form-group">
 						<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 							<span>
-								<i class="fa fa-calendar"></i> Search
+								<i class="fa fa-calendar"></i> ค้นหา
 							</span>
 						</button>
 					</div>
@@ -186,7 +189,7 @@
 			<div class="col-md-12">
 				<div class="box overview-box">
 					<div class="box-header with-border">
-						<h2 class="box-title">Overview Graph</h2>
+						<h2 class="box-title">กราฟรวมทุกเพจ</h2>
 
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -433,7 +436,7 @@
 	 */
 	function ajaxCall( min_date , max_date ,type )
 	{
-		$('#search-btn').find('span').text('Searching.....');
+		$('#search-btn').find('span').text('กำลังค้นหา.....');
 		$('#search-btn').addClass('disabled');
 		$('#search-btn').prop('disabled',true); 
 		$('#myModal').modal('show');
@@ -452,7 +455,7 @@
 				$('.col-md-6').attr('hidden',false);
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
-				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
+				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
 
 				dataset = makeSeriesData( data , type  );
 				if(is_first) createCheckBox( data , dataset );
@@ -765,10 +768,10 @@
 	 $('#daterange-btn').daterangepicker(
 	 {
 	 	ranges: {
-	 		'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	 		'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	 		'This Month': [moment().startOf('month'), moment().endOf('month')],
-	 		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	 		'7 วันที่ผ่านมา': [moment().subtract(6, 'days'), moment()],
+	 		'30 วันที่ผ่านมา': [moment().subtract(29, 'days'), moment()],
+	 		'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
+	 		'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	 	},
 	 	startDate: moment().subtract(6, 'days'),
 	 	endDate: moment()

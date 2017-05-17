@@ -146,6 +146,16 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
+	public function insertBatchPost( $data )
+	{
+		foreach ($data as $post) 
+		{
+			$insert_query = $this->db->insert_string('fb_facebook_post', $post);
+			$insert_query = str_replace('INSERT INTO','INSERT IGNORE INTO',$insert_query);
+			$this->db->query($insert_query);			
+		}
+	}
+
 	public function updatePost( $data )
 	{
 		$this->db->update_batch('fb_facebook_post', $data, 'post_id');

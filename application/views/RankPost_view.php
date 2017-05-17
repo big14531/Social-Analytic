@@ -108,7 +108,7 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1 style="float:left;margin-right: 20px;">
-			Ranking Page
+			จัดอันดับโพสต์
 		</h1>
 		<!-- button row -->
 		<div class="row control-row">
@@ -130,7 +130,7 @@
 						<div class="input-group full-width">
 							<button type="button" class="selectpicker btn btn-md btn-default full-width" id="daterange-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Date range
+									<i class="fa fa-calendar"></i> เลือกวันที่
 								</span>
 								<i class="fa fa-caret-down"></i>
 							</button>
@@ -141,7 +141,7 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 								<span>
-									<i class="fa fa-calendar"></i> Search
+									<i class="fa fa-calendar"></i> ค้นหา
 								</span>
 							</button>
 						</div>
@@ -157,7 +157,7 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-success full-width" id="best-btn">
 								<span>
-									<i class="fa fa-thumbs-up"></i> Select Best 5
+									<i class="fa fa-thumbs-up"></i> เลือก 5 อันดับดีที่สุด
 								</span>
 							</button>
 						</div>
@@ -167,14 +167,14 @@
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-danger full-width" id="worst-btn">
 								<span>
-									<i class="fa fa-thumbs-down"></i> Select Worst 5
+									<i class="fa fa-thumbs-down"></i> เลือก 5 อันดับแย่ที่สุด
 								</span>
 							</button>
 						</div>
 					</div>
 
 					<div class="col-md-6">
-						<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="Select a Page" style="width: 100%;">
+						<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="เลือกเพจ" style="width: 100%;">
 						</select>
 					</div>
 				</div>
@@ -427,7 +427,7 @@
 				$('#alert').removeClass( 'alert-success');
 				$('#alert').removeClass( 'alert-warning');
 				$('#alert').addClass( 'alert-warning');
-				$('#alert').find('h3').text( "กรุณากรอกวันที่และประเภทข้อมุล" );
+				$('#alert').find('h3').text( "กรุณาเลือกวันที่และชื่อเพจที่ต้องการ" );
 				$('#alert').find('p').text( '' );
 			}
 			$("#alert").fadeTo(2000, 500).slideUp(500, function()

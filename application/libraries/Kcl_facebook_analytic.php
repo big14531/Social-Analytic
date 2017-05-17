@@ -200,8 +200,11 @@ class Kcl_facebook_analytic
 		return $data;
 	}
 
-	public function batchGetPostFacebook()
+	public function batchGetPostFacebook( $page_array )
 	{
+		$result = [];
+		$batch = [];
+
 		$this->fb_obj= new Facebook\Facebook([
 			'app_id' => '272658633175667',
 			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
@@ -210,19 +213,13 @@ class Kcl_facebook_analytic
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
-		$request_field = '&fields=id,link,picture,message,description,object_id,name,icon,created_time,permalink_url,shares,comments.limit(0).summary(true),type';
+		$request_field = '/posts?limit=10&fields=id,link,picture,message,description,object_id,name,icon,created_time,permalink_url,type,shares,comments.limit(0).summary(true),likes.limit(0).summary(true)';
 
-		$page1 = $this->fb_obj->request('GET', '/208428464667/posts?limit=100');
-		$page2 = $this->fb_obj->request('GET', '/129558990394402/posts?limit=100');
-		$page3 = $this->fb_obj->request('GET', '/146406732438/posts?limit=100');
-
-		$batch = [
-		'page1' => $page1,
-		'page2' => $page2,
-		'page3' => $page3,
-		];
-
-		echo '<h1>Make a batch request</h1>' . "\n\n";
+		foreach ($page_array as $page_id) 
+		{
+			$page1 = $this->fb_obj->request('GET', '/'.$page_id.$request_field);
+			array_push( $batch , array( $page_id =>  $page1 ) );
+		}
 
 		try {
 			$responses = $this->fb_obj->sendBatchRequest($batch);
@@ -239,15 +236,11 @@ class Kcl_facebook_analytic
 		foreach ($responses as $key => $response) {
 			if ($response->isError()) {
 				$e = $response->getThrownException();
-				echo '<p>Error! Facebook SDK Said: ' . $e->getMessage() . "\n\n";
-				echo '<p>Graph Said: ' . "\n\n";
-				var_dump($e->getResponse());
 			} else {
-				echo "<p>(" . $key . ") HTTP status code: " . $response->getHttpStatusCode() . "<br />\n";
-				echo "Response: " . $response->getBody() . "</p>\n\n";
-				echo "<hr />\n\n";
+				array_push( $result , json_decode( $response->getBody() ) );
 			}
 		}
+		return $result;
 	}
 	
 	public function batchUpdatePostFacebook( $post_array )

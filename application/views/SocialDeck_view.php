@@ -516,7 +516,7 @@
 		}, 60000);
 		setInterval(function(){ 
 			ajaxGetNewPost();
-		}, 120000);
+		}, 70000);
 
 
 	});
