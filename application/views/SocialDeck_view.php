@@ -244,12 +244,28 @@
 		}	
 	}
 
+	function noHighlight( key ) 
+	{
+		$("#highlight-txt-"+key).text( ' no highlight '  );
+		$("#highlight-link-"+key).attr( 'href' , '#'  );
+		$("#highlight-pic-"+key).attr( 'src' , '#'  );
+		$("#highlight-date-"+key).text( '' );
+		$("#highlight-description-"+key).text( '' );
+		$("#highlight-like-"+key).text( '' );
+		$("#highlight-comment-"+key).text( '' );
+		$("#highlight-shared-"+key).text( '' );
+	}
+
 	function editHighlightPost( data ) 
 	{	
 		for (var key = 0; key < data.length; key++) 
 		{
 			var value = data[key][0];
-			
+			if( typeof(value)==='undefined' )
+			{
+				noHighlight(key);
+				continue;
+			} 
 			$("#highlight-txt-"+key).text( value.name  );
 			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  );
 			$("#highlight-pic-"+key).attr( 'src' , value.picture  );
