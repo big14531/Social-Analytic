@@ -50,15 +50,6 @@ class Data_ctrl extends CI_Controller
 			}
 		}
 
-		// if($minute%7==0)
-		// {
-		// 	$result = $this->sweepFacebookPost(10,0);
-		// 	if ( $result )
-		// 	{
-		// 		write_file($this->daily_log,date('Y-m-d H:i:s')."  - Sweep Post\r\n",'a+');
-		// 	}
-		// }
-
 		if($minute%1==0)
 		{
 			$result = $this->updateBatchFacebookPost(50);
@@ -68,38 +59,6 @@ class Data_ctrl extends CI_Controller
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
 			}
 		}		
-	}
-
-	public function sweepFacebookPost( $limit , $offset )
-	{
-		// get active page
-		$pageList = $this->Posts_model->getActivePagelist();
-
-		// Get Post from active page
-		foreach( $pageList as $page )
-		{
-			$page_id = $page->page_id;
-			$raw_post_array = $this->kcl_facebook_analytic->getRawPostData( $page_id , $limit , $offset  );
-		
-			$raw_post_list = $raw_post_array['data'];
-
-			// Extract data from facebook_api and save to database
-			foreach ( $raw_post_list as $post ) 
-			{
-				$new_post = $this->extractPostData( $post );
-
-				// Write log when can't get data from dacebook
-				if ( is_array($new_post) == false) 
-				{
-					write_file($this->daily_log,date('Y-m-d H:i:s')."  - Sweep Fail \n".$new_post."\r\n",'a+');
-					continue;
-				}
-				print_r( $new_post );
-				echo "<br><br>---";
-				$this->Posts_model->insertPostData( $new_post );
-			}			
-		}
-		return true;
 	}
 
 	public function newSweepFacebookPost()
@@ -115,103 +74,11 @@ class Data_ctrl extends CI_Controller
 		}
 
 		$raw_post_array = $this->kcl_facebook_analytic->batchGetPostFacebook( $page_array );
-		$result = $this->newExtractPostData( $raw_post_array );
+		$result = $this->kcl_facebook_analytic->newExtractPostData( $raw_post_array );
 		$this->Posts_model->insertBatchPost( $result );
 
 
 		return true;
-	}
-
-	public function newExtractPostData( $data )
-	{
-		$result=[];
-		foreach ($data as $key => $value)
-		{
-			$post_list = $value->data;
-
-			foreach ($post_list as $in_key => $post_data) 
-			{
-				$posts=[];
-				
-				$posts['created_time'] 	= nice_date(  $post_data->created_time, 'Y-m-d H:i');
-				$posts['page_id'] 		= explode("_", $post_data->id )[0];
-				$posts['post_id'] 		= explode("_", $post_data->id )[1];
-				$posts['type'] 			= $post_data->type;
-				$posts['message'] 		= ( empty($post_data->message) ) 		? '' : $post_data->message;
-				$posts['description'] 	= ( empty($post_data->description) ) 	? '' : $post_data->description;
-				$posts['link'] 			= ( empty($post_data->link) ) 			? '' : $post_data->link;
-				$posts['permalink_url'] = ( empty($post_data->permalink_url) ) 	? '' : $post_data->permalink_url;
-				$posts['object_id'] 	= ( empty($post_data->object_id) ) 		? '' : $post_data->object_id;
-				$posts['picture'] 		= ( empty($post_data->picture) ) 		? '' : $post_data->picture; 
-				$posts['name'] 			= ( empty($post_data->name) ) 			? '' : $post_data->name;
-				$posts['icon'] 			= ( empty($post_data->icon) ) 			? '' : $post_data->icon;
-				$posts['likes'] 		= ( empty($post_data->likes->summary->total_count) ) ? 0 : $post_data->likes->summary->total_count; 
-				$posts['comments'] 		= ( empty($post_data->comments->summary->total_count) ) ? 0 : $post_data->comments->summary->total_count;
-				$posts['shares'] 		= ( empty($post_data->shares->count) ) ? 0 : $post_data->shares->count;
-				array_push( $result , $posts );
-			}
-		}
-		return $result;
-	}
-
-	public function extractPostData( $value )
-	{
-		$post_result = array(
-			'page_id'       => '',
-			'post_id'       => '',
-			'type'          => '',
-			'message'       => '',    
-			'description'   => '',        
-			'link'          => '', 
-			'permalink_url' => '',          
-			'object_id'     => '',      
-			'picture'       => '',    
-			'name'          => '', 
-			'icon'          => '', 
-			'shares'        => '0',   
-			'comments'      => '0',
-			'created_time'  => ''
-			);
-
-		$post_reaction = $this->kcl_facebook_analytic->getReactionPost( $value['id'] );
-
-		// Case return error
-		if ( is_object( $post_reaction ) ) 
-		{
-			return $post_reaction;
-		}
-
-		$post_result['reaction'] = $post_reaction;
-
-		foreach( $value as $key => $inner_value)
-		{
-			if($key=='id')
-			{ 
-				$id = explode( '_' ,$inner_value );
-				$post_result['page_id'] = $id[0]; 
-				$post_result['post_id'] = $id[1];
-			}
-
-			elseif($key=='shares')
-				{ $post_result[$key] = $inner_value['count']; }
-
-			elseif($key=='comments')
-				{ $post_result[$key] = $inner_value['summary']['total_count']; }
-
-			elseif($key=='created_time')
-			{ 
-				$created_time = nice_date(  $inner_value, 'Y-m-d H:i');
-				$post_result[$key] = $created_time; 
-			}
-
-			else
-			{ 
-				$inner_value = str_replace('"',"'",$inner_value);
-				$post_result[$key] = $inner_value; 
-			}
-
-		}
-		return $post_result;		
 	}
 
 	public function updateTrackingPage()
@@ -328,5 +195,12 @@ class Data_ctrl extends CI_Controller
 		return $data;
 	}
 
+	public function getOldPost( $date , $limit )
+	{
+		$result = array();
+		$data = $this->Posts_model->getLatedUpdatePost( $date , $limit );
+		$data = $data->result();
+		return $data;
+	}
 }
 ?>

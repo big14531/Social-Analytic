@@ -286,4 +286,35 @@ class Kcl_facebook_analytic
 		return $result;
 	}
 
+	public function newExtractPostData( $data )
+	{
+		$result=[];
+		foreach ($data as $key => $value)
+		{
+			$post_list = $value->data;
+
+			foreach ($post_list as $in_key => $post_data) 
+			{
+				$posts=[];
+				
+				$posts['created_time'] 	= nice_date(  $post_data->created_time, 'Y-m-d H:i');
+				$posts['page_id'] 		= explode("_", $post_data->id )[0];
+				$posts['post_id'] 		= explode("_", $post_data->id )[1];
+				$posts['type'] 			= $post_data->type;
+				$posts['message'] 		= ( empty($post_data->message) ) 		? '' : $post_data->message;
+				$posts['description'] 	= ( empty($post_data->description) ) 	? '' : $post_data->description;
+				$posts['link'] 			= ( empty($post_data->link) ) 			? '' : $post_data->link;
+				$posts['permalink_url'] = ( empty($post_data->permalink_url) ) 	? '' : $post_data->permalink_url;
+				$posts['object_id'] 	= ( empty($post_data->object_id) ) 		? '' : $post_data->object_id;
+				$posts['picture'] 		= ( empty($post_data->picture) ) 		? '' : $post_data->picture; 
+				$posts['name'] 			= ( empty($post_data->name) ) 			? '' : $post_data->name;
+				$posts['icon'] 			= ( empty($post_data->icon) ) 			? '' : $post_data->icon;
+				$posts['likes'] 		= ( empty($post_data->likes->summary->total_count) ) ? 0 : $post_data->likes->summary->total_count; 
+				$posts['comments'] 		= ( empty($post_data->comments->summary->total_count) ) ? 0 : $post_data->comments->summary->total_count;
+				$posts['shares'] 		= ( empty($post_data->shares->count) ) ? 0 : $post_data->shares->count;
+				array_push( $result , $posts );
+			}
+		}
+		return $result;
+	}
 }
