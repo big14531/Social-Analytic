@@ -17,6 +17,15 @@
             </li>
 
             <li class="treeview">
+                <a href="<?php echo base_url(); ?>postList">
+                    <i class="fa fa-list-ul"></i> <span>โพสต์ทั้งหมด</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
+            <li class="treeview">
                 <a href="<?php echo base_url(); ?>dashboard">
                     <i class="fa fa-dashboard"></i> <span>รายละเอียดเพจ</span>
                     <span class="pull-right-container">
@@ -55,14 +64,6 @@
             <li class="treeview">
                 <a href="<?php echo base_url(); ?>postGraph">
                     <i class="fa fa-dot-circle-o "></i> <span>กราฟเวลาโพสต์</span>
-                    <span class="pull-right-container">
-                        <!-- <small class="label pull-right bg-green">16</small> -->
-                    </span>
-                </a>
-            </li>
-            <li class="treeview">
-                <a href="<?php echo base_url(); ?>postList">
-                    <i class="fa fa-list-ul"></i> <span>โพสต์ทั้งหมด</span>
                     <span class="pull-right-container">
                         <!-- <small class="label pull-right bg-green">16</small> -->
                     </span>
