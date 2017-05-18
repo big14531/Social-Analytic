@@ -1,10 +1,14 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');    
 
+ini_set('max_execution_time', 600); 
+ini_set('memory_limit','2048M');
+
 class Data_ctrl extends CI_Controller
 {
 
 	function __construct()
 	{
+
 		parent::__construct(); 
 		error_reporting(-1);
 		ini_set('display_errors', 1);
@@ -201,6 +205,41 @@ class Data_ctrl extends CI_Controller
 		$data = $this->Posts_model->getLatedUpdatePost( $date , $limit );
 		$data = $data->result();
 		return $data;
+	}
+
+	public function processAnalyticPost()
+	{
+		// Innitialize value 
+		$this->load->library('THSplitLib/segment');
+		$this->load->helper('analytic_helper');
+		$page_id = "208428464667";  //Komchudluk page_id
+		$min_date = date( "Y-m-d 00:00:00" , strtotime( "yesterday" ) );
+		$max_date = date( "Y-m-d H:i:s" , strtotime( "now" ) );
+
+		// GET POST
+		$main_post =  $this->Posts_model->getPostsbyPageNameandTime( $page_id ,$min_date ,$max_date );
+		$target_post =  $this->Posts_model->getAllPostbyTime( $min_date ,$max_date );
+		
+		$main_post = $main_post->result();
+
+		$post_id_array = [];
+		$i=0;
+		foreach ($main_post as $key => $post_obj) 
+		{
+			if( $post_obj->type!='link' )continue;
+			$compared_post = comparePostbyPostObj( $post_obj ,$target_post );
+			$i+=1;
+			if ($i==30) {
+				break;
+			}
+		}
+		
+		
+
+
+		// PUT IN ANALYTIC FUN
+
+		// INSERT TO DB
 	}
 }
 ?>

@@ -17,6 +17,15 @@
             </li>
 
             <li class="treeview">
+                <a href="<?php echo base_url(); ?>analyticList">
+                    <i class="fa fa-object-ungroup"></i> <span>ตารางเปรียบเทียบโพสต์</span>
+                    <span class="pull-right-container">
+                        <!-- <small class="label pull-right bg-green">16</small> -->
+                    </span>
+                </a>
+            </li>
+
+            <li class="treeview">
                 <a href="<?php echo base_url(); ?>postList">
                     <i class="fa fa-list-ul"></i> <span>โพสต์ทั้งหมด</span>
                     <span class="pull-right-container">

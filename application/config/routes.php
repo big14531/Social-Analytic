@@ -67,7 +67,7 @@ $route['updateFacebookPost/(:num)'] = 'data_ctrl/updateFacebookPost/$1';
 $route['updateTrackingPage'] = 'data_ctrl/updateTrackingPage';
 
 /*---------- update all interval , temp ----------*/
-$route['test'] = 'data_ctrl/newSweepFacebookPost';
+$route['test'] = 'data_ctrl/processAnalyticPost';
 $route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 
 ////////////////////////////////////////

@@ -355,6 +355,7 @@ class Posts_model extends CI_Model
 		$result = $this->db->query( $query );
 		return $result->result();
 	}
+
 	public function getPostsbyPageNameandTime( $page_id , $min_date , $max_date)
 	{
 		$result = array();
@@ -580,6 +581,23 @@ class Posts_model extends CI_Model
 		return $result->result();   
 	}
 
+	public function getAllPostbyTime( $min_date , $max_date )
+	{
+		$result = array();
+
+		$this->db->select('post.*,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact  ,  list.name as page_name , list.picture as page_picture , list.link as page_link');
+		$this->db->from('fb_facebook_post as post');
+
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
+		$this->db->where('list.is_active',1);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+	  // echo $this->db->get_compiled_select();
+	  //   exit()
+		$result = $this->db->get();
+
+		return $result->result();   
+	}
 	public function getPostbyID( $page_id , $post_id )
 	{
 
