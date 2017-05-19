@@ -360,7 +360,7 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 
-		$this->db->select('post.*, list.name as page_name');
+		$this->db->select('post.* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, , list.name as page_name');
 		$this->db->from('fb_facebook_post as post');
 
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');

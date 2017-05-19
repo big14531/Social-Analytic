@@ -74,6 +74,12 @@ class Home_ctrl extends CI_Controller
 	}
 
 
+	/* ---------------- analytic List Zone ---------------- */
+	public function analyticList()
+	{
+		$this->load->view( 'AnalyticList_view' );
+	}
+
 	/* ---------------- Social Deck Zone ---------------- */
 
 	/**

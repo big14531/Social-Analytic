@@ -228,18 +228,11 @@ class Data_ctrl extends CI_Controller
 		{
 			if( $post_obj->type!='link' )continue;
 			$compared_post = comparePostbyPostObj( $post_obj ,$target_post );
-			$i+=1;
-			if ($i==30) {
-				break;
-			}
+			print_r( $compared_post );
+
 		}
-		
-		
 
-
-		// PUT IN ANALYTIC FUN
-
-		// INSERT TO DB
 	}
+
 }
 ?>

@@ -4,7 +4,7 @@ function comparePostbyPostObj( $post_obj , $target_post )
 {
     $CI =& get_instance();
 
-   	print_r( $post_obj );
+   	// print_r( $post_obj );
    	$result =[];
    	$text = $post_obj->message.' '.$post_obj->name;
    	$text = removeUnnecessaryWord( $text );
@@ -25,9 +25,15 @@ function comparePostbyPostObj( $post_obj , $target_post )
 		$returnValue = preg_match_all( $regexp , $target_text, $matches, PREG_PATTERN_ORDER);
 		if ( $returnValue == 0) continue;
 		if ( $returnValue < $max*(80/100) ) continue;
-		array_push( $result , array( $value->page_id."_".$value->post_id => $returnValue ) );
+
+		$target_data = array(
+			'page_id' => $value->page_id,
+			'post_id' => $value->post_id,
+			'engage' => $value->engage 	
+			);
+		array_push( $result ,$target_data );
 	}
-	print_r( $result );
+	usort($result,"cmp");
  	return $result;
 }
 
@@ -49,6 +55,11 @@ function cleanArray( $array )
 	}
 
 	return $splited;
+}
+
+function cmp($a, $b) 
+{
+   return $b['engage'] - $a['engage'];
 }
 
 function removeUnnecessaryWord( $str_orignal )

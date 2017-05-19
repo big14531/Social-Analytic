@@ -85,6 +85,8 @@ $route['ajaxEditPageCard'] = 'home_ctrl/ajaxEditPageCard';
 $route['ajaxGetNewPost'] = 'home_ctrl/ajaxGetNewPost';
 $route['ajaxGetHighlightPost'] = 'home_ctrl/ajaxGetHighlightPost';
 
+/*---------- analyticList ----------*/
+$route['analyticList'] = 'home_ctrl/analyticList';
 
 /*---------- dashboard ----------*/
 $route['dashboard'] = 'home_ctrl/dashboard';

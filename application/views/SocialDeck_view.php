@@ -69,11 +69,13 @@
 		color: white!important;
 	}
 	.highlight-txt{
-		margin-left: 30px;
-		margin-bottom: 5px; 
-		font-weight: 400;
-		margin-top: -5px;
-		color: white;
+		margin-left: 20px;
+	    margin-bottom: 15px;
+	    font-weight: 400;
+	    margin-top: -5px;
+	    color: rgb(255, 255, 255);
+	    font-size: 15px;
+	    text-decoration: underline;
 	}
 </style>
 
@@ -99,7 +101,7 @@
 						<ul class="list-box" id="list-box-<?=$i?>">
 							
 							<li class="highlight-post" id="highlight-post-<?=$i?>"> 
-								<div class="row highlight-txt"><b>Highlight</b></div>
+								<div class="highlight-txt">ข่าวฮิตในช่วงครึ่งชั่งโมง</div>
 								
 								<a target="_blank" href="#" class="user-pic" id="highlight-link-<?=$i?>"><img id="highlight-pic-<?=$i?>" ></a> 
 								<div class="list-right"> 

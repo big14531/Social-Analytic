@@ -10,11 +10,11 @@ class Kcl_facebook_analytic
 
 	public function __construct()
 	{
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 		$this->getToken();
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 	}
@@ -78,11 +78,11 @@ class Kcl_facebook_analytic
 
 	public function getRawPageDetail( $pageName )
 	{
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
@@ -126,11 +126,11 @@ class Kcl_facebook_analytic
 
 	public function getFullPageDetail( $pageName )
 	{
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
@@ -205,11 +205,11 @@ class Kcl_facebook_analytic
 		$result = [];
 		$batch = [];
 
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
@@ -248,11 +248,11 @@ class Kcl_facebook_analytic
 		$result = [];
 		$batch = [];
 		
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
