@@ -80,6 +80,16 @@ class Home_ctrl extends CI_Controller
 		$this->load->view( 'AnalyticList_view' );
 	}
 
+	public function ajaxAnalyticList()
+	{
+		$result =[];
+		$min_date = date("Y-m-25 00:00:00" );
+		$max_date = date("Y-m-25 24:00:00" );
+		$post_array = $this->Posts_model->getOwnerPostbyDate( $min_date , $max_date );
+
+		echo json_encode( $post_array );
+	}
+
 	/* ---------------- Social Deck Zone ---------------- */
 
 	/**

@@ -90,6 +90,7 @@ $route['ajaxGetHighlightPost'] = 'home_ctrl/ajaxGetHighlightPost';
 
 /*---------- analyticList ----------*/
 $route['analyticList'] = 'home_ctrl/analyticList';
+$route['ajaxAnalyticList'] = 'home_ctrl/ajaxAnalyticList';
 
 /*---------- dashboard ----------*/
 $route['dashboard'] = 'home_ctrl/dashboard';

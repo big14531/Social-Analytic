@@ -21,7 +21,6 @@
 	}
 </style>
 
-
 <!-- daterange picker -->
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.css">
 <!-- bootstrap datepicker -->
@@ -62,7 +61,6 @@
 						</div>
 					</div>
 
-					
 					<div class="col-md-4">
 						<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 							<span>
@@ -95,17 +93,18 @@
 
 <script>
 
-	function ajaxManageList()
+	function ajaxAnalyticList()
     {
         $.ajax({
-            url:  "<?php echo base_url()?>ajaxManageList",   //the url where you want to fetch the data 
+            url:  "<?php echo base_url()?>ajaxAnalyticList",   //the url where you want to fetch the data 
             type: 'post', //type of request POST or GET    
             dataType: 'json',
             async: true, 
             success:function(data)
             {
-                var dataset = editData( data );
-                renderTable( dataset );
+            	console.log( data );
+                // var dataset = editData( data );
+                // renderTable( dataset );
             }
         }); 
     }
@@ -140,11 +139,34 @@
         return dataset;
      }
 
+    function initializeDatePicker() 
+    {
+    	$('#daterange-btn').daterangepicker
+		(
+		{
+			ranges: {
+				'วันนี้': [moment(), moment()],
+				'เมื่อวาน': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'7 วันที่ผ่านมา': [moment().subtract(7, 'days'), moment().subtract(1, 'days')],
+				'30 วันที่ผ่านมา': [moment().subtract(29, 'days'), moment()],
+				'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
+				'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},
+			startDate: moment().subtract(29, 'days'),
+			endDate: moment()
+		},
+		function (start, end) {
+			$('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+			$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
+		}
+		);
+    }
+
     function createTable() 
     {
         $('#dataTable').DataTable( {
             columns: [
-                { title: "Image" },
+                { title: "Post" },
                 { title: "Name" },
                 { title: "Engagement" },
               	{ title: "Rank 1" ,
@@ -187,7 +209,8 @@
 	$(document).ready(function() 
 	{
 	    createTable();
-	    // ajaxManageList(); 
+	    initializeDatePicker();
+	    ajaxAnalyticList(); 
 	});
 
 </script>

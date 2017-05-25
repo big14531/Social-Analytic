@@ -422,7 +422,7 @@ class Posts_model extends CI_Model
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
 		$this->db->where('list.page_id',$page_id);
 		$this->db->where('list.is_active',1);
-		$this->db->where('post.is_delete',0);
+		$this->db->where('post.is_delete<',5);
 		$this->db->where('post.is_analytic',0);
 		$this->db->where('post.created_time >',$min_date);
 		$this->db->where('post.created_time <',$max_date);
@@ -586,6 +586,23 @@ class Posts_model extends CI_Model
 		$this->db->where('list.is_active',1);
 		$this->db->where('post.created_time >',$min_date);
 		$this->db->where('post.created_time <',$max_date);
+		// echo $this->db->get_compiled_select();
+		// exit();
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
+	public function getOwnerPostbyDate( $min_date , $max_date )
+	{
+		$result = [];
+		$this->db->select( "owner.*,post.*" );
+		$this->db->from('fb_owner_post as owner');
+		$this->db->where('owner.created_time >',$min_date);
+		$this->db->where('owner.created_time <',$max_date);
+		$this->db->join( 'fb_facebook_post as post', 'owner.post_id = post.post_id' );
+		// $this->db->join( 'fb_page_list as list', 'owner.page_id = list.page_id' );
+		$this->db->order_by('owner.created_time', 'DESC');
 		// echo $this->db->get_compiled_select();
 		// exit();
 		$result = $this->db->get();

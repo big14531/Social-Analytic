@@ -37,7 +37,8 @@ class Data_ctrl extends CI_Controller
 		write_file($this->daily_log,"\n"."--- RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
 
 		if($minute%30==0)
-		{
+		{	
+			$this->updateInsight();
 			$result = $this->updateTrackingPage();
 			if ( $result )
 			{
@@ -288,20 +289,21 @@ class Data_ctrl extends CI_Controller
 		$this->load->library('THSplitLib/segment');
 		$this->load->helper('analytic_helper');
 		$page_id = "208428464667";  //Komchudluk page_id
-		$min_date = date( "Y-m-d 00:00:00" , strtotime( "2 day ago" ) );
-		$max_date = date( "Y-m-d H:i:s" , strtotime( "yesterday" ) );
+		$min_date = date( "Y-m-d 00:00:00" , strtotime( "yesterday" ) );
+		$max_date = date( "Y-m-d 23:59:59" , strtotime( "yesterday" ) );
 
 		// GET POST
 		$main_post =  $this->Posts_model->getPostsbyPageNameandTimeForAnalytic( $page_id ,$min_date ,$max_date )->result();
 		$target_post =  $this->Posts_model->getAllPostbyTime( $min_date ,$max_date );
-
+		print_r( $main_post );
 		foreach ($main_post as $key => $post_obj) 
 		{
 			$result = [];
-			if( $post_obj->type!='link' )continue;
+			// print_r( $post_obj );
+			// if( $post_obj->type!='link' )continue;
 			$related_post_json = comparePostbyPostObj( $post_obj ,$target_post );
 			// Uncomment for check output
-			print_r( $related_post_json );
+			
 
 
 			$result['post_id'] = $post_obj->post_id;
