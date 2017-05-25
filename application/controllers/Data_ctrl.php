@@ -38,7 +38,7 @@ class Data_ctrl extends CI_Controller
 
 		if($minute%30==0)
 		{	
-			$this->updateInsight();
+			
 			$result = $this->updateTrackingPage();
 			if ( $result )
 			{
@@ -53,6 +53,7 @@ class Data_ctrl extends CI_Controller
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - New Sweep Post\r\n",'a+');
 			}
+			$this->updateInsight();
 		}
 
 		if($minute%1==0)
@@ -222,7 +223,7 @@ class Data_ctrl extends CI_Controller
 	public function updateInsight()
 	{
 		$page_id = "208428464667";  //Komchudluk page_id
-		$min_date = date( "Y-m-d 00:00:00" , strtotime( "2 day ago" ) );
+		$min_date = date( "Y-m-d 00:00:00" , strtotime( "yesterday" ) );
 
 		// GET POST
 		$main_post =  $this->Posts_model->getOwnerPostsbyPageNameandDate( $page_id , $min_date )->result();
