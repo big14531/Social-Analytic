@@ -187,6 +187,7 @@
 			{ title: "เวลาอัพเดท" },
 			{ title: "ข้อความ" },
 			{ title: "Engagement" },
+			{ title: "Rank" },
 			{ title: "Share" },
 			{ title: "Comments" },
 			{ title: "Reaction" },
@@ -215,6 +216,7 @@
 			}
 			},
 			],
+			"iDisplayLength": 100,
 			'order': [[ 4, "ASC" ]]
 			});
 
@@ -305,6 +307,7 @@
 				last_update_time,
 				value.name,
 				engagement.toLocaleString('en-US'),
+				value.engage_rank,
 				parseInt ( value.shares ).toLocaleString('en-US'),
 				parseInt ( value.comments ).toLocaleString('en-US'),
 				reaction.toLocaleString('en-US'),
@@ -328,20 +331,20 @@
 			// Get the column API object
 			var table = $('#example1').DataTable();
 
-			var column_likes = table.column( 8 ).visible();
-			var column_love = table.column( 9 ).visible();
-			var column_wow = table.column( 10 ).visible();
-			var column_haha = table.column( 11 ).visible();
-			var column_sad = table.column( 12 ).visible();
-			var column_angry = table.column( 13 ).visible();
+			var column_likes = table.column( 9 ).visible();
+			var column_love = table.column( 10 ).visible();
+			var column_wow = table.column( 11 ).visible();
+			var column_haha = table.column( 12 ).visible();
+			var column_sad = table.column( 13 ).visible();
+			var column_angry = table.column( 14 ).visible();
 
 			// Hide a column
-			table.column( 8 ).visible( !column_likes );
-			table.column( 9 ).visible( !column_love );
-			table.column( 10 ).visible( !column_wow );
-			table.column( 11 ).visible( !column_haha );
-			table.column( 12 ).visible( !column_sad );
-			table.column( 13).visible( !column_angry );		
+			table.column( 9 ).visible( !column_likes );
+			table.column( 10 ).visible( !column_love );
+			table.column( 11 ).visible( !column_wow );
+			table.column( 12 ).visible( !column_haha );
+			table.column( 13 ).visible( !column_sad );
+			table.column( 14 ).visible( !column_angry );		
 		}
 
 		function ajaxCall( page_id , min_date , max_date )

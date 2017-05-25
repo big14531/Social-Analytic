@@ -56,9 +56,8 @@ class Data_ctrl extends CI_Controller
 
 		if($minute%1==0)
 		{
-			$result = $this->updateBatchFacebookPost(50);
-			$result1 = $this->updateBatchFacebookPost(50);
-			if ( $result && $result1 ) 
+			$result = $this->updateBatchFacebookPost( 150 );
+			if ( $result ) 
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
 			}
@@ -172,11 +171,13 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
-	public function updateBatchFacebookPost( $limit=40 )
+	public function updateBatchFacebookPost( $limit=150 )
 	{
 		$post_array = [];
 		$date = Date("Y-m-d 00:00:00" , strtotime("-1 days"));
 		$post = $this->getLatedUpdatePost( $date , $limit );
+
+		// print_r( $post );
 
 		foreach ($post as $key => $value) 
 		{
@@ -184,10 +185,20 @@ class Data_ctrl extends CI_Controller
 			array_push( $post_array , $id );
 		}
 
-		$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
-		$result = $this->Posts_model->editDataForUpdate( $batch );
+		$post_id_array = array_chunk( $post_array , 50 );
 
-		$this->Posts_model->updatePost( $result );
+		
+		foreach ($post_id_array as $value) 
+		{
+			$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $value );
+			$result = $this->Posts_model->editDataForUpdate( $batch , $post );
+			if ( is_string( $result[0]) ) 
+			{
+				return;
+			}
+			$this->Posts_model->updatePost( $result );
+			// print_r( $result );
+		}
 		return true;
 	}
 
@@ -207,31 +218,99 @@ class Data_ctrl extends CI_Controller
 		return $data;
 	}
 
+	public function updateInsight()
+	{
+		$page_id = "208428464667";  //Komchudluk page_id
+		$min_date = date( "Y-m-d 00:00:00" , strtotime( "2 day ago" ) );
+
+		// GET POST
+		$main_post =  $this->Posts_model->getOwnerPostsbyPageNameandDate( $page_id , $min_date )->result();
+
+		$post_id_array = [];
+		foreach ($main_post as $key => $value) 
+		{
+			array_push( $post_id_array , $value->page_id.'_'.$value->post_id );
+		}
+
+		$post_id_array = array_chunk( $post_id_array , 50 , true );
+
+		foreach ($post_id_array as $value) 
+		{
+			$result=[];
+			$raw_post_array = $this->kcl_facebook_analytic->getInsightPost( $value );
+			foreach ($raw_post_array as $inner_value) 
+			{
+				$id = explode('/', $inner_value->data[0]->id );
+				$id = explode('_', $id[0] );
+				$insight_data = $inner_value->data[0]->values[0]->value;
+				$other_clicks = empty($insight_data->{'other clicks'})==1?0:$insight_data->{'other clicks'};
+				$photo_view = empty($insight_data->{'photo view'})==1?0:$insight_data->{'photo view'};
+				$link_clicks = empty($insight_data->{'link clicks'})==1?0:$insight_data->{'link clicks'};
+				$total_click =  $other_clicks + $photo_view + $link_clicks;
+				switch ( $total_click ) {
+					case $total_click>20000:
+						$total_click = 'S';
+						break;
+					case $total_click>10000:
+						$total_click = 'A';
+						break;
+					case $total_click>5000:
+						$total_click = 'B';
+						break;
+					case $total_click>1000:
+						$total_click = 'C';
+						break;
+					case $total_click>500:
+						$total_click = 'D';
+						break;	
+					case $total_click<500:
+						$total_click = 'F';
+						break;				
+					default:
+						$total_click = null;
+						break;
+				}
+				$data['post_id'] = $id[1];
+				$data['page_id'] = $id[0];
+				$data['other_clicks'] = $other_clicks;
+				$data['photo_view'] = $photo_view;
+				$data['link_clicks'] = $link_clicks;
+				$data['click_rank'] = $total_click;
+				array_push( $result , $data );
+			}
+			// print_r( $result );
+			$this->Posts_model->updateBatchOwnerPost( $result );
+		}	
+	}
+
 	public function processAnalyticPost()
 	{
-		// Innitialize value 
 		$this->load->library('THSplitLib/segment');
 		$this->load->helper('analytic_helper');
 		$page_id = "208428464667";  //Komchudluk page_id
-		$min_date = date( "Y-m-d 00:00:00" , strtotime( "yesterday" ) );
-		$max_date = date( "Y-m-d H:i:s" , strtotime( "now" ) );
+		$min_date = date( "Y-m-d 00:00:00" , strtotime( "2 day ago" ) );
+		$max_date = date( "Y-m-d H:i:s" , strtotime( "yesterday" ) );
 
 		// GET POST
-		$main_post =  $this->Posts_model->getPostsbyPageNameandTime( $page_id ,$min_date ,$max_date );
+		$main_post =  $this->Posts_model->getPostsbyPageNameandTimeForAnalytic( $page_id ,$min_date ,$max_date )->result();
 		$target_post =  $this->Posts_model->getAllPostbyTime( $min_date ,$max_date );
-		
-		$main_post = $main_post->result();
 
-		$post_id_array = [];
-		$i=0;
 		foreach ($main_post as $key => $post_obj) 
 		{
+			$result = [];
 			if( $post_obj->type!='link' )continue;
-			$compared_post = comparePostbyPostObj( $post_obj ,$target_post );
-			print_r( $compared_post );
+			$related_post_json = comparePostbyPostObj( $post_obj ,$target_post );
+			// Uncomment for check output
+			print_r( $related_post_json );
 
+
+			$result['post_id'] = $post_obj->post_id;
+			$result['page_id'] = $post_obj->page_id;
+		 	$result['related_post'] = $related_post_json;
+
+			$this->Posts_model->insertBatchOwnerPost( [$result] );
+			$this->Posts_model->setIsAnalytic( $post_obj->page_id , $post_obj->post_id );
 		}
-
 	}
 
 }

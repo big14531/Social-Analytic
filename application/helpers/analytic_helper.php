@@ -6,6 +6,7 @@ function comparePostbyPostObj( $post_obj , $target_post )
 
    	// print_r( $post_obj );
    	$result =[];
+   	$json_obj =[];
    	$text = $post_obj->message.' '.$post_obj->name;
    	$text = removeUnnecessaryWord( $text );
 
@@ -15,8 +16,9 @@ function comparePostbyPostObj( $post_obj , $target_post )
 	$splited = cleanArray( $splited );
 	$max = sizeof( $splited );
 	$regexp = '/'.implode('|', $splited).'/i';
-	echo $regexp."<br>";
 
+	// Uncomment for echo regexp
+	echo "<br>".$regexp."<br>";
 
 	foreach ($target_post as $value	) 
 	{
@@ -27,20 +29,22 @@ function comparePostbyPostObj( $post_obj , $target_post )
 		if ( $returnValue < $max*(80/100) ) continue;
 
 		$target_data = array(
-			'page_id' => $value->page_id,
-			'post_id' => $value->post_id,
+			'post_id' => $value->page_id.'_'.$value->post_id,
 			'engage' => $value->engage 	
 			);
 		array_push( $result ,$target_data );
 	}
 	usort($result,"cmp");
+	$result = array_slice($result, 0, 10);
+	$result = json_encode( $result );
+
  	return $result;
 }
 
 function cleanArray( $array )
 {
 	$splited = array_unique($array);
-	$nope_word = array('ๆ','สุด','ฯ','นี้','ได้','ยัง','จึง','ไม่','ให้','กับ','แล้ว','และ','หรือ','ที่','คือ','เป็น','สี','ว่า','จะ','มี','ใน');
+	$nope_word = array('ๆ','ทำ','สุด','ฯ','ก็','ไป','','นี้','ได้','ยัง','จึง','ไม่','ให้','กับ','แล้ว','และ','หรือ','ที่','คือ','เป็น','สี','ว่า','จะ','มี','ใน');
 
 	foreach ($splited as $key => $value) 
 	{

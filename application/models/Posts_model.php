@@ -8,7 +8,7 @@ class Posts_model extends CI_Model
 		$this->load->database();
 		$this->load->helper('file');
 	}
-	
+		
 	public function insertPostData( $posts )
 	{   
 
@@ -123,27 +123,65 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
-	public function editDataForUpdate( $data )
+	public function editDataForUpdate( $data , $main_post)
 	{
 		$result =[];
 		foreach( $data as $key => $value)
-		{
+		{	
+			if ( is_string($value) ) 
+			{
+				$del_count = $main_post[$key]->is_delete;
+				$id = explode('_', $value );
+				$this->setDeletedPost( $id[0] , $id[1] , $del_count );
+				continue;
+			}
 			$post =[];
-			$post['shares'] 			= ( empty( $value->shares ) ? 0 : $value->shares->count );
-			$post['comments'] 			= ( empty( $value->comments ) ? 0 : $value->comments->summary->total_count );
-			$post['likes'] 				= $value->like->summary->total_count;
-			$post['love'] 				= $value->love->summary->total_count;
-			$post['wow'] 				= $value->wow->summary->total_count;
-			$post['haha'] 				= $value->haha->summary->total_count;
-			$post['sad'] 				= $value->sad->summary->total_count;
-			$post['angry'] 				= $value->angry->summary->total_count;
+
+			$shares 	= intval( ( empty( $value->shares ) ? 0 : $value->shares->count ) );
+			$comments 	= intval( ( empty( $value->comments ) ? 0 : $value->comments->summary->total_count ) );
+			$likes 		= intval( ( empty( $value->like ) ? 0 : $value->like->summary->total_count ) );
+			$love 		= intval( ( empty( $value->love ) ? 0 : $value->love->summary->total_count ) );
+			$wow 		= intval( ( empty( $value->wow ) ? 0 : $value->wow->summary->total_count ) );
+			$haha 		= intval( ( empty( $value->haha ) ? 0 : $value->haha->summary->total_count ) );
+			$sad 		= intval( ( empty( $value->sad ) ? 0 : $value->sad->summary->total_count ) );
+			$angry 		= intval( ( empty( $value->angry ) ? 0 : $value->angry->summary->total_count ) );
+			$engage 	= $shares + $comments + $likes + $love + $wow + $haha + $sad + $angry;
+
+			if 		( $engage>20000 ) { $engage = 'S'; }
+			elseif 	( $engage>10000 ) { $engage = 'A'; }
+			elseif 	( $engage>5000 ) { $engage = 'B'; }
+			elseif 	( $engage>1000 ) { $engage = 'C'; }
+			elseif 	( $engage>500 ) { $engage = 'D'; }
+			elseif 	( $engage<500 ) { $engage = 'F'; }
+			
+			$post['shares'] 			= $shares;
+			$post['comments'] 			= $comments;
+			$post['likes'] 				= $likes;
+			$post['love'] 				= $love;
+			$post['wow'] 				= $wow;
+			$post['haha'] 				= $haha;
+			$post['sad'] 				= $sad;
+			$post['angry'] 				= $angry;
 			$post['last_update_time'] 	= Date("Y-m-d H:i:55");
 			$post['page_id'] 			= explode("_", $value->id )[0];
 			$post['post_id'] 			= explode("_", $value->id )[1];
 			$post['is_delete'] 			= 0;
+			$post['engage_rank'] 		= $engage;
+			print_r( $post );
 			array_push( $result , $post );
 		}
+		
 		return $result;
+	}
+
+	public function insertBatchOwnerPost( $data )
+	{
+		foreach ($data as $post) 
+		{
+			$insert_query = $this->db->insert_string('fb_owner_post', $post);
+			$insert_query = str_replace('INSERT INTO','INSERT IGNORE INTO',$insert_query);
+			$this->db->query($insert_query);			
+		}
 	}
 
 	public function insertBatchPost( $data )
@@ -154,6 +192,11 @@ class Posts_model extends CI_Model
 			$insert_query = str_replace('INSERT INTO','INSERT IGNORE INTO',$insert_query);
 			$this->db->query($insert_query);			
 		}
+	}
+
+	public function updateBatchOwnerPost( $data )
+	{
+		$this->db->update_batch('fb_owner_post', $data, 'post_id');
 	}
 
 	public function updatePost( $data )
@@ -356,12 +399,60 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function setIsAnalytic( $page_id , $post_id )
+	{
+		$data = array
+		(
+			'is_analytic' => 1
+			);
+		$this->db->where( 'page_id' , $page_id );
+		$this->db->where( 'post_id' , $post_id );
+		$this->db->update( 'fb_facebook_post' , $data );
+		
+		return true;
+	}
+
+	public function getPostsbyPageNameandTimeForAnalytic( $page_id , $min_date , $max_date)
+	{
+		$result = array();
+
+		$this->db->select('post.* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, , list.name as page_name');
+		$this->db->from('fb_facebook_post as post'); 
+
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
+		$this->db->where('list.page_id',$page_id);
+		$this->db->where('list.is_active',1);
+		$this->db->where('post.is_delete',0);
+		$this->db->where('post.is_analytic',0);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+
+		$result = $this->db->get();
+
+		return $result;
+	}
+
+
+	public function getOwnerPostsbyPageNameandDate( $page_id , $min_date)
+	{
+		$result = array();
+
+		$this->db->select('owner.*');
+		$this->db->from('fb_owner_post as owner'); 
+		$this->db->where('owner.page_id',$page_id);
+		$this->db->where('owner.created_time >',$min_date);
+		$this->db->order_by('owner.updated_time', 'asc');
+		$result = $this->db->get();
+
+		return $result;
+	}
+
 	public function getPostsbyPageNameandTime( $page_id , $min_date , $max_date)
 	{
 		$result = array();
 
 		$this->db->select('post.* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, , list.name as page_name');
-		$this->db->from('fb_facebook_post as post');
+		$this->db->from('fb_facebook_post as post'); 
 
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
 		$this->db->where('list.page_id',$page_id);
@@ -458,7 +549,6 @@ class Posts_model extends CI_Model
 
 		return $result->result();
 	}
-
 
 	public function getRecentPostbyPageandTime( $page_id , $min_date )
 	{

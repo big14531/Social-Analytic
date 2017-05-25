@@ -21,7 +21,7 @@ class Kcl_facebook_analytic
 
 	public function getToken()
 	{
-		$_SESSION['accessToken'] = "272658633175667|afmrK1I172gDdS-eXfc7jlJnzhU";
+		$_SESSION['accessToken'] = "EAAHcqxIXZB8IBAHVD8QgcrY6pa7AJGfXtqkpT1UhjR0Pz7644sl98XZCOuZCCXPGAZBfWhw5jks9kgjH0q4xjwh9OYE5C6hqJm9EEXWZCltAABZC5XCwaHn0ZB7dH9ZCToGOTveORGdehrf1ZAn4s05SwpD16SR75ws4ZD";
 	}
 
 	public function getRawPostData( $pageName , $limit , $offset=0 )
@@ -275,6 +275,47 @@ class Kcl_facebook_analytic
 			echo 'Facebook SDK returned an error: ' . $e->getMessage();
 			exit;
 		}
+		foreach ($responses as $key => $response) {
+			if ($response->isError()) {
+				$e = $response->getThrownException();
+				array_push( $result , $key );
+			} else {
+				array_push( $result , json_decode( $response->getBody() ) );
+			}
+		}
+		return $result;
+	}
+
+	public function getInsightPost( $post_array )
+	{
+		$result = [];
+		$batch = [];
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
+
+		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
+
+		$request_field = '/insights/post_consumptions_by_type_unique/lifetime/?fields=values';
+		foreach ($post_array as $post_id) 
+		{
+			$post1 = $this->fb_obj->request('GET', '/'.$post_id.$request_field);
+			array_push( $batch , array( $post_id =>  $post1 ) );
+		}
+		
+		try {
+			$responses = $this->fb_obj->sendBatchRequest($batch);
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
+
+			echo 'Graph returned an error: ' . $e->getMessage();
+			exit;
+		} catch(Facebook\Exceptions\FacebookSDKException $e) {
+
+			echo 'Facebook SDK returned an error: ' . $e->getMessage();
+			exit;
+		}
 
 		foreach ($responses as $key => $response) {
 			if ($response->isError()) {
@@ -285,6 +326,7 @@ class Kcl_facebook_analytic
 		}
 		return $result;
 	}
+
 
 	public function newExtractPostData( $data )
 	{
@@ -312,6 +354,7 @@ class Kcl_facebook_analytic
 				$posts['likes'] 		= ( empty($post_data->likes->summary->total_count) ) ? 0 : $post_data->likes->summary->total_count; 
 				$posts['comments'] 		= ( empty($post_data->comments->summary->total_count) ) ? 0 : $post_data->comments->summary->total_count;
 				$posts['shares'] 		= ( empty($post_data->shares->count) ) ? 0 : $post_data->shares->count;
+				
 				array_push( $result , $posts );
 			}
 		}
