@@ -147,11 +147,11 @@ class Posts_model extends CI_Model
 			$angry 		= intval( ( empty( $value->angry ) ? 0 : $value->angry->summary->total_count ) );
 			$engage 	= $shares + $comments + $likes + $love + $wow + $haha + $sad + $angry;
 
-			if 		( $engage>20000 ) { $engage = 'S'; }
-			elseif 	( $engage>10000 ) { $engage = 'A'; }
-			elseif 	( $engage>5000 ) { $engage = 'B'; }
-			elseif 	( $engage>1000 ) { $engage = 'C'; }
-			elseif 	( $engage>500 ) { $engage = 'D'; }
+			if 		( $engage>20000 ) { $engage = 'A'; }
+			elseif 	( $engage>10000 ) { $engage = 'B'; }
+			elseif 	( $engage>5000 ) { $engage = 'C'; }
+			elseif 	( $engage>1000 ) { $engage = 'D'; }
+			elseif 	( $engage>500 ) { $engage = 'E'; }
 			elseif 	( $engage<500 ) { $engage = 'F'; }
 			
 			$post['shares'] 			= $shares;
@@ -593,16 +593,25 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
-	public function getOwnerPostbyDate( $min_date , $max_date )
+	public function getOwnerPostbyDate( $page_id , $min_date , $max_date )
 	{
 		$result = [];
-		$this->db->select( "owner.*,post.*" );
-		$this->db->from('fb_owner_post as owner');
-		$this->db->where('owner.created_time >',$min_date);
-		$this->db->where('owner.created_time <',$max_date);
-		$this->db->join( 'fb_facebook_post as post', 'owner.post_id = post.post_id' );
-		// $this->db->join( 'fb_page_list as list', 'owner.page_id = list.page_id' );
-		$this->db->order_by('owner.created_time', 'DESC');
+		$this->db->select( "owner.*,post.*,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, (owner.link_clicks+owner.other_clicks+owner.photo_view+owner.video_play) as total_click" );
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$this->db->where_in('post.page_id',$page_id);
+		$this->db->join( 'fb_owner_post as owner', 'post.post_id = owner.post_id' );
+		$this->db->order_by('post.created_time', 'DESC');
+		// $this->db->group_by('post.post_id');
+
+
+		// $this->db->select( "owner.*,post.*" );
+		// $this->db->from('fb_owner_post as owner');
+		// $this->db->where('owner.created_time >',$min_date);
+		// $this->db->where('owner.created_time <',$max_date);
+		// $this->db->join( 'fb_facebook_post as post', 'owner.post_id = post.post_id' );
+		// $this->db->order_by('owner.created_time', 'DESC');
 		// echo $this->db->get_compiled_select();
 		// exit();
 		$result = $this->db->get();
@@ -716,12 +725,19 @@ class Posts_model extends CI_Model
 		$this->db->where('post.post_id =',$post_id );
 		$result = $this->db->get(); 
 
+		return $result->result();
+	}
 
-	   //  $result = array();
-	   // $this->db->from('fb_facebook_post');
-	   // $this->db->where('page_id =',$page_id);
-	   // $this->db->where('post_id =',$post_id );
-	   // $result = $this->db->get();
+	public function getPostbyArrayID( $id_array )
+	{
+
+		$result = array();
+		$this->db->select('post.*, ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact  , list.name as page_name , list.picture as page_picture , list.link as page_link');
+		$this->db->from('fb_facebook_post as post');
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
+		$this->db->where_in('post.post_id',$id_array );
+		$this->db->order_by( 'engage' ,'DESC');
+		$result = $this->db->get(); 
 
 		return $result->result();
 	}

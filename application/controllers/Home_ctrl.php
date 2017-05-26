@@ -83,9 +83,28 @@ class Home_ctrl extends CI_Controller
 	public function ajaxAnalyticList()
 	{
 		$result =[];
-		$min_date = date("Y-m-25 00:00:00" );
-		$max_date = date("Y-m-25 24:00:00" );
-		$post_array = $this->Posts_model->getOwnerPostbyDate( $min_date , $max_date );
+		// $min_date = date("Y-m-25 00:00:00" );
+		// $max_date = date("Y-m-25 24:00:00" );
+
+		$min_date = $this->input->post('min_date');
+		$max_date = $this->input->post('max_date');
+		
+		$page_id = ["208428464667"];
+		$post_array = $this->Posts_model->getOwnerPostbyDate( $page_id , $min_date , $max_date );
+
+		foreach ($post_array as $key => $post) 
+		{
+			$related_post = json_decode( $post->related_post );
+
+			$array_id = [];
+			foreach ( $related_post as $relate_obj ) 
+			{
+				array_push( $array_id, explode('_', $relate_obj->post_id)[1] ) ;
+			}
+
+			$related_data = $this->Posts_model->getPostbyArrayID( $array_id );
+			$post_array[$key]->related_post = $related_data;
+		}
 
 		echo json_encode( $post_array );
 	}

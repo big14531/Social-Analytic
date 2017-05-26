@@ -67,6 +67,7 @@ $route['updateFacebookPost/(:num)'] = 'data_ctrl/updateFacebookPost/$1';
 $route['updateTrackingPage'] = 'data_ctrl/updateTrackingPage';
 
 /*---------- update all interval , temp ----------*/
+$route['tmp'] = 'home_ctrl/ajaxAnalyticList';
 $route['processAnalyticPost'] = 'data_ctrl/processAnalyticPost';
 $route['updateInsight'] = 'data_ctrl/updateInsight';
 $route['updateBatchFacebookPost']  = 'data_ctrl/updateBatchFacebookPost';

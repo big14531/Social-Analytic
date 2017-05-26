@@ -251,19 +251,19 @@ class Data_ctrl extends CI_Controller
 				$total_click =  $other_clicks + $photo_view + $link_clicks;
 				switch ( $total_click ) {
 					case $total_click>20000:
-						$total_click = 'S';
-						break;
-					case $total_click>10000:
 						$total_click = 'A';
 						break;
-					case $total_click>5000:
+					case $total_click>10000:
 						$total_click = 'B';
 						break;
-					case $total_click>1000:
+					case $total_click>5000:
 						$total_click = 'C';
 						break;
-					case $total_click>500:
+					case $total_click>1000:
 						$total_click = 'D';
+						break;
+					case $total_click>500:
+						$total_click = 'E';
 						break;	
 					case $total_click<500:
 						$total_click = 'F';
