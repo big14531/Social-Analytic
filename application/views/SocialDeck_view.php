@@ -5,7 +5,6 @@
 
 <!-- Internal CSS Zone -->
 <style>
-
 	html,body{ margin:0; padding:0; height:100%; width:100%; }
 	.page-name{
 		margin-right: 5px;

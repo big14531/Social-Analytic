@@ -3,9 +3,7 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
-	li{
-		color: black!important;
-	}
+
 	.graph_tab.active a{
 		background-color:#3c8dbc!important;
 	}
@@ -387,6 +385,10 @@
 						$('#search-btn').prop('disabled',false);
 						$('#search-btn').removeClass('disabled');
 						$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
+						$("#alert").fadeTo(2000, 500).slideUp(500, function()
+						{
+							$("#alert").slideUp(500);
+						});
 					},
 					error:function(xhr, textStatus, errorThrown) 
 					{
@@ -419,10 +421,7 @@
 				$('#alert').find('h3').text( "กรุณาเลือกวันที่และชื่อเพจที่ต้องการ" );
 				$('#alert').find('p').text( '' );
 			}
-			$("#alert").fadeTo(2000, 500).slideUp(500, function()
-			{
-				$("#alert").slideUp(500);
-			});
+			
 		});
 
 		$('#toggle-vis-btn').click( function()

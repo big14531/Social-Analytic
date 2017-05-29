@@ -3,21 +3,59 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
-	#line-chart-tooltip{
-		z-index: 10000;
+	p{
+		margin: 0 0 0px;
 	}
-	.tooltip-inner{
-		min-width: 100px;
-		max-width: 300px;
+	label{
+		color: black!important;
 	}
-	.gray-box{
-		padding: 30px!important;
+	.product-description{
+	    font-size: 13px;
 	}
-	.graph_tab.active a{
-		background-color:#3c8dbc!important;
+	.product-title{
+		overflow: hidden;
+	    text-overflow: ellipsis;
+	    display: -webkit-box;
+	    line-height: 16px;
+	    max-height: 48px;
+	    -webkit-line-clamp: 2;
+	    -webkit-box-orient: vertical;
+	    font-weight: 400!important;
+	    color: white;
+	    font-size: 13px;
 	}
-	.graph_tab.active{
-		border-top:0px!important;
+	.products-list .product-info {
+	    margin-left: 60px;
+	}
+	.products-list>.item{
+		background: transparent;
+		padding-top: 5px;
+		padding-bottom: 4px;
+		border-bottom: 0px;
+	}
+	.header-table{
+		font-size: 20px;
+	}
+	.white-text{
+		color: white;
+	}
+	#target_profile_name{
+		color: white;
+	}
+	.dl-horizontal dt{
+		width: 100px;
+     	text-align: left;
+     	color: #8d8d8d; 
+	}
+	.img-post{
+		width: 100%;
+	}
+	.dl-horizontal dd {
+	    margin-left: 100px;
+	    text-overflow: ellipsis;
+    	overflow: hidden;
+    	margin-bottom: 5px;
+    	color: white;
 	}
 	.table-icon{
 		width:30px;
@@ -30,18 +68,21 @@
 		padding-left: 5px;
 		padding-top: 5px;
 		font-weight: 400;
-		font-size: 20px;
+		font-size: 15px;
 		color: black!important;
 	}
 	.box-font-head{
-		font-size: 20px;
+		font-size: 15px;
 		color: black!important;
 	}
-	.post-icon{
-		background-color: #f0f0f5;
+	.small-box>.inner{
+		padding: 5px;
+		text-align: center;
 	}
-	.icon-col{
-		padding: 10px;
+	.post-icon{
+		margin-bottom: 10px;
+		background-color: #f0f0f5;
+		border-radius: 5px;
 	}
 	.modal-dialog{
 		padding-top: 15%!important;
@@ -159,9 +200,9 @@
 
 		<!--  Target Post Zone -->
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-9">
 				<!-- Box Comment -->
-				<div class="box box-widget">
+				<div class="box gray-box">
 
 					<!-- Header  -->
 					<div class="box-header with-border">
@@ -171,47 +212,38 @@
 							<span class="description" id="target_create"></span>
 							<span class="description" id="target_update"></span>
 						</div>
-						<!-- /.user-block -->
-
-						<div class="box-tools">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
-						</div>
-						<!-- /.box-tools -->
 					</div>
 
 					<!-- Body  -->
 					<div class="box-body">
-						<img class="img-responsive pad" id="target_photo" alt="Photo">
-
-						<div class="box box-solid">
-							<div class="box-header with-border">
-								<i class="fa fa-text"></i>
-
-								<h3 class="box-title">Post Detail</h3>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body">
-								<dl class="dl-horizontal">
-									<dt>Name</dt>
-									<dd id="target_name"></dd>
-
-									<dt>Message</dt>
-									<dd id="target_message"></dd>
-
-									<dt>Description</dt>
-									<dd id="target_description"></dd>
-
-									<dt>Facebook Link</dt>
-									<dd><a id="target_facebook" target="_blank"></a></dd>
-
-									<dt>Content Link</dt>
-									<dd><a id="target_link" target="_blank"></a></dd>
-
-								</dl>
-							</div>
-							<!-- /.box-body -->
+						<div class="col-md-3">
+							<img class="img-post" id="target_photo" alt="Photo">
 						</div>
+						
+						<div class="col-md-9">
+							<dl class="dl-horizontal">
+
+								<dt>ประเภทข่าว</dt>
+								<dd id="target_session"></dd>
+
+								<dt>Name</dt>
+								<dd id="target_name"></dd>
+
+								<dt>Message</dt>
+								<dd id="target_message"></dd>
+
+								<dt>Description</dt>
+								<dd id="target_description"></dd>
+
+								<dt>Facebook Link</dt>
+								<dd><a id="target_facebook" target="_blank"></a></dd>
+
+								<dt>Content Link</dt>
+								<dd><a id="target_link" target="_blank"></a></dd>
+
+							</dl>
+								
+						</div>	
 					</div>
 
 					<!-- Icon -->
@@ -246,86 +278,36 @@
 							</div>
 
 						</div>
-						<div class="row">
-
-							<div class="col-xs-2 icon-col">
-								<div class="small-box post-icon">
-									<div class="inner">
-										<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>
-										<label class="box-font" id="target_like"></label>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-xs-2 icon-col">
-								<div class="small-box post-icon">
-									<div class="inner">
-										<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>
-										<label class="box-font" id="target_love"></label>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-xs-2 icon-col">
-								<div class="small-box post-icon">
-									<div class="inner">
-										<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>
-										<label class="box-font" id="target_wow"></label>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-xs-2 icon-col">
-								<div class="small-box post-icon">
-									<div class="inner">
-										<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>
-										<label class="box-font" id="target_smile"></label>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-xs-2 icon-col">
-								<div class="small-box post-icon">
-									<div class="inner">
-										<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>
-										<label class="box-font" id="target_sad"></label>
-									</div>
-								</div>
-							</div>
-
-
-							<div class="col-xs-2 icon-col">
-								<div class="small-box post-icon">
-									<div class="inner">
-										<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>
-										<label class="box-font" id="target_angry"></label>
-									</div>
-								</div>
-							</div>
-
-						</div>
+					
 					</div>
 
 				</div>
+			</div>
 
+			<div class="col-md-3">
+				<div class="box gray-box">
+					<div class="box-header with-border">
+						<p class="white-text">สรุปเปรียบเทียบโพสต์</p>
+					</div>
+
+					<!-- Body  -->
+					<div class="box-body">
+						<ul id="rank-list" class="products-list product-list-in-box">
+			                
+			            </ul>
+					</div>
+				</div>
 			</div>
 		</div>
 		
-		<div class="box gray-box">
-			<div class="row">
-				<div class="graph-box">
-					<div id="placeholder" style="width:100%;height:500px">
-					</div>
-				</div>
-			</div>
-		</div>
+
 
 		<!--  Match Post table  -->
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="box">
 					<div class="box-header with-border">
-						<h1>โพสต์ที่เกี่ยวข้อง</h1>
+						<p class="header-table">โพสต์ที่เกี่ยวข้อง</p>
 					</div>
 					<div class="box-body">
 						<table id="example1" class="display table table-bordered" width="100%"></table>
@@ -351,7 +333,6 @@
 		var page_id = '<?php echo $id['page_id']; ?>';
 		var post_id = '<?php echo $id['post_id']; ?>';
 		var keyword = decodeURIComponent( '<?php echo $id['keyword'];?>' ).split(" ");
-		console.log( keyword );
 		$('#myModal').modal('show')
 		$.ajax(
 		{
@@ -367,17 +348,42 @@
 			success:function(data)
 			{
 				console.log(data);
+				var match_sort = data.match_post.sort(function(a,b){return b[0]['engage']-a[0]['engage']});
 				createPostTarget( data.target_post );
+				createRankList( match_sort , data.target_post[0].engage );
 				createTable( data.target_post );
-				renderTable( data.match_post );
-				plotGraph( data );
+				renderTable( match_sort );
 				toggleColumnReaction();
-				$('#myModal').modal('hide')
+
+				$('#myModal').modal('hide');
 			}   
 		}
 		);      
 	}
 	);
+
+	function createRankList( data , target_engage ) 
+	{
+		var rank_obj = $("#rank-list");
+
+		for (var i = 0; i < 5; i++) 
+		{
+
+			var post = data[i][0];
+			var html = 	'<li class="item">'+
+							'<div class="product-img">'+
+								'<img src="'+post.page_picture+'">'+
+		                  	'</div>'+
+							'<div class="product-info">'+
+		                    	'<a href="'+post.permalink_url+'" class="product-title" target="_blank">'+post.message+'</a>'+
+		                        '<span class="product-description">'+
+		                          'Engagement :'+parseInt(post.engage).toLocaleString('en-US')+
+		                        '</span>'+
+							'</div>'+
+		                '</li>'
+			rank_obj.append(html);
+		}
+	}
 
 	function generateData ( data , color ) 
 	{
@@ -434,104 +440,6 @@
 		return fan_dataset;
 	}
 
-	function plotGraph( data ) 
-	{ 
-		var match_post = generateData( data.match_post , '#00c0ef');
-		var target_post = generateDataTarget( data.target_post , '#FF0000');
-		var options = 
-		{
-			legend:
-			{
-				show:false
-			},       
-			series: 
-			{
-				points: 
-				{
-					show: true,
-					radius: 5,
-					fill: true,
-					fillColor: false
-				}
-			},
-			grid: 
-			{
-				hoverable: true,
-				clickable: true
-
-			},
-			xaxis:
-			{
-				show: true,
-				autoscaleMargin: 0.05
-
-			},
-			yaxis: 
-			{
-				show: true,
-				autoscaleMargin: 0.05
-			}
-		};
-
-		var placeholder = $("#placeholder");
-		var plot = $.plot("#placeholder", [match_post , target_post] , options );
-
-
-		$('<div class="tooltip-inner" id="line-chart-tooltip"></div>').css({
-			position: "absolute",
-			display: "none",
-			opacity: 1,
-		}).appendTo("body");
-
-		placeholder.bind("plothover", function (event, pos, item) 
-		{
-			if (item) 
-			{
-				var index = item.dataIndex;
-				var label = item.series.extraData[index].label;
-				var name = label[0]; 
-				var page_name = label[1];
-				var picture = label[4];
-
-				var date = new Date(item.datapoint[0]);
-					// Hours part from the timestamp    
-					var hours = date.getHours();
-					// Minutes part from the timestamp
-					var minutes = "0" + date.getMinutes();
-					// Seconds part from the timestamp
-					var seconds = "0" + date.getSeconds();
-					// Seconds part from the timestamp
-					var year = "0" + date.getFullYear();
-					// Seconds part from the timestamp
-					var month = "0" + date.getMonth();
-					var month = parseInt( month )+1;
-					// Seconds part from the timestamp
-					var day = "0" + date.getDate();
-					// Will display date in DD/MM/YYYY format
-					var formattedDate = day.substr(1) + '-' + month + '-' + year.substr(1);
-					// Will display time in 10:30:23 format
-					var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-
-					var date = "Date : "+formattedDate;
-					var time = "Time : "+formattedTime;
-					y = item.datapoint[1].toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ",");
-
-					$("#line-chart-tooltip").html( 
-
-						'<div class="row"><div class="col-xs-6"><image class="table-img" src='+picture+' /></div><div class="col-xs-6">'+name+'<br>'+date+'<br>'+time+'<br> '+'likes : '+ y+'</div></div>'
-						)
-					.css({top: item.pageY - 155, left: item.pageX - 150 })
-					.fadeIn(200);
-				} 
-				else 
-				{
-					$("#line-chart-tooltip").hide();
-				}
-			});
-
-		
-	}   
-
 	function toggleColumnReaction()
 	{
 		// Get the column API object
@@ -571,6 +479,7 @@
 		$('#target_update').text( 'Lated update - '+data[0].last_update_time );
 		$('#target_photo').attr( 'src' , data[0].picture );
 
+		$('#target_session').text( data[0].session===null?'None':data[0].session );
 		$('#target_name').text( data[0].name );
 		$('#target_message').text( data[0].message );
 		$('#target_description').text( data[0].description );

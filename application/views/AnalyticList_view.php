@@ -4,9 +4,6 @@
 
 <style>
 
-	li{
-		color: black!important;
-	}
 	.full-width{
 		width:100%;
 	}
@@ -15,7 +12,7 @@
 		margin: 0px;
 	}
 	.table-img{
-		width:100%;
+		width: 80px;
 	}
 	.page-img{
 		width: 50px;
@@ -221,7 +218,7 @@
     		dataset[key] = 
     		[
 	    		[ value.picture , value.permalink_url ],	
-	    		value.name,
+	    		[ value.name , value.page_id , value.post_id],
 	    		value.engage_rank,
 	    		value.engage,
 	    		value.click_rank , 
@@ -264,7 +261,9 @@
 		    	{ title: "Name"  ,
 		    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 		    	{
+		    		var analytic_link = "<?php echo base_url() ?>"+"postAnalytic/"+sData[1]+"/"+sData[2]+"/-";
 		    		$(nTd).addClass("name_txt");
+		    		$(nTd).html(sData[0]+" <a href='"+analytic_link+"' target='_blank' title='ไปหน้าวิเคราะห์แบบละเอียด' ><i class='fa fa-line-chart' aria-hidden='true'></a>" );
 		    	}
 			    },
 			    { title: "" ,
@@ -272,7 +271,6 @@
 			    {
 			    	$(nTd).addClass("rank_col");
 			    	$(nTd).html(sData);
-			    	console.log( nTd );
 			    }
 				},
 			    { title: "Reaction" ,
@@ -364,8 +362,6 @@
 			$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
 		});
     }
-
-
 
     $(document).ready(function() 
     {

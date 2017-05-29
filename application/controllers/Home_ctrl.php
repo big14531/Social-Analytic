@@ -707,9 +707,10 @@ class Home_ctrl extends CI_Controller
 		}
         //exit();
 
-		$result = $this->sortNestArray( $result);
+		$result = $this->sortNestArray( $result );
 		$data['target_post'] = $target_post;
 		$data['match_post'] = $result;
+		$data['keyword'] = $regexp;
 		echo json_encode( $data );
 	}
 

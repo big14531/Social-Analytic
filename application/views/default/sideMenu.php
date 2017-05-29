@@ -27,7 +27,7 @@
 
 					<li class="treeview">
 						<a href="<?php echo base_url(); ?>postList">
-							<i class="fa fa-list-ul"></i> 
+							<i class="fa fa-comments"></i> 
 							<span>โพสต์ทั้งหมด</span>
 							<span class="pull-right-container">
 								<!-- <small class="label pull-right bg-green">16</small> -->
@@ -37,7 +37,7 @@
 
 					<li class="treeview">
 						<a href="<?php echo base_url(); ?>showPageTable">
-							<i class="fa fa-table"></i> <span>เพจทั้งหมด</span>
+							<i class="fa fa-flag"></i> <span>เพจทั้งหมด</span>
 							<span class="pull-right-container">
 								<!-- <small class="label pull-right bg-green">16</small> -->
 							</span>
