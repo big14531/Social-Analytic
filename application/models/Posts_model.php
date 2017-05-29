@@ -123,57 +123,7 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
-	public function editDataForUpdate( $data , $main_post)
-	{
-		$result =[];
-		foreach( $data as $key => $value)
-		{	
-			if ( is_string($value) ) 
-			{
-				$del_count = $main_post[$key]->is_delete;
-				$id = explode('_', $value );
-				$this->setDeletedPost( $id[0] , $id[1] , $del_count );
-				continue;
-			}
-			$post =[];
-
-			$shares 	= intval( ( empty( $value->shares ) ? 0 : $value->shares->count ) );
-			$comments 	= intval( ( empty( $value->comments ) ? 0 : $value->comments->summary->total_count ) );
-			$likes 		= intval( ( empty( $value->like ) ? 0 : $value->like->summary->total_count ) );
-			$love 		= intval( ( empty( $value->love ) ? 0 : $value->love->summary->total_count ) );
-			$wow 		= intval( ( empty( $value->wow ) ? 0 : $value->wow->summary->total_count ) );
-			$haha 		= intval( ( empty( $value->haha ) ? 0 : $value->haha->summary->total_count ) );
-			$sad 		= intval( ( empty( $value->sad ) ? 0 : $value->sad->summary->total_count ) );
-			$angry 		= intval( ( empty( $value->angry ) ? 0 : $value->angry->summary->total_count ) );
-			$engage 	= $shares + $comments + $likes + $love + $wow + $haha + $sad + $angry;
-
-			if 		( $engage>20000 ) { $engage = 'A'; }
-			elseif 	( $engage>10000 ) { $engage = 'B'; }
-			elseif 	( $engage>5000 ) { $engage = 'C'; }
-			elseif 	( $engage>1000 ) { $engage = 'D'; }
-			elseif 	( $engage>500 ) { $engage = 'E'; }
-			elseif 	( $engage<500 ) { $engage = 'F'; }
-			
-			$post['shares'] 			= $shares;
-			$post['comments'] 			= $comments;
-			$post['likes'] 				= $likes;
-			$post['love'] 				= $love;
-			$post['wow'] 				= $wow;
-			$post['haha'] 				= $haha;
-			$post['sad'] 				= $sad;
-			$post['angry'] 				= $angry;
-			$post['last_update_time'] 	= Date("Y-m-d H:i:55");
-			$post['page_id'] 			= explode("_", $value->id )[0];
-			$post['post_id'] 			= explode("_", $value->id )[1];
-			$post['is_delete'] 			= 0;
-			$post['engage_rank'] 		= $engage;
-			print_r( $post );
-			array_push( $result , $post );
-		}
-		
-		return $result;
-	}
-
+	
 	public function insertBatchOwnerPost( $data )
 	{
 		foreach ($data as $post) 
@@ -305,19 +255,6 @@ class Posts_model extends CI_Model
 
 	public function getPageLog( $min_date , $max_date , $page )
 	{
-		//  EXMAPLE JOIN TABLE
-		// 
-		// $result = array();
-		// $this->db->select('*');
-		// $this->db->from('fb_page_log as log');
-		// $this->db->join('fb_page_list as list', 'list.page_id = log.page_id');
-		// $this->db->order_by('log.create_time', 'ASC');
-		// $this->db->where('log.create_time >', $time);
-		// $this->db->where('log.page_id', $page);
-
-		// $result = $this->db->get();
-
-		// return $result;
 
 		$result = array();
 		$this->db->order_by('create_time', 'ASC');
@@ -331,19 +268,6 @@ class Posts_model extends CI_Model
 
 	public function getPostRateLog( $page )
 	{
-		//  EXMAPLE JOIN TABLE
-		// 
-		// $result = array();
-		// $this->db->select('*');
-		// $this->db->from('fb_page_log as log');
-		// $this->db->join('fb_page_list as list', 'list.page_id = log.page_id');
-		// $this->db->order_by('log.create_time', 'ASC');
-		// $this->db->where('log.create_time >', $time);
-		// $this->db->where('log.page_id', $page);
-
-		// $result = $this->db->get();
-
-		// return $result;
 
 		$result = array();
 		$this->db->order_by('create_time', 'ASC');
@@ -431,7 +355,6 @@ class Posts_model extends CI_Model
 
 		return $result;
 	}
-
 
 	public function getOwnerPostsbyPageNameandDate( $page_id , $min_date)
 	{
@@ -603,17 +526,7 @@ class Posts_model extends CI_Model
 		$this->db->where_in('post.page_id',$page_id);
 		$this->db->join( 'fb_owner_post as owner', 'post.post_id = owner.post_id' );
 		$this->db->order_by('post.created_time', 'DESC');
-		// $this->db->group_by('post.post_id');
 
-
-		// $this->db->select( "owner.*,post.*" );
-		// $this->db->from('fb_owner_post as owner');
-		// $this->db->where('owner.created_time >',$min_date);
-		// $this->db->where('owner.created_time <',$max_date);
-		// $this->db->join( 'fb_facebook_post as post', 'owner.post_id = post.post_id' );
-		// $this->db->order_by('owner.created_time', 'DESC');
-		// echo $this->db->get_compiled_select();
-		// exit();
 		$result = $this->db->get();
 
 		return $result->result();
@@ -714,6 +627,7 @@ class Posts_model extends CI_Model
 
 		return $result->result();   
 	}
+	
 	public function getPostbyID( $page_id , $post_id )
 	{
 
@@ -798,7 +712,7 @@ class Posts_model extends CI_Model
 	}
 
 }
-
+?>
 
 
 

@@ -33,12 +33,20 @@ class Data_ctrl extends CI_Controller
 		}
 
 		$minute = date('i');
-
+		$hour = date('H');
 		write_file($this->daily_log,"\n"."--- RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
+		
+		if ($hour==='06') 
+		{
+			$result = $this->processAnalyticPost();
+			if ( $result )
+			{
+				write_file($this->daily_log,date('Y-m-d H:i:s')."  - Analytic Post\r\n",'a+');
+			}
+		}
 
 		if($minute%30==0)
 		{	
-			
 			$result = $this->updateTrackingPage();
 			if ( $result )
 			{
@@ -81,7 +89,7 @@ class Data_ctrl extends CI_Controller
 		$raw_post_array = $this->kcl_facebook_analytic->batchGetPostFacebook( $page_array );
 		$result = $this->kcl_facebook_analytic->newExtractPostData( $raw_post_array );
 		$this->Posts_model->insertBatchPost( $result );
-
+		// print_r( $result );
 
 		return true;
 	}
@@ -193,7 +201,7 @@ class Data_ctrl extends CI_Controller
 		foreach ($post_id_array as $value) 
 		{
 			$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $value );
-			$result = $this->Posts_model->editDataForUpdate( $batch , $post );
+			$result = $this->editDataForUpdate( $batch , $post );
 			if ( is_string( $result[0]) ) 
 			{
 				return;
@@ -202,6 +210,57 @@ class Data_ctrl extends CI_Controller
 			// print_r( $result );
 		}
 		return true;
+	}
+
+	public function editDataForUpdate( $data , $main_post)
+	{
+		$result =[];
+		foreach( $data as $key => $value)
+		{	
+			if ( is_string($value) ) 
+			{
+				$del_count = $main_post[$key]->is_delete;
+				$id = explode('_', $value );
+				$this->Posts_model->setDeletedPost( $id[0] , $id[1] , $del_count );
+				continue;
+			}
+			$post =[];
+
+			$shares 	= intval( ( empty( $value->shares ) ? 0 : $value->shares->count ) );
+			$comments 	= intval( ( empty( $value->comments ) ? 0 : $value->comments->summary->total_count ) );
+			$likes 		= intval( ( empty( $value->like ) ? 0 : $value->like->summary->total_count ) );
+			$love 		= intval( ( empty( $value->love ) ? 0 : $value->love->summary->total_count ) );
+			$wow 		= intval( ( empty( $value->wow ) ? 0 : $value->wow->summary->total_count ) );
+			$haha 		= intval( ( empty( $value->haha ) ? 0 : $value->haha->summary->total_count ) );
+			$sad 		= intval( ( empty( $value->sad ) ? 0 : $value->sad->summary->total_count ) );
+			$angry 		= intval( ( empty( $value->angry ) ? 0 : $value->angry->summary->total_count ) );
+			$engage 	= $shares + $comments + $likes + $love + $wow + $haha + $sad + $angry;
+
+			if 		( $engage>20000 ) { $engage = 'A'; }
+			elseif 	( $engage>10000 ) { $engage = 'B'; }
+			elseif 	( $engage>5000 ) { $engage = 'C'; }
+			elseif 	( $engage>1000 ) { $engage = 'D'; }
+			elseif 	( $engage>500 ) { $engage = 'E'; }
+			elseif 	( $engage<500 ) { $engage = 'F'; }
+			
+			$post['shares'] 			= $shares;
+			$post['comments'] 			= $comments;
+			$post['likes'] 				= $likes;
+			$post['love'] 				= $love;
+			$post['wow'] 				= $wow;
+			$post['haha'] 				= $haha;
+			$post['sad'] 				= $sad;
+			$post['angry'] 				= $angry;
+			$post['last_update_time'] 	= Date("Y-m-d H:i:55");
+			$post['page_id'] 			= explode("_", $value->id )[0];
+			$post['post_id'] 			= explode("_", $value->id )[1];
+			$post['is_delete'] 			= 0;
+			$post['engage_rank'] 		= $engage;
+			print_r( $post );
+			array_push( $result , $post );
+		}
+		
+		return $result;
 	}
 
 	public function getLatedUpdatePost( $date , $limit )
@@ -304,8 +363,6 @@ class Data_ctrl extends CI_Controller
 			// if( $post_obj->type!='link' )continue;
 			$related_post_json = comparePostbyPostObj( $post_obj ,$target_post );
 			// Uncomment for check output
-			
-
 
 			$result['post_id'] = $post_obj->post_id;
 			$result['page_id'] = $post_obj->page_id;
@@ -314,6 +371,7 @@ class Data_ctrl extends CI_Controller
 			$this->Posts_model->insertBatchOwnerPost( [$result] );
 			$this->Posts_model->setIsAnalytic( $post_obj->page_id , $post_obj->post_id );
 		}
+		return true;
 	}
 
 }

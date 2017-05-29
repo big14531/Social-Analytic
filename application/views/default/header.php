@@ -17,7 +17,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/dist/css/AdminLTE.min.css?version=4">
     <!-- Skin -->
     <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/dist/css/skins/_all-skins.min.css">
     <!-- DataTables -->

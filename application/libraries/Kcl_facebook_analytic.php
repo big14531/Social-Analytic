@@ -354,10 +354,17 @@ class Kcl_facebook_analytic
 				$posts['likes'] 		= ( empty($post_data->likes->summary->total_count) ) ? 0 : $post_data->likes->summary->total_count; 
 				$posts['comments'] 		= ( empty($post_data->comments->summary->total_count) ) ? 0 : $post_data->comments->summary->total_count;
 				$posts['shares'] 		= ( empty($post_data->shares->count) ) ? 0 : $post_data->shares->count;
-				
+				$posts['session'] 		= $this->setPostSession( $post_data );
 				array_push( $result , $posts );
 			}
 		}
 		return $result;
+	}
+
+	public function setPostSession( $post )
+	{
+		$text = explode('/', $post->link);
+		if ($text[2]!=='www.komchadluek.net')return null;
+		return $text[4];
 	}
 }

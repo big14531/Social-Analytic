@@ -3,6 +3,7 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+
 	li{
 		color: black!important;
 	}
@@ -45,6 +46,9 @@
 		text-align: center;
 		vertical-align: middle;
 	}
+	.rank_col{
+		width: 20px;
+	}
 	.reddot:before {
 		margin-left: 15px;
 		position: absolute;
@@ -56,12 +60,28 @@
 		height: 20px;
 		pointer-events: none;
 	}
-
 	.div-pic {
 		padding:10px;
 	}
 	.mini-engage{
 		font-size: 0.8em;
+	}
+	.sm-icon{
+		width: 15px;
+	}
+	.rank-row{
+		margin-top: 10px;
+	}
+	.rank-box{
+		border-radius: 3px;
+		height: 100%;
+		color: white;
+		background-color: #0ac4f2;
+		padding: 7px;
+	}
+	.rank-text{
+		margin-left : 12px;
+		margin-right: 12px;
 	}
 </style>
 
@@ -79,7 +99,7 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			ตารางเปรียบเทียบโพสต์ ( Reports )
+			ตารางเปรียบเทียบโพสต์ คมชัดลึก
 		</h1>
 
 	</section>
@@ -105,7 +125,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 							<span>
 								<i class="fa fa-calendar"></i> ค้นหา
@@ -113,8 +133,28 @@
 						</button>
 					</div>
 				</div>
+				<div class="row rank-row">
+					<div class="col-md-12">
+						<div class="rank-box">
+							<b>รายละเอียดการจัดอันดับ : </b>
+							<span class="rank-text">ระดับ A - มากกว่า 20,000</span> 
+							<span class="rank-text">ระดับ B - 10,000 ถึง 20,000</span> 
+							<span class="rank-text">ระดับ C - 5,000 ถึง 10,000</span> 
+							<span class="rank-text">ระดับ D - 1,000 ถึง 5,000</span> 
+							<span class="rank-text">ระดับ E - 500 ถึง 1,000</span> 
+							<span class="rank-text">ระดับ F - น้อยกว่า 500</span> 
+						</div>
+
+
+
+
+
+					</div>
+				</div>
 			</div>
 		</div>
+
+
 
 		<div class="box">
 			<div class="box-body">
@@ -182,8 +222,10 @@
     		[
 	    		[ value.picture , value.permalink_url ],	
 	    		value.name,
-	    		[ value.engage_rank , parseInt(value.engage).toLocaleString('en-US') ] ,
-	    		[ value.click_rank , parseInt(value.link_clicks).toLocaleString('en-US') ] ,
+	    		value.engage_rank,
+	    		value.engage,
+	    		value.click_rank , 
+	    		value.link_clicks ,
 	    		relate_post[0]==null ? '-':relate_post[0],
 	    		relate_post[1]==null ? '-':relate_post[1],
 	    		relate_post[2]==null ? '-':relate_post[2],
@@ -205,7 +247,7 @@
     		$(nTd).addClass("reddot");
     	}
     	$(nTd).addClass("rank_col");
-    	$(nTd).html("<div class='div-pic'><a href='"+sData.permalink_url+"' target='_blank'><image class='page-img' src='"+sData.page_picture+"' /></a><span class='mini-engage'>"+parseInt(sData.engage).toLocaleString('en-US')+"</span></div>");
+    	$(nTd).html("<div class='div-pic'><a href='"+sData.permalink_url+"' target='_blank'><image class='page-img' src='"+sData.page_picture+"' /></a><br><img class='sm-icon' src='<?php echo(base_url());?>assets/images/like.png'><span class='mini-engage'>"+parseInt(sData.engage).toLocaleString('en-US')+"</span></div>");
     }
 
     function createTable() 
@@ -225,19 +267,34 @@
 		    		$(nTd).addClass("name_txt");
 		    	}
 			    },
+			    { title: "" ,
+			    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+			    {
+			    	$(nTd).addClass("rank_col");
+			    	$(nTd).html(sData);
+			    	console.log( nTd );
+			    }
+				},
 			    { title: "Reaction" ,
 			    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 			    {
 			    	$(nTd).addClass("reaction_col");
-			    	$(nTd).html(sData[0]+" ( "+sData[1]+" )");
+			    	$(nTd).html(parseInt(sData).toLocaleString('en-US'));
 			    }
 				},
-				{ title: "Click" ,
+				{ title: "" ,
 				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 				{
-					$(nTd).addClass("engage_col");
-					$(nTd).html(sData[0]+" ( "+sData[1]+" )");
+					$(nTd).addClass("rank_col");
+					$(nTd).html(sData);
 				}
+				},
+				{ title: "Reaction" ,
+			    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+			    {
+			    	$(nTd).addClass("engage_col");
+			    	$(nTd).html(parseInt(sData).toLocaleString('en-US'));
+			    }
 				},
 				{ title: "Rank 1" ,
 				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
