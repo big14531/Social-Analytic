@@ -161,7 +161,7 @@
 		+'</div>'
 		+'</div>'
 		+'</li>'
-		list_box.append( html );
+		list_box.append( $(html).hide().fadeIn(500) );
 	}
 
 	function prependPost( post , col ) 
@@ -184,7 +184,7 @@
 		+'</div>'
 		+'</div>'
 		+'</li>'
-		list_box.prepend( html );
+		list_box.prepend( $(html).hide().fadeIn(500)  );
 	}
 
 	function addNewPost( data ) 
@@ -267,14 +267,14 @@
 				noHighlight(key);
 				continue;
 			} 
-			$("#highlight-txt-"+key).text( value.name  );
-			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  );
-			$("#highlight-pic-"+key).attr( 'src' , value.picture  );
-			$("#highlight-date-"+key).text( value.last_update_time  );
-			$("#highlight-description-"+key).text( value.message );
-			$("#highlight-like-"+key).text( value.engage );
-			$("#highlight-comment-"+key).text( value.comments );
-			$("#highlight-shared-"+key).text( value.shares );
+			$("#highlight-txt-"+key).text( value.name  ).hide().fadeIn(500);
+			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  ).hide().fadeIn(500);
+			$("#highlight-pic-"+key).attr( 'src' , value.picture  ).hide().fadeIn(500);
+			$("#highlight-date-"+key).text( value.last_update_time  ).hide().fadeIn(500);
+			$("#highlight-description-"+key).text( value.message ).hide().fadeIn(500);
+			$("#highlight-like-"+key).text( value.engage ).hide().fadeIn(500);
+			$("#highlight-comment-"+key).text( value.comments ).hide().fadeIn(500);
+			$("#highlight-shared-"+key).text( value.shares ).hide().fadeIn(500);
 		}
 	}
 
@@ -302,17 +302,17 @@
 
 			if( typeof (post.reaction.summary.total_count) !== 'undefined' )
 			{
-				$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count );
+				$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count ).hide().fadeIn(500);
 			}
 
 			if( typeof (post.comments.summary.total_count) !== 'undefined' )
 			{
-				$("#post-"+post.id).find( "#comment_number" ).text( post.comments.summary.total_count );
+				$("#post-"+post.id).find( "#comment_number" ).text( post.comments.summary.total_count ).hide().fadeIn(500);
 			}
 
 			if( typeof (post.shares) !== 'undefined' )
 			{
-				$("#post-"+post.id).find( "#share_number" ).text( post.shares.count );
+				$("#post-"+post.id).find( "#share_number" ).text( post.shares.count ).hide().fadeIn(500);
 			}
 		}
 	}
@@ -472,10 +472,11 @@
 	function initialize() 
 	{
 		ajaxCreatePageCard();
-		setTempDefault();
-		ajaxFirstTimePost();
 		setHightlightOrder();
 		ajaxGetHighlightPost();
+		setTempDefault();
+		ajaxFirstTimePost();
+		
 	}
 
 	function removeOverPost() 

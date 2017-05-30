@@ -53,7 +53,7 @@ class Validation_ctrl extends CI_Controller
             $date = date("Y-m-d H:i:s");
             $this->Login_model->updateLastLogin( $data[0]->user_id , $date );
 
-            redirect('/dashboard');
+            redirect('/');
         }
         else
         {
