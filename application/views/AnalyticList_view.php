@@ -98,7 +98,6 @@
 		<h1>
 			ตารางเปรียบเทียบโพสต์ คมชัดลึก
 		</h1>
-
 	</section>
 
 	<section class="content">   
@@ -158,8 +157,25 @@
 				<table id="dataTable" class="display table table-bordered" width="100%"></table>
 			</div>
 		</div>
-
 	</section>
+
+	<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+		<div class="modal-dialog" role="document" style="text-align: center;">
+			<div class="sk-cube-grid">
+				<div class="sk-cube sk-cube1"></div>
+				<div class="sk-cube sk-cube2"></div>
+				<div class="sk-cube sk-cube3"></div>
+				<div class="sk-cube sk-cube4"></div>
+				<div class="sk-cube sk-cube5"></div>
+				<div class="sk-cube sk-cube6"></div>
+				<div class="sk-cube sk-cube7"></div>
+				<div class="sk-cube sk-cube8"></div>
+				<div class="sk-cube sk-cube9"></div>
+			</div>
+
+			<h3 style="color: #FFF">Loading....</h3>
+		</div>
+	</div>
 </div>
 
 <?php $this->load->view( 'default/bottom' ) ?>
@@ -176,6 +192,7 @@
 
 	function ajaxAnalyticList( min_date , max_date )
 	{
+		$('#myModal').modal('show');
 		$('#search-btn').find('span').text('กำลังค้นหา.....');
 		$('#search-btn').addClass('disabled');
 		$('#search-btn').prop('disabled',true);
@@ -196,6 +213,7 @@
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
 				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
+				$('#myModal').modal('hide');
             }
         }); 
 	}

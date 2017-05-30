@@ -64,6 +64,21 @@
 	.highlight-post{
 		background-color: #3c8dbc;
 	}
+	.blink-item{
+		-moz-transition:all 0.5s ease-in-out;
+	    -webkit-transition:all 0.5s ease-in-out;
+	    -o-transition:all 0.5s ease-in-out;
+	    -ms-transition:all 0.5s ease-in-out;
+	    transition:all 0.5s ease-in-out;
+	    -moz-animation:blink normal 1.5s infinite ease-in-out;
+	    /* Firefox */
+	    -webkit-animation:blink normal 1.5s infinite ease-in-out;
+	    /* Webkit */
+	    -ms-animation:blink normal 1.5s infinite ease-in-out;
+	    /* IE */
+	    animation:blink normal 1.5s infinite ease-in-out;
+	    /* Opera */
+	}
 	.white{
 		color: white!important;
 	}
@@ -76,6 +91,32 @@
 	    font-size: 15px;
 	    text-decoration: underline;
 	}
+
+	@keyframes blink 
+	{
+	    0% {
+	           background-color: #222d32;
+	    }
+	    50% {
+	           background-color: #a8a8a8;
+	    }
+	    100% {
+	           background-color: #222d32;
+	    }
+	}
+	@-webkit-keyframes blink 
+	{
+	    0% {
+	           background-color: #222d32;
+	    }
+	    50% {
+	           background-color: #a8a8a8;
+	    }
+	    100% {
+	           background-color: #222d32;
+	    }
+	}
+
 </style>
 
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=5">
@@ -132,7 +173,6 @@
 
 	var last_time_update = []; 
 
-
 	function setHightlightOrder()
 	{
 		$("#list-box-"+0+" li:eq(0)").before($("#highlight-post-"+0));
@@ -185,6 +225,7 @@
 		+'</div>'
 		+'</li>'
 		list_box.prepend( $(html).hide().fadeIn(500)  );
+		$('#post-'+post.page_id+'_'+post.post_id).addClass('blink-item');
 	}
 
 	function addNewPost( data ) 
@@ -299,7 +340,7 @@
 		for (var i = 0; i < data.length; i++) {
 			var post = data[i];
 			var target = $("#post-"+post.id);
-
+			if ( typeof( post )=='string' ) continue;
 			if( typeof (post.reaction.summary.total_count) !== 'undefined' )
 			{
 				$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count ).hide().fadeIn(500);
@@ -335,6 +376,7 @@
 				},
 				success:function(data)	
 				{
+
 					console.log("Get : ");
 					console.log(data);
 					addNewPost(data);
@@ -476,7 +518,6 @@
 		ajaxGetHighlightPost();
 		setTempDefault();
 		ajaxFirstTimePost();
-		
 	}
 
 	function removeOverPost() 
@@ -500,9 +541,9 @@
 		}
 	}
 
+	$('.feed-col').hide().fadeIn(700);
 	$(document).ready(function() 
 	{
-		
 		var box_height = $(document).height();
 		$(".gray-box").height(box_height-60);
 
@@ -510,8 +551,8 @@
 
 		$(".js-example-basic-single").on("select2:select", function (e) { ajaxEditPageCard( e.params.data.id , e.target.id ); });
 		
-
 		setInterval(function(){ 
+			$('.post-item').removeClass('blink-item');
 			ajaxUpdatePost();
 			removeOverPost();
 			ajaxGetHighlightPost();
@@ -519,8 +560,6 @@
 		setInterval(function(){ 
 			ajaxGetNewPost();
 		}, 70000);
-
-
 	});
 
 </script>
