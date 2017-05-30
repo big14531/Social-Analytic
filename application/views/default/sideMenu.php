@@ -61,13 +61,8 @@
 							</span>
 						</a>
 					</li>
-
-					
-
 				</ul>
 			</li>
-
-
 
 			<li class="treeview">
 				<a href="<?php echo base_url(); ?>dashboard">
