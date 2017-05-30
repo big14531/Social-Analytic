@@ -74,6 +74,15 @@
 			</li>
 
 			<li class="treeview">
+				<a href="<?php echo base_url(); ?>ownerDashboard">
+					<i class="fa fa-dashboard"></i> <span>แดชบอร์ด คมชัดลึก</span>
+					<span class="pull-right-container">
+						<!-- <small class="label pull-right bg-green">16</small> -->
+					</span>
+				</a>
+			</li>
+
+			<li class="treeview">
 				<a href="<?php echo base_url(); ?>growthPage">
 					<i class="fa fa-line-chart"></i> <span>กราฟภาพรวม</span>
 					<span class="pull-right-container">
