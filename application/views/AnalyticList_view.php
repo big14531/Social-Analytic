@@ -237,6 +237,7 @@
     		[
 	    		[ value.picture , value.permalink_url ],	
 	    		[ value.name , value.page_id , value.post_id],
+				value.session,
 	    		value.engage_rank,
 	    		value.engage,
 	    		value.click_rank , 
@@ -284,6 +285,13 @@
 		    		$(nTd).html(sData[0]+" <a href='"+analytic_link+"' target='_blank' title='ไปหน้าวิเคราะห์แบบละเอียด' ><i class='fa fa-line-chart' aria-hidden='true'></a>" );
 		    	}
 			    },
+			    { title: "Session" ,
+			    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+			    {
+			    	$(nTd).addClass("rank_col");
+			    	$(nTd).html(sData);
+			    }
+				},
 			    { title: "" ,
 			    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 			    {
@@ -305,7 +313,7 @@
 					$(nTd).html(sData);
 				}
 				},
-				{ title: "Reaction" ,
+				{ title: "Click" ,
 			    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 			    {
 			    	$(nTd).addClass("engage_col");

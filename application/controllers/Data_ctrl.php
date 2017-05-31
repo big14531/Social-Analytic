@@ -141,46 +141,6 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
-	public function updateFacebookPost( $limit )
-	{
-		$total_result = array();
-		$date = Date("Y-m-d 00:00:00" , strtotime("-1 days"));
-		
-		$postArray = $this->getLatedUpdatePost( $date , $limit );
-
-		if( isset($_SESSION['accessToken']) )
-		{
-			foreach ($postArray as $value) 
-			{
-				// echo "<br><br>Last Update".$value->last_update_time."<br><br>";
-				$error_count = $value->is_delete;
-				$post_id =  $value->page_id."_".$value->post_id;
-
-				$post_reaction = $this->kcl_facebook_analytic->getReactionPost( $post_id );
-				print_r( $value );
-				echo "<br><br><br>";
-
-				// incresing delete score
-				if ( is_object( $post_reaction ) ) 
-				{
-					$this->Posts_model->setDeletedPost( $value->page_id , $value->post_id , $error_count );
-					write_file($this->daily_log,date('Y-m-d H:i:s')."  - Update Fail ".$post_id."\r\n",'a+');
-					continue;
-				}
-
-				$post_reaction['last_update_time'] = Date("Y-m-d H:i:00");
-				$post_reaction['post_id'] = $value->post_id;
-				$post_reaction['created_time'] = nice_date(  $post_reaction['created_time'] , 'Y-m-d H:i:00');
-				$post_reaction['is_delete'] = 0;
-				array_push( $total_result , $post_reaction );
-			}
-			if ( count( $total_result )!=0 ) {
-				$this->Posts_model->updatePost( $total_result );
-			} 
-		}
-		return true;
-	}
-
 	public function updateBatchFacebookPost( $limit=150 )
 	{
 		$post_array = [];
@@ -216,7 +176,7 @@ class Data_ctrl extends CI_Controller
 	{
 		$result =[];
 		foreach( $data as $key => $value)
-		{	
+		{	 
 			if ( is_string($value) ) 
 			{
 				$del_count = $main_post[$key]->is_delete;
@@ -262,6 +222,7 @@ class Data_ctrl extends CI_Controller
 		
 		return $result;
 	}
+
 
 	public function getLatedUpdatePost( $date , $limit )
 	{
@@ -374,5 +335,27 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
+	// public function tempUpdateSession()
+	// {
+	// 	for ($i=15; $i <= 25 ; $i++) 
+	// 	{ 
+	// 		$post = $this->Posts_model->getPostsbyPageNameandTime( '208428464667' , '2017-05-'.$i.' 00:00:00' , '2017-05-'.$i.' 23:59:00' );
+	// 		$out=[];
+	// 		foreach ($post->result() as  $value) 
+	// 		{
+	// 			$item = file_get_contents("http://www.komchadluek.net/api/section?url=".$value->link);
+	// 			$result =  json_decode( $item );
+	// 			if (  $item=='null' || isset($result->error) )
+	// 			{
+	// 				continue;
+	// 			}
+	// 			echo $value->post_id." ".$result->section_name."<br>";
+	// 			array_push( $out,['post_id'=>$value->post_id , 'session'=>$result->section_name] );
+				
+	// 		}
+	// 		// print_r( $out );
+	// 		$this->Posts_model->updatePost($out);
+	// 	}
+	// }
 }
 ?>

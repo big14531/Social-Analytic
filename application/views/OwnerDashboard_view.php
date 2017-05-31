@@ -73,10 +73,10 @@
 	<section class="content">
 
 		<div class="row">
-			<div class="col-md-4 col-xs-12" style="text-align: center;">
+			<div class="col-md-3 col-xs-12" style="text-align: center;">
 				<img id="page-icon" class="page-logo" src="">
 			</div>
-			<div class="col-md-8 col-xs-12">
+			<div class="col-md-9 col-xs-12">
 				<div class="box white-box">
 					<h1 class="page-name" id="page-name"></h1>
 					<h3 class="page-name" id="time-range"></h3>
@@ -304,8 +304,6 @@
 		addContent( worst_box , data[1] );		
 	}
 
-	
-
 	function createDetailBox( data ) 
 	{
 		var page_detail = data[1];
@@ -514,7 +512,7 @@
 				createBarChart( data[0] );
 				createPieChart( data[0] );
 				createDetailBox( data )
-                editBestandWorstBox( data[1] );
+                editBestandWorstBox( data[2] );
 				$('#myModal').modal('hide');
 			}
 		});
@@ -559,7 +557,7 @@
 		updateFloatWidget();
 		searchCallback( construct_min_date , construct_max_date );
 	});
-    
+
 </script>
 
 </body>

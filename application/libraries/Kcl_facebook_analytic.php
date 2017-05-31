@@ -354,17 +354,21 @@ class Kcl_facebook_analytic
 				$posts['likes'] 		= ( empty($post_data->likes->summary->total_count) ) ? 0 : $post_data->likes->summary->total_count; 
 				$posts['comments'] 		= ( empty($post_data->comments->summary->total_count) ) ? 0 : $post_data->comments->summary->total_count;
 				$posts['shares'] 		= ( empty($post_data->shares->count) ) ? 0 : $post_data->shares->count;
-				$posts['session'] 		= $this->setPostSession( $post_data );
+				$posts['session'] 		= $this->getSessionKomchadluek( $post_data );
+				$this->getSessionKomchadluek( $post_data );
 				array_push( $result , $posts );
 			}
 		}
 		return $result;
 	}
 
-	public function setPostSession( $post )
+	public function getSessionKomchadluek($post)
 	{
 		$text = explode('/', $post->link);
 		if ($text[2]!=='www.komchadluek.net')return null;
-		return $text[4];
+		$item = file_get_contents("http://www.komchadluek.net/api/section?url=".$post->link);
+		$result =  json_decode( $item );
+		return $result->section_name;
 	}
+
 }
