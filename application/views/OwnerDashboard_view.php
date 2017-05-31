@@ -74,7 +74,7 @@
 
 		<div class="row">
 			<div class="col-md-3 col-xs-12" style="text-align: center;">
-				<img id="page-icon" class="page-logo" src="">
+				<img id="page-icon" class="page-logo" src="">                                                                                              
 			</div>
 			<div class="col-md-9 col-xs-12">
 				<div class="box white-box">
@@ -146,6 +146,24 @@
 		</div>
 
 		<div class="row chart-row">
+        
+			<div class="col-sm-12">
+				<!-- Donut chart -->
+				<div class="box gray-box">
+					<div class="box-header">
+						<h2 class="box-title">ประเภทข่าวทั้งหมด</h2>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<div class="box-body">
+						<div id="session-bar-chart" style="height: 300px;"></div>
+					</div>
+					<!-- /.box-body-->
+				</div>
+			</div>
+
 			<div class="col-sm-6 col-xs-12">
 				<!-- Donut chart -->
 				<div class="box gray-box">
@@ -394,7 +412,6 @@
 			color: "#00c0ef"
 		};
 
-
 		$.plot("#bar-chart", [bar_data], {
 			grid: {
 				borderWidth: 1,
@@ -456,6 +473,43 @@
 		});
 	}
 
+    function createSessionChart( data ) 
+    {
+        var result=[];
+		for( var key in data )
+		{
+			var row = data[key]
+            if ( row.session==null ) continue;
+			var data_array = [ row.session , row.count ];
+			result.push( data_array );
+		}
+        
+		var bar_data = {
+			data: result,
+			color: "#00c0ef"
+		};
+
+		$.plot("#session-bar-chart", [bar_data], {
+			grid: {
+				borderWidth: 1,
+				borderColor: "#444444",
+				tickColor: "#444444"
+			},
+			series: {
+				bars: {
+					show: true,
+					barWidth: 0.5,
+					align: "center"
+				}
+			},
+			xaxis: {
+				mode: "categories",
+				tickLength: 0
+			}
+		});
+
+    }
+
 	function updateFloatWidget()
 	{
 		$(".chart-row > div").each(function(i){
@@ -513,6 +567,7 @@
 				createPieChart( data[0] );
 				createDetailBox( data )
                 editBestandWorstBox( data[2] );
+                createSessionChart( data[3] )
 				$('#myModal').modal('hide');
 			}
 		});

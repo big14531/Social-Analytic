@@ -356,6 +356,24 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
+	public function getSessionbyPageNameandTime( $page_id , $min_date , $max_date)
+	{
+		$result = array();
+
+		$this->db->select('session , count(session) as count');
+		$this->db->from('fb_facebook_post as post'); 
+
+		$this->db->where('post.page_id',$page_id);
+		$this->db->where('post.is_delete<',5);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$this->db->group_by( 'session' );
+
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 	public function getOwnerPostsbyPageNameandDate( $page_id , $min_date)
 	{
 		$result = array();

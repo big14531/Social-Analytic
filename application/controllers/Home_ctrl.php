@@ -228,8 +228,9 @@ class Home_ctrl extends CI_Controller
 		array_push( $rank , $top_array );
 		array_push( $rank , $min_array );
 
+		$session = $this->Posts_model->getSessionbyPageNameandTime( $page_id , $min_date , $max_date );
 
-		echo json_encode( array( $postData,$page_detail,$rank ) );
+		echo json_encode( array( $postData ,$page_detail , $rank , $session ) );
 	}
 
 	/* ---------------- Rank posts Zone ---------------- */
