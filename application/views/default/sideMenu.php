@@ -65,8 +65,8 @@
 			</li>
 
 			<li class="treeview">
-				<a href="<?php echo base_url(); ?>dashboard">
-					<i class="fa fa-dashboard"></i> <span>แดชบอร์ด</span>
+				<a href="<?php echo base_url(); ?>ownerDashboard">
+					<i class="fa fa-home" aria-hidden="true"></i> <span>แดชบอร์ด คมชัดลึก</span>
 					<span class="pull-right-container">
 						<!-- <small class="label pull-right bg-green">16</small> -->
 					</span>
@@ -74,8 +74,8 @@
 			</li>
 
 			<li class="treeview">
-				<a href="<?php echo base_url(); ?>ownerDashboard">
-					<i class="fa fa-dashboard"></i> <span>แดชบอร์ด คมชัดลึก</span>
+				<a href="<?php echo base_url(); ?>dashboard">
+					<i class="fa fa-dashboard"></i> <span>แดชบอร์ด อื่นๆ</span>
 					<span class="pull-right-container">
 						<!-- <small class="label pull-right bg-green">16</small> -->
 					</span>

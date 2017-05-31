@@ -81,7 +81,7 @@ $route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 $route['login'] = 'validation_ctrl/index';
 $route['logout'] = 'validation_ctrl/logout';
 
-/*---------- dashboard ----------*/
+/*---------- socialdesk ----------*/
 $route['socialDeck'] = 'home_ctrl/socialDeck';
 $route['ajaxFirstTimePost'] = 'home_ctrl/ajaxFirstTimePost';
 $route['ajaxUpdatePost'] = 'home_ctrl/ajaxUpdatePost';
@@ -100,7 +100,11 @@ $route['ajaxDashboardRankPost'] = 'home_ctrl/ajaxDashboardRankPost';
 /*---------- utility ajax ----------*/
 $route['ajaxGetActivePage'] = 'home_ctrl/ajaxGetActivePage';
 
-/*---------- dashboard ----------*/
+/*---------- owner dashboard ----------*/
+$route['ownerDashboard'] = 'home_ctrl/ownerDashboard';
+$route['ajaxOwnerDashboard'] = 'home_ctrl/ajaxOwnerDashboard';
+
+/*---------- analytic ----------*/
 $route['postAnalytic/(:num)/(:num)/(:any)'] = 'home_ctrl/postAnalytic/$1/$2/$3';
 $route['ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';
 

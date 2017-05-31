@@ -202,6 +202,36 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $result );
 	}
 
+
+	/* ---------------- Rank posts Zone ---------------- */
+
+	public function ownerDashboard()
+	{
+		$this->load->view( 'OwnerDashboard_view' );
+	}
+	public function ajaxOwnerDashboard()
+	{
+		$arrayPage = array();
+		$arrayPageValue = array();
+
+		$min_date = $this->input->post('min_date');
+		$max_date = $this->input->post('max_date');
+		$page_id = $this->input->post('page_id');
+
+		$page_detail = $this->kcl_facebook_analytic->getFullPageDetail( $page_id );
+		$postData = $this->Posts_model->getPageSummaryGroupbyDate( $page_id ,$min_date , $max_date );
+
+		$rank =[];
+		$top_array = $this->Posts_model->getTopPostbyPageIDandDate( $page_id , $min_date , $max_date );
+		$min_array = $this->Posts_model->getMinPostbyPageIDandDate( $page_id , $min_date , $max_date );
+
+		array_push( $rank , $top_array );
+		array_push( $rank , $min_array );
+
+
+		echo json_encode( array( $postData,$page_detail,$rank ) );
+	}
+
 	/* ---------------- Rank posts Zone ---------------- */
 
 	/**
