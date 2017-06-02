@@ -221,16 +221,40 @@ class Home_ctrl extends CI_Controller
 		$page_detail = $this->kcl_facebook_analytic->getFullPageDetail( $page_id );
 		$postData = $this->Posts_model->getPageSummaryGroupbyDate( $page_id ,$min_date , $max_date );
 
-		$rank =[];
+		$top_5 =[];
 		$top_array = $this->Posts_model->getTopPostbyPageIDandDate( $page_id , $min_date , $max_date );
 		$min_array = $this->Posts_model->getMinPostbyPageIDandDate( $page_id , $min_date , $max_date );
 
-		array_push( $rank , $top_array );
-		array_push( $rank , $min_array );
+		array_push( $top_5 , $top_array );
+		array_push( $top_5 , $min_array );
 
-		$session = $this->Posts_model->getSessionbyPageNameandTime( $page_id , $min_date , $max_date );
+		$session_array =[];
+		$all_session = $this->Posts_model->getSessionbyPageNameandTime( $page_id , $min_date , $max_date );
 
-		echo json_encode( array( $postData ,$page_detail , $rank , $session ) );
+		$rank = ['F','E','D','C','B','A'];
+		foreach ($rank as $alphabet) 
+		{
+			$multi_series_engage = [];
+			$multi_series_click = [];
+			foreach ($all_session as $key => $value) 
+			{
+				if($value->session ==null )continue;
+				$session_type = $value->session;
+				$session_count = $value->count;
+				$engage_rank = $this->Posts_model->getEngageRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet);
+				$click_rank = $this->Posts_model->getClickRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet);		
+				$engage_count = empty( $engage_rank )? 0 : $engage_rank[0]->count;
+				$click_count = empty( $click_rank )? 0 : $click_rank[0]->count;
+				
+				array_push( $multi_series_engage , [ $session_type , $engage_count ] );
+				array_push( $multi_series_click ,  [ $session_type , $click_count ] );
+			}
+			array_push( $session_array , [ 'rank' => $alphabet , 'engage_rank' => $multi_series_engage ,'click_rank'=>$multi_series_click ] );
+		}
+			
+
+
+		echo json_encode( array( $postData ,$page_detail , $top_5 , $session_array , $all_session ) );
 	}
 
 	/* ---------------- Rank posts Zone ---------------- */

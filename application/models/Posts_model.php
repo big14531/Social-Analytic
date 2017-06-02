@@ -362,12 +362,52 @@ class Posts_model extends CI_Model
 
 		$this->db->select('session , count(session) as count');
 		$this->db->from('fb_facebook_post as post'); 
+		$this->db->where('post.page_id',$page_id);
+		$this->db->where('post.is_delete<',5);
+		// $this->db->where('post.engage_rank','B');
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$this->db->where('post.session !=', null);
+		$this->db->group_by( 'session' );
+		$this->db->order_by( 'count' , 'DESC' );
 
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+	public function getEngageRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet)
+	{
+		$result = array();
+
+		$this->db->select('post.engage_rank , count(engage_rank) as count');
+		$this->db->from('fb_facebook_post as post'); 
+		// $this->db->join('fb_owner_post as owner', 'post.post_id = list.post_id');
 		$this->db->where('post.page_id',$page_id);
 		$this->db->where('post.is_delete<',5);
 		$this->db->where('post.created_time >',$min_date);
 		$this->db->where('post.created_time <',$max_date);
-		$this->db->group_by( 'session' );
+		$this->db->where('post.session ',$session_type);
+		$this->db->where('post.engage_rank', $alphabet);
+		$this->db->group_by( 'post.engage_rank' );
+
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+	public function getClickRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet)
+	{
+		$result = array();
+
+		$this->db->select('owner.click_rank , count( owner.click_rank ) as count');
+		$this->db->from('fb_facebook_post as post'); 
+		$this->db->join('fb_owner_post as owner', 'post.post_id = owner.post_id');
+		$this->db->where('post.page_id',$page_id);
+		$this->db->where('post.is_delete<',5);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$this->db->where('post.session ',$session_type);
+		$this->db->where('owner.click_rank ', $alphabet);
+		$this->db->group_by( 'owner.click_rank' );
 
 		$result = $this->db->get();
 

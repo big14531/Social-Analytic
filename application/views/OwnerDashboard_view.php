@@ -3,6 +3,9 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	#tooltip {
+		 z-index: 9999; 
+	}
 	.small-icon{
 		width:20px;
 		margin-left: 10px;
@@ -53,8 +56,6 @@
 		padding-left: 30px;
 		padding-right: 30px;
 	}
-
-
 	.page-logo{
 		max-height: 200px;
 	}
@@ -132,11 +133,11 @@
 			<!-- /.col -->
 			<div class="col-md-3 col-sm-6 col-xs-6">
 				<div class="info-box">
-					<span class="info-box-icon bg-facebook"><i class="ion ion-person-add icon"></i></span>
+					<span class="info-box-icon bg-facebook"><i class="ion ion-thumbsup icon"></i></span>
 
 					<div class="info-box-content">
-						<span class="info-box-text">แฟนเพจใหม่</span>
-						<span class="info-box-number" id="new-fanpage-box"></span>
+						<span class="info-box-text">Engagement เฉลี่ย</span>
+						<span class="info-box-number" id="avg-engage-box"></span>
 					</div>
 					<!-- /.info-box-content -->
 				</div>
@@ -152,8 +153,11 @@
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">ประเภทข่าวทั้งหมด</h2>
+						
 						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+							<select class="js-example-basic-single" id="selector-<?=$i?>">
+							</select>
+							<button type="button" class="btn btn-sm btn-info">เปิดข้อมูล Session
 							</button>
 						</div>
 					</div>
@@ -202,14 +206,14 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">โพสต์ดีที่สุด</h2>
+						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
 						</div>
 					</div>
-					<div class="box-body" >
-						<ul class="products-list product-list-in-box" id="best-box">	
+					<div class="box-body">
+						<ul class="products-list product-list-in-box" id="worst-box">
 						</ul>
 					</div>
 					<!-- /.box-body-->
@@ -220,14 +224,14 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
+						<h2 class="box-title">โพสต์ดีที่สุด</h2>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
 						</div>
 					</div>
-					<div class="box-body">
-						<ul class="products-list product-list-in-box" id="worst-box">
+					<div class="box-body" >
+						<ul class="products-list product-list-in-box" id="best-box">	
 						</ul>
 					</div>
 					<!-- /.box-body-->
@@ -351,6 +355,7 @@
 		$("#page-category").html( category );
 		$("#fanpage-box").html( parseInt(fanpage).toLocaleString('en-US') );
 		$("#engage-box").html( parseInt(engage).toLocaleString('en-US') );
+		$("#avg-engage-box").html( 'Null' );
 		$("#post-box").html( parseInt(post).toLocaleString('en-US') );
 		$("#new-fanpage-box").html( parseInt(new_fanpage).toLocaleString('en-US') );
 	}
@@ -416,7 +421,10 @@
 			grid: {
 				borderWidth: 1,
 				borderColor: "#444444",
-				tickColor: "#444444"
+				tickColor: "#444444",
+				hoverable: true,
+            	clickable: true,
+				mouseActiveRadius: 30
 			},
 			series: {
 				bars: {
@@ -430,7 +438,37 @@
 				tickLength: 0
 			}
 		});
+		var previousPoint = null,
+    		previousLabel = null;
 
+		$("#bar-chart").on("plothover", function (event, pos, item) {
+			if (item) {
+				if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex)) 
+				{
+					previousPoint = item.dataIndex;
+					previousLabel = item.series.label;
+					$("#tooltip").remove();
+
+					var x = item.datapoint[0];
+					var y = item.datapoint[1];
+
+					var color = item.series.color;
+
+					//console.log(item.series.xaxis.ticks[x].label);               
+
+					showTooltip(item.pageX,
+					item.pageY,
+					color,
+						item.series.xaxis.ticks[x].label + " : <strong>" + y + "</strong>");
+				}
+			} 
+			else 
+			{
+				$("#tooltip").remove();
+				previousPoint = null;
+				
+			}
+		});
 	}
 
 	function createPieChart( data ) 
@@ -473,42 +511,141 @@
 		});
 	}
 
+	function createStackSeries( data ) 
+	{
+		var multi_series=[];
+		for( var key in data )
+		{
+			var value = data[key];	
+			var alphabet = value.rank;
+			switch (alphabet) {
+				case 'A':
+					var color = "#1dc1ac"
+					break;
+				case 'B':
+					var color = "#e75260"
+					break;
+				case 'C':
+					var color = "#f8c3a8"
+					break;
+				case 'D':
+					var color = "#ebeca2"
+					break;
+				case 'E':
+					var color = "#81e5f8"
+					break;
+				case 'F':
+					var color = "#237cb7"
+					break;
+				default:
+					break;
+			}
+			var series = {
+				data: value.engage_rank,
+				color: color,
+				label: alphabet
+			};
+			multi_series.push( series );
+		}
+		return multi_series;
+	}
+
     function createSessionChart( data ) 
     {
         var result=[];
-		for( var key in data )
-		{
-			var row = data[key]
-            if ( row.session==null ) continue;
-			var data_array = [ row.session , row.count ];
-			result.push( data_array );
-		}
-        
-		var bar_data = {
-			data: result,
-			color: "#00c0ef"
-		};
 
-		$.plot("#session-bar-chart", [bar_data], {
+		var multi_series = createStackSeries( data );
+
+		var stack = 0,
+			bars = true,
+			lines = false,
+			steps = false;
+
+		$.plot("#session-bar-chart", multi_series, {
 			grid: {
 				borderWidth: 1,
 				borderColor: "#444444",
-				tickColor: "#444444"
+				tickColor: "#444444",
+				hoverable: true,
+            	clickable: true,
+				mouseActiveRadius: 30
 			},
 			series: {
+				stack : stack,
 				bars: {
 					show: true,
 					barWidth: 0.5,
-					align: "center"
+					align: "center",
+					hoverable: true
 				}
 			},
 			xaxis: {
 				mode: "categories",
 				tickLength: 0
+			},
+			legend:{
+				show:false
+			}
+		});
+
+		var previousPoint = null,
+			previousIndex = null,
+    		previousLabel = null;
+
+		$("#session-bar-chart").on("plotclick", function (event, pos, item) {
+			if (item) {
+				alert( item );
+			}
+		});
+
+		$("#session-bar-chart").on("plothover", function (event, pos, item) {
+			if (item) {
+				if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex) || (previousIndex != item.seriesIndex) ) 
+				{
+					previousIndex = item.seriesIndex;
+					previousPoint = item.dataIndex;
+					previousValue = item.datapoint[1];
+					previousLabel = item.series.label;
+					$("#tooltip").remove();
+					
+					var x = item.datapoint[0];
+					var y = item.datapoint[1]-item.datapoint[2];
+					
+					var color = item.series.color;
+					var rank = item.series.label;
+					//console.log(item.series.xaxis.ticks[x].label);               
+
+					showTooltip(item.pageX,
+					item.pageY,
+					color,
+						"Rank : "+rank+"<br>"+item.series.xaxis.ticks[x].label + " : <strong>" + y + "</strong>");
+				}
+			} 
+			else 
+			{
+				$("#tooltip").remove();
+				previousPoint = null;
+				
 			}
 		});
 
     }
+	
+	function showTooltip(x, y, color, contents) {
+		$('<div id="tooltip">' + contents + '</div>').css({
+			position: 'absolute',
+			display: 'none',
+			top: y - 50,
+			left: x - 100,
+			border: '2px solid ' + color,
+			padding: '3px',
+				'font-size': '15px',
+				'border-radius': '5px',
+				'background-color': '#fff',
+				'font-family': 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+			opacity: 0.9
+		}).appendTo("body").fadeIn(200);
+	}
 
 	function updateFloatWidget()
 	{
@@ -548,6 +685,20 @@
 		+ "</div>";
 	}
 
+	function createSelector( data ) 
+	{
+		var result=[];
+		for (var i = 0; i < data.length; i++) 
+		{
+			var name = data[i].session;
+			result.push( { id: i, text: name} );
+		}
+		
+		$(".js-example-basic-single").select2({
+			data: result
+		});	
+	}
+
     function ajaxDashboard( page_id , min_date , max_date )
 	{		
 		$.ajax({
@@ -567,7 +718,8 @@
 				createPieChart( data[0] );
 				createDetailBox( data )
                 editBestandWorstBox( data[2] );
-                createSessionChart( data[3] )
+                createSessionChart( data[3] );
+				createSelector( data[4] )
 				$('#myModal').modal('hide');
 			}
 		});
