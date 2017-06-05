@@ -3,6 +3,9 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	.btn{
+		color:#FFF!important;
+	}
 	#tooltip {
 		 z-index: 9999; 
 	}
@@ -63,7 +66,7 @@
 </style>
 <!-- Select2 -->
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
-
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <div class="content-wrapper">
 	<section class="content-header">
 		<h1>
@@ -153,7 +156,6 @@
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">ประเภทข่าวทั้งหมด</h2>
-						
 						<div class="box-tools pull-right">
 							<select class="js-example-basic-single" id="selector-<?=$i?>">
 							</select>
@@ -168,15 +170,11 @@
 				</div>
 			</div>
 
-			<div class="col-sm-6 col-xs-12">
+			<div class="col-sm-4 col-xs-12">
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">ประเภทของโพสต์</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
-						</div>
 					</div>
 					<div class="box-body">
 						<div id="donut-chart" style="height: 300px;"></div>
@@ -185,15 +183,31 @@
 				</div>
 			</div>
 
-			<div class="col-sm-6 col-xs-12">
+			<div class="col-sm-4 col-xs-12">
+				<!-- Donut chart -->
+				<div class="box gray-box">
+					<div class="box-header">
+						<h2 class="box-title">Rank ของโพสต์</h2>
+						<div class="box-tools pull-right">
+							<input id="toggle-rank" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Engage" data-off="Click" data-onstyle="success" data-offstyle="warning">
+						</div>
+					</div>
+					<div class="box-body" id="engage-body">
+						<div id="rank-bar-chart1" style="width: 100%;height: 300px;"></div>
+					</div>
+					<div class="box-body" id="click-body" hidden>
+						<div id="rank-bar-chart2" style="width: 100%;height: 300px;"></div>
+					</div>
+
+					<!-- /.box-body-->
+				</div>
+			</div>
+
+			<div class="col-sm-4 col-xs-12">
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">จำนวนโพสเฉลี่ย</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
-						</div>
 					</div>
 					<div class="box-body">
 						<div id="bar-chart" style="height: 300px;"></div>
@@ -207,10 +221,6 @@
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
-						</div>
 					</div>
 					<div class="box-body">
 						<ul class="products-list product-list-in-box" id="worst-box">
@@ -225,10 +235,6 @@
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">โพสต์ดีที่สุด</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
-						</div>
 					</div>
 					<div class="box-body" >
 						<ul class="products-list product-list-in-box" id="best-box">	
@@ -267,7 +273,7 @@
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.full.min.js"></script>
 <!-- date-range-picker -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script>
 
 	function addContent( box , data ) 
@@ -429,13 +435,20 @@
 			series: {
 				bars: {
 					show: true,
-					barWidth: 0.5,
-					align: "center"
+					barWidth: 0.8,
+					align: "center",
+					numbers : {
+            			show : true,
+						font : { size: 30 ,color:'#FFF'},
+					}
 				}
 			},
 			xaxis: {
 				mode: "categories",
 				tickLength: 0
+			},
+			yaxis:{
+				ticks: []
 			}
 		});
 		var previousPoint = null,
@@ -563,9 +576,7 @@
 
 		$.plot("#session-bar-chart", multi_series, {
 			grid: {
-				borderWidth: 1,
-				borderColor: "#444444",
-				tickColor: "#444444",
+				borderWidth: 0,
 				hoverable: true,
             	clickable: true,
 				mouseActiveRadius: 30
@@ -576,7 +587,11 @@
 					show: true,
 					barWidth: 0.5,
 					align: "center",
-					hoverable: true
+					hoverable: true,
+					numbers : {
+            			show : true,
+						font : { size: 14 ,color:'#FFF'},
+					}
 				}
 			},
 			xaxis: {
@@ -631,6 +646,75 @@
 
     }
 	
+	function createRankBarChart( data )
+	{
+		var result=[];
+		var engage_data =[];
+		var click_data =[];
+		for( var key in data )
+		{
+			var row 			= data[key];
+			var engage_array 	= row.engage_rank;
+			var click_array 	= row.click_rank;
+			var engage_sum		= 0;
+			var click_sum 		= 0;
+			var rank 			= row.rank;
+
+			for (var index = 0; index < click_array.length; index++) 
+			{
+				var engage_obj = engage_array[index];
+				var click_obj = click_array[index];
+				engage_sum +=  parseInt(engage_obj[1]);
+				click_sum += parseInt(click_obj[1]);
+			}
+			engage_data.unshift( [rank , engage_sum ] );
+			click_data.unshift( [rank , click_sum ] );
+		}
+
+
+		var engage_series = {
+			data: engage_data,
+			color: "#00a65a"
+		};
+
+		var click_series = {
+			data: click_data,
+			color: "#f39c12"
+		};
+	
+		var option = {
+			grid: {
+				borderWidth: 0,
+				hoverable: true,
+            	clickable: true,
+				mouseActiveRadius: 30
+			},
+			series: {
+				bars: {
+					show: true,
+					barWidth: 0.8,
+					align: "center",
+					numbers : {
+            			show : true,
+						font : { size: 30 ,color:'#FFF'},
+					}
+				}
+			},
+			xaxis: {
+				mode: "categories",
+				tickLength: 0
+			},
+			yaxis:{
+				ticks: [] 
+			}
+		};
+
+		$.plot("#rank-bar-chart1", [engage_series], option);
+
+		$.plot("#rank-bar-chart2", [click_series], option);
+
+	}
+
 	function showTooltip(x, y, color, contents) {
 		$('<div id="tooltip">' + contents + '</div>').css({
 			position: 'absolute',
@@ -716,9 +800,10 @@
 				console.log( data );
 				createBarChart( data[0] );
 				createPieChart( data[0] );
+				createSessionChart( data[3] );
+				createRankBarChart( data[3] )
 				createDetailBox( data )
                 editBestandWorstBox( data[2] );
-                createSessionChart( data[3] );
 				createSelector( data[4] )
 				$('#myModal').modal('hide');
 			}
@@ -761,8 +846,20 @@
 		construct_max_date = moment().subtract(1, 'weeks').endOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
 
 		$('#myModal').modal('show');
-		updateFloatWidget();
+		$('#toggle-rank').change(function() {
+			if ($(this).prop('checked') )
+			{
+				$('#engage-body').show();
+				$('#click-body').hide();
+			}
+			else
+			{
+				$('#engage-body').hide();
+				$('#click-body').show();
+			}
+		})
 		searchCallback( construct_min_date , construct_max_date );
+		
 	});
 
 </script>

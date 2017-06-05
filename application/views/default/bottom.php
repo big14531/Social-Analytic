@@ -38,6 +38,8 @@
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.time.js"></script>
 <!-- FLOT STACK CHARTS -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.stack.js"></script>
+<!-- FLOT BAR NUMBER -->
+<script src="<?php echo(base_url());?>assets/admin-lite/plugins/flot/jquery.flot.barnumbers.js"></script>
 <!-- date-range-picker -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.js"></script>
