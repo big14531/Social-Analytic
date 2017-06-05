@@ -3,6 +3,9 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	.select2-container {
+		width: 100px!important;
+	}
 	.btn{
 		color:#FFF!important;
 	}
@@ -159,8 +162,6 @@
 						<div class="box-tools pull-right">
 							<select class="js-example-basic-single" id="selector-<?=$i?>">
 							</select>
-							<button type="button" class="btn btn-sm btn-info">เปิดข้อมูล Session
-							</button>
 						</div>
 					</div>
 					<div class="box-body">
@@ -187,7 +188,7 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">Rank ของโพสต์</h2>
+						<h2 class="box-title">อันดับ Rank ภาพรวม</h2>
 						<div class="box-tools pull-right">
 							<input id="toggle-rank" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Engage" data-off="Click" data-onstyle="success" data-offstyle="warning">
 						</div>
@@ -275,6 +276,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script>
+
+	var global_data = [];
 
 	function addContent( box , data ) 
 	{
@@ -425,9 +428,7 @@
 
 		$.plot("#bar-chart", [bar_data], {
 			grid: {
-				borderWidth: 1,
-				borderColor: "#444444",
-				tickColor: "#444444",
+				borderWidth: 0,
 				hoverable: true,
             	clickable: true,
 				mouseActiveRadius: 30
@@ -524,57 +525,36 @@
 		});
 	}
 
-	function createStackSeries( data ) 
-	{
-		var multi_series=[];
-		for( var key in data )
-		{
-			var value = data[key];	
-			var alphabet = value.rank;
-			switch (alphabet) {
-				case 'A':
-					var color = "#1dc1ac"
-					break;
-				case 'B':
-					var color = "#e75260"
-					break;
-				case 'C':
-					var color = "#f8c3a8"
-					break;
-				case 'D':
-					var color = "#ebeca2"
-					break;
-				case 'E':
-					var color = "#81e5f8"
-					break;
-				case 'F':
-					var color = "#237cb7"
-					break;
-				default:
-					break;
-			}
-			var series = {
-				data: value.engage_rank,
-				color: color,
-				label: alphabet
-			};
-			multi_series.push( series );
-		}
-		return multi_series;
-	}
-
     function createSessionChart( data ) 
     {
+
         var result=[];
 
-		var multi_series = createStackSeries( data );
+		for( var key in data )
+		{
+			var row = data[key]
+			var session = row.session;
+			var count = row.count;
+			result.push( [ session , count ] );
+		}
 
+
+		var multi_series = {
+			data: result,
+			color: "#237cb7"
+		};
+		plotSessionGraph(multi_series); 
+    }
+	
+	function plotSessionGraph(series) 
+	{
+		
 		var stack = 0,
 			bars = true,
 			lines = false,
 			steps = false;
 
-		$.plot("#session-bar-chart", multi_series, {
+		$.plot("#session-bar-chart", [series], {
 			grid: {
 				borderWidth: 0,
 				hoverable: true,
@@ -585,7 +565,7 @@
 				stack : stack,
 				bars: {
 					show: true,
-					barWidth: 0.5,
+					barWidth: 0.8,
 					align: "center",
 					hoverable: true,
 					numbers : {
@@ -627,13 +607,12 @@
 					var y = item.datapoint[1]-item.datapoint[2];
 					
 					var color = item.series.color;
-					var rank = item.series.label;
 					//console.log(item.series.xaxis.ticks[x].label);               
 
 					showTooltip(item.pageX,
 					item.pageY,
 					color,
-						"Rank : "+rank+"<br>"+item.series.xaxis.ticks[x].label + " : <strong>" + y + "</strong>");
+						item.series.xaxis.ticks[x].label + " : <strong>" + y + "</strong>");
 				}
 			} 
 			else 
@@ -642,10 +621,61 @@
 				previousPoint = null;
 				
 			}
-		});
+		});	
+	}
 
-    }
 	
+	function editSessionChart( selector ) 
+	{
+		var data = global_data[3];
+		var rank =  selector.data;
+		switch (rank) {
+				case 'All':
+					var color = "#237cb7"
+					var obj_array = [];
+					for( var key in global_data[4] )
+					{
+						var row = global_data[4][key];
+						var session = row.session;
+						var count = row.count;
+						obj_array.push( [ session , count ] );
+					}
+					break;
+				case 'A':
+					var color = "#0098d2"
+					var obj_array = data[5].click_rank;
+					break;
+				case 'B':
+					var color = "#56caf6"
+					var obj_array = data[4].click_rank;
+					break;
+				case 'C':
+					var color = "#adf0ff"
+					var obj_array = data[3].click_rank;
+					break;
+				case 'D':
+					var color = "#ff6d52"
+					var obj_array = data[2].click_rank;
+					break;
+				case 'E':
+					var color = "#ff9b82"
+					var obj_array = data[1].click_rank;
+					break;
+				case 'F':
+					var color = "#ac1616"
+					var obj_array = data[0].click_rank;
+					break;
+				default:
+					break;
+		}
+		var series = {
+			data: obj_array,
+			color: color,
+			label: rank
+		};
+		plotSessionGraph(series);
+	}
+
 	function createRankBarChart( data )
 	{
 		var result=[];
@@ -771,12 +801,14 @@
 
 	function createSelector( data ) 
 	{
-		var result=[];
-		for (var i = 0; i < data.length; i++) 
-		{
-			var name = data[i].session;
-			result.push( { id: i, text: name} );
-		}
+		var result=[ 
+			{ id: 0, text: 'ทั้งหมด' , data: 'All' } ,
+			{ id: 1, text: 'ระดับ A' , data: 'A' } , 
+			{ id: 2, text: 'ระดับ B' , data: 'B' } , 
+			{ id: 3, text: 'ระดับ C' , data: 'C' } , 
+			{ id: 4, text: 'ระดับ D' , data: 'D' } ,
+			{ id: 5, text: 'ระดับ E' , data: 'E' } ,
+			{ id: 6, text: 'ระดับ F' , data: 'F' } ];
 		
 		$(".js-example-basic-single").select2({
 			data: result
@@ -798,9 +830,10 @@
 			success:function(data)
 			{
 				console.log( data );
+				global_data = data;
 				createBarChart( data[0] );
 				createPieChart( data[0] );
-				createSessionChart( data[3] );
+				createSessionChart( data[4] );
 				createRankBarChart( data[3] )
 				createDetailBox( data )
                 editBestandWorstBox( data[2] );
@@ -841,11 +874,13 @@
 
 	$(document).ready(function() 
 	{
-
 		construct_min_date = moment().subtract(1, 'weeks').startOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
 		construct_max_date = moment().subtract(1, 'weeks').endOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
 
 		$('#myModal').modal('show');
+
+		$(".js-example-basic-single").on("select2:select", function (e) { editSessionChart(e.params.data); });
+
 		$('#toggle-rank').change(function() {
 			if ($(this).prop('checked') )
 			{
