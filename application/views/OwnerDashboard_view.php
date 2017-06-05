@@ -4,7 +4,7 @@
 
 <style>
 	.select2-container {
-		width: 100px!important;
+		/*width: 100%!important;*/
 	}
 	.btn{
 		color:#FFF!important;
@@ -42,6 +42,7 @@
 		color:black!important;
 	}
 	.white-box{
+		height: 250px;
 		padding-left: 20px;
 		padding-right: 20px;
 		padding-bottom: 20px;
@@ -63,6 +64,7 @@
 		padding-right: 30px;
 	}
 	.page-logo{
+		margin-bottom: 15px;
 		max-height: 200px;
 	}
 	
@@ -81,7 +83,11 @@
 
 		<div class="row">
 			<div class="col-md-3 col-xs-12" style="text-align: center;">
-				<img id="page-icon" class="page-logo" src="">                                                                                              
+				<div class="row">
+					<img id="page-icon" class="page-logo" src=""><br>
+					<select class="js-example-basic-single" id="session-selector"></select>
+					<button type="button" class="btn btn-primary btn-sm" id="btn_session">ค้นหา Session</button>	
+				</div>
 			</div>
 			<div class="col-md-9 col-xs-12">
 				<div class="box white-box">
@@ -160,7 +166,7 @@
 					<div class="box-header">
 						<h2 class="box-title">ประเภทข่าวทั้งหมด</h2>
 						<div class="box-tools pull-right">
-							<select class="js-example-basic-single" id="selector-<?=$i?>">
+							<select class="js-example-basic-single"  id="rank-selector">
 							</select>
 						</div>
 					</div>
@@ -587,12 +593,6 @@
 			previousIndex = null,
     		previousLabel = null;
 
-		$("#session-bar-chart").on("plotclick", function (event, pos, item) {
-			if (item) {
-				alert( item );
-			}
-		});
-
 		$("#session-bar-chart").on("plothover", function (event, pos, item) {
 			if (item) {
 				if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex) || (previousIndex != item.seriesIndex) ) 
@@ -624,7 +624,6 @@
 		});	
 	}
 
-	
 	function editSessionChart( selector ) 
 	{
 		var data = global_data[3];
@@ -745,7 +744,8 @@
 
 	}
 
-	function showTooltip(x, y, color, contents) {
+	function showTooltip(x, y, color, contents) 
+	{
 		$('<div id="tooltip">' + contents + '</div>').css({
 			position: 'absolute',
 			display: 'none',
@@ -801,17 +801,28 @@
 
 	function createSelector( data ) 
 	{
-		var result=[ 
+		var rank_result=[ 
 			{ id: 0, text: 'ทั้งหมด' , data: 'All' } ,
 			{ id: 1, text: 'ระดับ A' , data: 'A' } , 
 			{ id: 2, text: 'ระดับ B' , data: 'B' } , 
 			{ id: 3, text: 'ระดับ C' , data: 'C' } , 
 			{ id: 4, text: 'ระดับ D' , data: 'D' } ,
 			{ id: 5, text: 'ระดับ E' , data: 'E' } ,
-			{ id: 6, text: 'ระดับ F' , data: 'F' } ];
+			{ id: 6, text: 'ระดับ F' , data: 'F' } 
+		];
+		var session_result=[];
 		
-		$(".js-example-basic-single").select2({
-			data: result
+		for (var index = 0; index < data.length; index++) {
+			var element = data[index];
+			session_result.push( {id:index , text :element.session} );
+		}
+
+		$("#rank-selector").select2({
+			data: rank_result
+		});	
+
+		$("#session-selector").select2({
+			data: session_result
 		});	
 	}
 
@@ -879,8 +890,12 @@
 
 		$('#myModal').modal('show');
 
-		$(".js-example-basic-single").on("select2:select", function (e) { editSessionChart(e.params.data); });
-
+		$("#rank-selector").on("select2:select", function (e) { editSessionChart(e.params.data); });
+		$('#btn_session').on('click', function(event) {
+			var link = "<?php echo base_url() ?>"+"sessionDashboard/"+$("#session-selector").select2('data')[0].text
+			console.log( link );
+			window.open( link , '_blank' );
+		});
 		$('#toggle-rank').change(function() {
 			if ($(this).prop('checked') )
 			{
@@ -893,6 +908,7 @@
 				$('#click-body').show();
 			}
 		})
+		
 		searchCallback( construct_min_date , construct_max_date );
 		
 	});
