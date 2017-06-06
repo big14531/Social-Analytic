@@ -163,6 +163,14 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function getAllFanpage()
+	{
+		$this->db->select('page_id,fan_count');
+		$this->db->where('is_active', '1');
+		$result = $this->db->get( 'fb_page_list' );
+		return $result->result();
+	}
+
 	public function insertPageDetail( $data )
 	{
 		$this->db->db_debug = FALSE;

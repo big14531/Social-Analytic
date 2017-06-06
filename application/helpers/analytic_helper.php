@@ -74,3 +74,24 @@ function removeUnnecessaryWord( $str_orignal )
 	}
 	return $str_orignal;
 }
+
+function rankCriteriaCalculator( $value , $fanpage )
+{
+	$reach 			= ($fanpage*1)/100;
+	$max_success 	= $reach/2;
+	$CriteriaA 		= floor( ( $max_success*100 )/100 );
+	$CriteriaB 		= floor( ( $max_success*80 )/100 );
+	$CriteriaC 		= floor( ( $max_success*60 )/100 );
+	$CriteriaD 		= floor( ( $max_success*40 )/100 );
+	$CriteriaE 		= floor( ( $max_success*20 )/100 );
+	$CriteriaF 		= 0;
+
+	if 		( $value>$CriteriaA  ) 	{ $rank = 'A'; }
+	elseif 	( $value>$CriteriaB  ) 	{ $rank = 'B'; }
+	elseif 	( $value>$CriteriaC  ) 	{ $rank = 'C'; }
+	elseif 	( $value>$CriteriaD  ) 	{ $rank = 'D'; }
+	elseif 	( $value>$CriteriaE  ) 	{ $rank = 'E'; }
+	elseif 	( $value>$CriteriaF  ) 	{ $rank = 'F'; }
+
+	return $rank;
+}

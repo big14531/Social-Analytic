@@ -17,6 +17,7 @@ class Data_ctrl extends CI_Controller
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
 		$this->load->helper('file');
+		$this->load->helper('analytic_helper');
 		$this->daily_log = "logs/log-".date('Y-m-d').".txt";
 	}
 
@@ -146,22 +147,19 @@ class Data_ctrl extends CI_Controller
 		$post_array = [];
 		$date = Date("Y-m-d 00:00:00" , strtotime("-1 days"));
 		$post = $this->getLatedUpdatePost( $date , $limit );
-
-		// print_r( $post );
-
+		$page = $this->getAllPageFanpage();
+		
 		foreach ($post as $key => $value) 
 		{
 			$id = $value->page_id."_".$value->post_id;
 			array_push( $post_array , $id );
 		}
-
 		$post_id_array = array_chunk( $post_array , 50 );
-
 		
 		foreach ($post_id_array as $value) 
 		{
 			$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $value );
-			$result = $this->editDataForUpdate( $batch , $post );
+			$result = $this->editDataForUpdate( $batch , $post , $page);
 			if ( is_string( $result[0]) ) 
 			{
 				return;
@@ -172,7 +170,18 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
-	public function editDataForUpdate( $data , $main_post)
+	public function getAllPageFanpage()
+	{
+		$result = [];
+		$post = $this->Posts_model->getAllFanpage();
+		foreach ($post as $key => $value) 
+		{
+			$result[ $value->page_id ] = $value->fan_count;
+		}
+		return $result;
+	}
+
+	public function editDataForUpdate( $data , $main_post , $page)
 	{
 		$result =[];
 		foreach( $data as $key => $value)
@@ -185,7 +194,8 @@ class Data_ctrl extends CI_Controller
 				continue;
 			}
 			$post =[];
-
+			$page_id	= explode("_", $value->id )[0];
+			$post_id	= explode("_", $value->id )[1];
 			$shares 	= intval( ( empty( $value->shares ) ? 0 : $value->shares->count ) );
 			$comments 	= intval( ( empty( $value->comments ) ? 0 : $value->comments->summary->total_count ) );
 			$likes 		= intval( ( empty( $value->like ) ? 0 : $value->like->summary->total_count ) );
@@ -195,14 +205,9 @@ class Data_ctrl extends CI_Controller
 			$sad 		= intval( ( empty( $value->sad ) ? 0 : $value->sad->summary->total_count ) );
 			$angry 		= intval( ( empty( $value->angry ) ? 0 : $value->angry->summary->total_count ) );
 			$engage 	= $shares + $comments + $likes + $love + $wow + $haha + $sad + $angry;
+			$fan_page 	= $page[$page_id];
+			$engage 	= rankCriteriaCalculator( $engage , $fan_page );
 
-			if 		( $engage>20000 ) { $engage = 'A'; }
-			elseif 	( $engage>10000 ) { $engage = 'B'; }
-			elseif 	( $engage>5000 ) { $engage = 'C'; }
-			elseif 	( $engage>1000 ) { $engage = 'D'; }
-			elseif 	( $engage>500 ) { $engage = 'E'; }
-			elseif 	( $engage<500 ) { $engage = 'F'; }
-			
 			$post['shares'] 			= $shares;
 			$post['comments'] 			= $comments;
 			$post['likes'] 				= $likes;
@@ -212,8 +217,8 @@ class Data_ctrl extends CI_Controller
 			$post['sad'] 				= $sad;
 			$post['angry'] 				= $angry;
 			$post['last_update_time'] 	= Date("Y-m-d H:i:55");
-			$post['page_id'] 			= explode("_", $value->id )[0];
-			$post['post_id'] 			= explode("_", $value->id )[1];
+			$post['page_id'] 			= $page_id;
+			$post['post_id'] 			= $post_id;
 			$post['is_delete'] 			= 0;
 			$post['engage_rank'] 		= $engage;
 			print_r( $post );
@@ -222,7 +227,6 @@ class Data_ctrl extends CI_Controller
 		
 		return $result;
 	}
-
 
 	public function getLatedUpdatePost( $date , $limit )
 	{
@@ -308,7 +312,6 @@ class Data_ctrl extends CI_Controller
 	public function processAnalyticPost()
 	{
 		$this->load->library('THSplitLib/segment');
-		$this->load->helper('analytic_helper');
 		$page_id = "208428464667";  //Komchudluk page_id
 		$min_date = date( "Y-m-d 00:00:00" , strtotime( "yesterday" ) );
 		$max_date = date( "Y-m-d 23:59:59" , strtotime( "yesterday" ) );
@@ -335,8 +338,8 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
-	// public function tempUpdateSession()
-	// {
+	public function tempUpdateSession()
+	{
 	// 	for ($i=15; $i <= 25 ; $i++) 
 	// 	{ 
 	// 		$post = $this->Posts_model->getPostsbyPageNameandTime( '208428464667' , '2017-05-'.$i.' 00:00:00' , '2017-05-'.$i.' 23:59:00' );
@@ -356,6 +359,6 @@ class Data_ctrl extends CI_Controller
 	// 		// print_r( $out );
 	// 		$this->Posts_model->updatePost($out);
 	// 	}
-	// }
+	}
 }
 ?>

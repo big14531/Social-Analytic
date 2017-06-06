@@ -3,8 +3,12 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+
+	#btn_session{
+		margin-top:10px
+	}
 	.select2-container {
-		/*width: 100%!important;*/
+		width: 100%!important;
 	}
 	.btn{
 		color:#FFF!important;
@@ -64,8 +68,8 @@
 		padding-right: 30px;
 	}
 	.page-logo{
-		margin-bottom: 15px;
-		max-height: 200px;
+		margin-bottom: 10px;
+		max-height: 170px;
 	}
 	
 </style>
@@ -84,9 +88,11 @@
 		<div class="row">
 			<div class="col-md-3 col-xs-12" style="text-align: center;">
 				<div class="row">
-					<img id="page-icon" class="page-logo" src=""><br>
-					<select class="js-example-basic-single" id="session-selector"></select>
-					<button type="button" class="btn btn-primary btn-sm" id="btn_session">ค้นหา Session</button>	
+					<img id="page-icon" class="page-logo" src="">
+					<div class="selector-box">
+						<select class="js-example-basic-single" id="session-selector"></select>
+					</div>
+					<button type="button" class="btn btn-primary btn-sm" id="btn_session">ไปที่ Session แดชบอร์ด</button>	
 				</div>
 			</div>
 			<div class="col-md-9 col-xs-12">
