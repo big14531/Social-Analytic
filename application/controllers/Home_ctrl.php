@@ -19,6 +19,7 @@ class Home_ctrl extends CI_Controller
 		$this->load->library('Kcl_facebook_analytic'); 
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
+		$this->load->driver('cache');
 		isLoggedin($this->session->all_userdata());
 	}
 	
@@ -211,6 +212,12 @@ class Home_ctrl extends CI_Controller
 	}
 	public function ajaxOwnerDashboard()
 	{
+		if( $this->cache->redis->get('result_ownerDashboard') )
+		{
+			echo json_encode( $this->cache->redis->get('result_ownerDashboard') );
+			return;
+		}
+
 		$arrayPage = array();
 		$arrayPageValue = array();
 
@@ -251,18 +258,16 @@ class Home_ctrl extends CI_Controller
 			}
 			array_push( $session_array , [ 'rank' => $alphabet , 'engage_rank' => $multi_series_engage ,'click_rank'=>$multi_series_click ] );
 		}
-			
-
-
+		
+		$this->cache->redis->save('result_ownerDashboard', array( $postData ,$page_detail , $top_5 , $session_array , $all_session ), 120);
 		echo json_encode( array( $postData ,$page_detail , $top_5 , $session_array , $all_session ) );
 	}
-
 
 	public function sessionDashboard( $session )
 	{
 		$session = urldecode($session);
 		$data['session'] = $session;
-		$this->load->view( 'SessionDashboard_view' , $data );
+		$view = $this->load->view( 'SessionDashboard_view' , $data );
 	}
 
 	/* ---------------- Rank posts Zone ---------------- */

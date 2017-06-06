@@ -18,6 +18,7 @@ class Data_ctrl extends CI_Controller
 		$this->load->helper('date');
 		$this->load->helper('file');
 		$this->load->helper('analytic_helper');
+		$this->load->driver('cache');
 		$this->daily_log = "logs/log-".date('Y-m-d').".txt";
 	}
 
@@ -340,6 +341,7 @@ class Data_ctrl extends CI_Controller
 
 	public function tempUpdateSession()
 	{
+		print_r( $this->cache->redis->get('result_ownerDashboard') );
 	// 	for ($i=15; $i <= 25 ; $i++) 
 	// 	{ 
 	// 		$post = $this->Posts_model->getPostsbyPageNameandTime( '208428464667' , '2017-05-'.$i.' 00:00:00' , '2017-05-'.$i.' 23:59:00' );
