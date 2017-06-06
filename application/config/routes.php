@@ -103,6 +103,7 @@ $route['ajaxGetActivePage'] = 'home_ctrl/ajaxGetActivePage';
 /*---------- owner dashboard ----------*/
 $route['ownerDashboard'] = 'home_ctrl/ownerDashboard';
 $route['ajaxOwnerDashboard'] = 'home_ctrl/ajaxOwnerDashboard';
+$route['sessionDashboard/(:any)'] = 'home_ctrl/sessionDashboard/$1';
 
 /*---------- analytic ----------*/
 $route['postAnalytic/(:num)/(:num)/(:any)'] = 'home_ctrl/postAnalytic/$1/$2/$3';

@@ -355,7 +355,6 @@ class Kcl_facebook_analytic
 				$posts['comments'] 		= ( empty($post_data->comments->summary->total_count) ) ? 0 : $post_data->comments->summary->total_count;
 				$posts['shares'] 		= ( empty($post_data->shares->count) ) ? 0 : $post_data->shares->count;
 				$posts['session'] 		= $this->getSessionKomchadluek( $post_data );
-				$this->getSessionKomchadluek( $post_data );
 				array_push( $result , $posts );
 			}
 		}

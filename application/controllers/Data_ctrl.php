@@ -90,7 +90,7 @@ class Data_ctrl extends CI_Controller
 		$raw_post_array = $this->kcl_facebook_analytic->batchGetPostFacebook( $page_array );
 		$result = $this->kcl_facebook_analytic->newExtractPostData( $raw_post_array );
 		$this->Posts_model->insertBatchPost( $result );
-		// print_r( $result );
+		print_r( $result );
 
 		return true;
 	}
@@ -359,6 +359,19 @@ class Data_ctrl extends CI_Controller
 	// 		// print_r( $out );
 	// 		$this->Posts_model->updatePost($out);
 	// 	}
+	}
+
+	// Description
+	// This Function use for track grow rate of post
+	// And Result save in text file
+	public function trackPostExperiment()
+	{
+		$post_array = [
+			''
+		];
+		$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
+
+
 	}
 }
 ?>

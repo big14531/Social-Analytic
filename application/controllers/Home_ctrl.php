@@ -257,6 +257,14 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( array( $postData ,$page_detail , $top_5 , $session_array , $all_session ) );
 	}
 
+
+	public function sessionDashboard( $session )
+	{
+		$session = urldecode($session);
+		$data['session'] = $session;
+		$this->load->view( 'SessionDashboard_view' , $data );
+	}
+
 	/* ---------------- Rank posts Zone ---------------- */
 
 	/**
@@ -425,7 +433,7 @@ class Home_ctrl extends CI_Controller
 	* 
 	*/
 	public function postList()
-	{
+	{ 
 		$result = $this->Posts_model->getActivePagelist();
 		$data['page_list'] = $result;
 
