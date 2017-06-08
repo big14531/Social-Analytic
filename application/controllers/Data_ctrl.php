@@ -341,7 +341,6 @@ class Data_ctrl extends CI_Controller
 
 	public function tempUpdateSession()
 	{
-		print_r( $this->cache->redis->get('result_ownerDashboard') );
 	// 	for ($i=15; $i <= 25 ; $i++) 
 	// 	{ 
 	// 		$post = $this->Posts_model->getPostsbyPageNameandTime( '208428464667' , '2017-05-'.$i.' 00:00:00' , '2017-05-'.$i.' 23:59:00' );

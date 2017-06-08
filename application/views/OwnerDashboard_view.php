@@ -233,10 +233,10 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
+						<h2 class="box-title">โพสต์ดีที่สุด</h2>
 					</div>
-					<div class="box-body">
-						<ul class="products-list product-list-in-box" id="worst-box">
+					<div class="box-body" >
+						<ul class="products-list product-list-in-box" id="best-box">	
 						</ul>
 					</div>
 					<!-- /.box-body-->
@@ -247,10 +247,10 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">โพสต์ดีที่สุด</h2>
+						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
 					</div>
-					<div class="box-body" >
-						<ul class="products-list product-list-in-box" id="best-box">	
+					<div class="box-body">
+						<ul class="products-list product-list-in-box" id="worst-box">
 						</ul>
 					</div>
 					<!-- /.box-body-->

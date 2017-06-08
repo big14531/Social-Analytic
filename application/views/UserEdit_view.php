@@ -441,6 +441,7 @@
             value.username,
             value.user_name_surname,
             value.email,
+            value.user_last_login,
             value.permission_user+value.permission_manager+value.permission_admin,
             value.user_active,
             0
@@ -477,6 +478,11 @@
                     }
                 },
                 { title: "Email"  ,
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        $(nTd).addClass("email");
+                    }
+                },
+                { title: "Last Login"  ,
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         $(nTd).addClass("email");
                     }
@@ -519,11 +525,11 @@
                          $(nTd).html('<a class="btn btn-xs btn-warning edit" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</a>');
                          $(nTd).append(' <a class="btn btn-xs btn-success changePass" data-toggle="modal" data-target="#passModal"><i class="fa fa-edit"></i> Change Password</a>');
 
-                         if( oData[5][2]==1 )
+                         if( oData[6][2]==1 )
                          {
                          $(nTd).append('');
                          }
-                         else if( oData[6]==1 )
+                         else if( oData[7]==1 )
                          {
                          $(nTd).append(' <a class="btn btn-xs btn-danger" href="'+'<?=base_url()?>'+'editActiveUser/'+oData[0]+'/'+oData[6]+'"><i class="fa fa-check"></i> Disable</a>');
                          }
