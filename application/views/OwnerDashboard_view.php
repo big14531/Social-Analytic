@@ -683,6 +683,7 @@
 
 	function createRankBarChart( data )
 	{
+		console.log(data);
 		var result=[];
 		var engage_data =[];
 		var click_data =[];
@@ -851,10 +852,10 @@
 				createBarChart( data[0] );
 				createPieChart( data[0] );
 				createSessionChart( data[4] );
-				createRankBarChart( data[3] )
-				createDetailBox( data )
+				createRankBarChart( data[3] );
+				createDetailBox( data );
                 editBestandWorstBox( data[2] );
-				createSelector( data[4] )
+				createSelector( data[4] );
 				$('#myModal').modal('hide');
 			}
 		});

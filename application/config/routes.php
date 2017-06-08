@@ -104,7 +104,7 @@ $route['ajaxGetActivePage'] = 'home_ctrl/ajaxGetActivePage';
 $route['ownerDashboard'] = 'home_ctrl/ownerDashboard';
 $route['ajaxOwnerDashboard'] = 'home_ctrl/ajaxOwnerDashboard';
 $route['sessionDashboard/(:any)'] = 'home_ctrl/sessionDashboard/$1';
-
+$route['ajaxSessionDashboard'] = 'home_ctrl/ajaxSessionDashboard';
 /*---------- analytic ----------*/
 $route['postAnalytic/(:num)/(:num)/(:any)'] = 'home_ctrl/postAnalytic/$1/$2/$3';
 $route['ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';

@@ -383,6 +383,7 @@ class Posts_model extends CI_Model
 
 		return $result->result();
 	}
+
 	public function getEngageRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet)
 	{
 		$result = array();
@@ -622,6 +623,38 @@ class Posts_model extends CI_Model
 				WHERE  created_time  >= '".$min_date."' 
 					AND created_time  <= '".$max_date."' 
 					AND  page_id =".$page_id." 
+				GROUP BY created_time_out";	
+
+		$result = $this->db->query( $query );
+
+		return $result->result();
+	}
+
+	public function getSessionSummaryGroupbyDate( $page_id , $session , $min_date , $max_date)
+	{
+		$result = array();
+		$query = "SELECT 
+					page_id,
+					DATE_FORMAT( created_time,  '%Y-%m-%d' ) as created_time_out,
+					sum(likes) as likes, 
+					sum( love ) as love ,
+					sum( wow ) as wow ,
+					sum( haha ) as haha ,
+					sum( sad ) as sad ,
+					sum( angry ) as angry ,
+					sum( shares ) as shares ,
+					count(case type when 'link' then 1 else null end) as link ,
+					count(case type when 'video' then 1 else null end) as video ,
+					count(case type when 'photo' then 1 else null end) as photo ,
+					sum( comments ) as comments ,
+					( sum(shares)+sum(comments)+sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as total,
+					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
+					count( post_id ) as post_count
+				FROM  fb_facebook_post  
+				WHERE  created_time  >= '".$min_date."' 
+					AND created_time  <= '".$max_date."' 
+					AND  page_id =".$page_id." 
+					AND  session ='".$session."'
 				GROUP BY created_time_out";	
 
 		$result = $this->db->query( $query );
