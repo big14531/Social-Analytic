@@ -368,8 +368,9 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 
-		$this->db->select('session , count(session) as count');
+		$this->db->select('session , count(session) as count ,sum(owner.other_clicks+link_clicks+photo_view+video_play) as click , sum( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , avg( owner.other_clicks+link_clicks+photo_view+video_play ) as click_avg , avg(  post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage_avg');
 		$this->db->from('fb_facebook_post as post'); 
+		$this->db->join('fb_owner_post as owner', 'post.post_id = owner.post_id');
 		$this->db->where('post.page_id',$page_id);
 		$this->db->where('post.is_delete<',5);
 		// $this->db->where('post.engage_rank','B');
@@ -377,7 +378,7 @@ class Posts_model extends CI_Model
 		$this->db->where('post.created_time <',$max_date);
 		$this->db->where('post.session !=', null);
 		$this->db->group_by( 'session' );
-		$this->db->order_by( 'count' , 'DESC' );
+		$this->db->order_by( 'engage' , 'DESC' );
 
 		$result = $this->db->get();
 
@@ -403,11 +404,12 @@ class Posts_model extends CI_Model
 
 		return $result->result();
 	}
+
 	public function getClickRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet)
 	{
 		$result = array();
 
-		$this->db->select('owner.click_rank , count( owner.click_rank ) as count');
+		$this->db->select('owner.click_rank , count( owner.click_rank ) as count , SUM( owner.other_clicks+link_clicks+photo_view+video_play ) as sum_click , SUM( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as sum_engage');
 		$this->db->from('fb_facebook_post as post'); 
 		$this->db->join('fb_owner_post as owner', 'post.post_id = owner.post_id');
 		$this->db->where('post.page_id',$page_id);
@@ -630,6 +632,23 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function getPostbySessionPageTimeRank( $page_id , $session , $min_date , $max_date )
+	{
+		
+		$result = array();
+		$this->db->select('post.*, ( owner.other_clicks+link_clicks+photo_view+video_play ) as sum_click, owner.click_rank , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact ');
+		$this->db->from('fb_facebook_post as post');
+		$this->db->join('fb_owner_post as owner', 'post.post_id = owner.post_id');
+		$this->db->where('post.page_id =',$page_id);
+		$this->db->where('post.session =',$session);
+		$this->db->where('post.is_delete <',5);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$result = $this->db->get(); 
+
+		return $result->result();
+	}
+
 	public function getSessionSummaryGroupbyDate( $page_id , $session , $min_date , $max_date)
 	{
 		$result = array();
@@ -655,6 +674,7 @@ class Posts_model extends CI_Model
 					AND created_time  <= '".$max_date."' 
 					AND  page_id =".$page_id." 
 					AND  session ='".$session."'
+					AND  is_delete <'5'
 				GROUP BY created_time_out";	
 
 		$result = $this->db->query( $query );

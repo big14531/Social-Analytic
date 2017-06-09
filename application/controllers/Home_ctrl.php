@@ -273,23 +273,26 @@ class Home_ctrl extends CI_Controller
 
 	public function ajaxSessionDashboard()
 	{
-		$result = [];
+		$graph_data = [];
 		$min_date		= $this->input->post('min_date');
 		$max_date		= $this->input->post('max_date');
 		$page_id		= $this->input->post('page_id');
 		$session_type 	= $this->input->post('session');
 
 		$session_date = $this->Posts_model->getSessionSummaryGroupbyDate( $page_id , $session_type ,$min_date , $max_date );
+		$post_list = $this->Posts_model->getPostbySessionPageTimeRank( $page_id , $session_type , $min_date , $max_date );
 		$rank = ['F','E','D','C','B','A'];
 		foreach ($rank as $alphabet) 
 		{
 			$engage_rank = $this->Posts_model->getEngageRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet);
 			$click_rank = $this->Posts_model->getClickRankbySessionandRank( $page_id , $min_date , $max_date , $session_type , $alphabet);
-			$engage_count = empty( $engage_rank )? 0 : $engage_rank[0]->count;
-			$click_count = empty( $click_rank )? 0 : $click_rank[0]->count;					
-			array_push( $result , [ 'rank' => $alphabet , 'engage_rank' => $engage_count ,'click_rank'=>$click_count ] );	
+			$engage_count = empty( $engage_rank )? 0:  $engage_rank[0]->count;
+			$click_count = empty( $click_rank )? 0 	:  $click_rank[0]->count;
+			$click_sum = empty( $click_rank )? 0 	:  $click_rank[0]->sum_click;
+			$engage_sum = empty( $click_rank )? 0 	:  $click_rank[0]->sum_engage;
+			array_push( $graph_data , [ 'rank' => $alphabet , 'engage_rank' => $engage_count ,'click_rank'=>$click_count , 'sum_click'=>$click_sum  , 'sum_engage'=>$engage_sum ] );	
 		}
-		echo json_encode([ $result , $session_date ]);
+		echo json_encode([ $graph_data , $session_date , $post_list ]);
 	}
 
 	/* ---------------- Rank posts Zone ---------------- */

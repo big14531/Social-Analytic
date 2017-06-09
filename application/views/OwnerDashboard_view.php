@@ -3,7 +3,35 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
-
+	.avg-table>tbody>tr>td {
+		padding: 10px;
+	}
+	.avg-box
+	{
+		background-color: #FFF;
+		border-radius: 4px;
+		width: 150px;
+		color: #000;
+		text-align:center;
+		padding-bottom:10px
+	}
+	.session-name {
+		background-color: #1ab394;
+		border-color: #1ab394;
+		color: #FFFFFF;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+		margin-right: 5px;
+		width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding:10px;
+		text-align: center;
+		margin-bottom:10px;
+	}
+	.info-hover{
+		color: #00c0ef ;
+	}
 	#btn_session{
 		margin-top:10px
 	}
@@ -71,7 +99,18 @@
 		margin-bottom: 10px;
 		max-height: 170px;
 	}
-	
+	.tooltiptext {
+		max-width:400px;
+		visibility: hidden;
+		background-color: #fff;
+		color: black;
+		line-height: 20px;;
+		border-radius: 3px;
+		padding: 10px;
+		position: absolute;
+		z-index: 999;
+		font-size:13px;
+	}
 </style>
 <!-- Select2 -->
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
@@ -106,7 +145,7 @@
 		</div>
 
 		<div class="row info-row">
-			<div class="col-md-3 col-sm-6 col-xs-6">
+			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="info-box">
 					<span class="info-box-icon bg-facebook"><i class="ion ion-person-stalker icon"></i></span>
 
@@ -114,12 +153,10 @@
 						<span class="info-box-text">จำนวนแฟนเพจ</span>
 						<span class="info-box-number" id="fanpage-box"></span>
 					</div>
-					<!-- /.info-box-content -->
 				</div>
-				<!-- /.info-box -->
 			</div>
-			<!-- /.col -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
+
+			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="info-box">
 					<span class="info-box-icon bg-facebook"><i class="ion ion-speedometer icon"></i></span>
 
@@ -127,16 +164,12 @@
 						<span class="info-box-text">จำนวน Engagement รวม</span>
 						<span class="info-box-number" id="engage-box"></span>
 					</div>
-					<!-- /.info-box-content -->
 				</div>
-				<!-- /.info-box -->
 			</div>
-			<!-- /.col -->
 
-			<!-- fix for small devices only -->
 			<div class="clearfix visible-sm-block"></div>
 
-			<div class="col-md-3 col-sm-6 col-xs-6">
+			<div class="col-md-4 col-sm-6 col-xs-6">
 				<div class="info-box">
 					<span class="info-box-icon bg-facebook"><i class="ion ion-chatbubbles icon"></i></span>
 
@@ -144,33 +177,41 @@
 						<span class="info-box-text">จำนวนโพสต์</span>
 						<span class="info-box-number" id="post-box"></span>
 					</div>
-					<!-- /.info-box-content -->
 				</div>
-				<!-- /.info-box -->
 			</div>
-			<!-- /.col -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="info-box">
-					<span class="info-box-icon bg-facebook"><i class="ion ion-thumbsup icon"></i></span>
-
-					<div class="info-box-content">
-						<span class="info-box-text">Engagement เฉลี่ย</span>
-						<span class="info-box-number" id="avg-engage-box"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			</div>
-			<!-- /.col -->
+			
 		</div>
 
 		<div class="row chart-row">
-        
 			<div class="col-sm-12">
-				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">ประเภทข่าวทั้งหมด</h2>
+						<h2 class="box-title" id="engage-click-title">รวม Engagement ข่าวทั้งหมด</h2>
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> กราฟแสดงการกดไลค์และคลิกของโพสต์ แยกตามประเภทของข่าว</span>
+						</i>
+						<div class="box-tools pull-right">
+							<input id="toggle-bar-engage" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Engage" data-off="Click" data-onstyle="success" data-offstyle="warning">
+						</div>
+					</div>
+					<div class="box-body" id="engage-box-body">
+						<div id="engage-bar-chart" style="width: 100%;height: 300px;"></div>
+					</div>
+					<div class="box-body" id="click-box-body" >
+						<div id="click-bar-chart" style="width: 100%;height: 300px;" ></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-12">
+				<div class="box gray-box">
+					<div class="box-header">
+						<h2 class="box-title">จำนวนข่าวแยกตามประเภท</h2>
+						
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> กราฟแสดงจำนวนของข่าว แยกตามประเภทของข่าว สามารถเลือกดดูเฉพาะข่าวในกลุ่มคะแนนเดียวกันได้ โดยเลือกจากปุ่มทางมุมบนขวาของกราฟ</span>
+						</i>
+
 						<div class="box-tools pull-right">
 							<select class="js-example-basic-single"  id="rank-selector">
 							</select>
@@ -179,15 +220,79 @@
 					<div class="box-body">
 						<div id="session-bar-chart" style="height: 300px;"></div>
 					</div>
-					<!-- /.box-body-->
 				</div>
 			</div>
 
-			<div class="col-sm-4 col-xs-12">
+			<!--<div class="col-sm-12">
+				<div class="box gray-box">
+					<div class="box-header">
+						<h2 class="box-title">ค่าเฉลี่ยข่าวแต่ละประเภท</h2>
+						
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> ตารางแสดงค่ากดไลค์/คลิก เฉลี่ยของแต่ละประเภทข่าว</span>
+						</i>
+
+						<div class="box-tools pull-right">
+							<input id="toggle-bar-avg" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Engage" data-off="Click" data-onstyle="success" data-offstyle="warning">
+						</div>
+					</div>
+					<div class="box-body">
+						<table class="avg-table">
+							<tr>
+								<td>
+									<div class="avg-box">
+										<div class="session-name">อาชญากรรมasdasdasdasdasdasdasd</div>
+										<span>1231</span>
+									</div>
+								</td>
+								<td>
+									<div class="avg-box">
+										<div class="session-name">อาชญากรรม</div>
+										<span>4123</span>
+									</div>
+								</td>
+								<td>
+									<div class="avg-box">
+										<div class="session-name">อาชญากรรม</div>
+										<span>2212</span>
+									</div>
+								</td>
+								<td>
+									<div class="avg-box">
+										<div class="session-name">อาชญากรรม</div>
+										<span>2212</span>
+									</div>
+								</td>
+								<td>
+									<div class="avg-box">
+										<div class="session-name">อาชญากรรม</div>
+										<span>2212</span>
+									</div>
+								</td>
+								<td>
+									<div class="avg-box">
+										<div class="session-name">อาชญากรรม</div>
+										<span>2212</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>-->
+
+		</div>
+
+		<div class="row chart-row">
+
+			<div class="col-sm-4 col-xs-12">	
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">ประเภทของโพสต์</h2>
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> กราฟแสดงประเภทของโพสทั้งหมด ตัวอย่างเช่น โพสต์รูป โพสต์วีดีโอ Live</span>
+						</i>
 					</div>
 					<div class="box-body">
 						<div id="donut-chart" style="height: 300px;"></div>
@@ -200,7 +305,10 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">อันดับ Rank ภาพรวม</h2>
+						<h2 class="box-title">จำนวนโพสต์ตาม Rank</h2>
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> กราฟแสดงจำนวนของโพสต์ แยกตามคะแนนของโพสต์</span>
+						</i>
 						<div class="box-tools pull-right">
 							<input id="toggle-rank" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Engage" data-off="Click" data-onstyle="success" data-offstyle="warning">
 						</div>
@@ -208,7 +316,7 @@
 					<div class="box-body" id="engage-body">
 						<div id="rank-bar-chart1" style="width: 100%;height: 300px;"></div>
 					</div>
-					<div class="box-body" id="click-body" hidden>
+					<div class="box-body" id="click-body">
 						<div id="rank-bar-chart2" style="width: 100%;height: 300px;"></div>
 					</div>
 
@@ -220,7 +328,10 @@
 				<!-- Donut chart -->
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">จำนวนโพสเฉลี่ย</h2>
+						<h2 class="box-title">จำนวนโพสต์รายวัน</h2>
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> กราฟแสดงจำนวนเฉลี่ยของโพสต์รายวัน</span>
+						</i>
 					</div>
 					<div class="box-body">
 						<div id="bar-chart" style="height: 300px;"></div>
@@ -234,6 +345,9 @@
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">โพสต์ดีที่สุด</h2>
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> แสดง 5 โพสต์ที่มีคนกดไลค์/แชร์/คอมเม้น มากที่สุด</span>
+						</i>
 					</div>
 					<div class="box-body" >
 						<ul class="products-list product-list-in-box" id="best-box">	
@@ -248,6 +362,9 @@
 				<div class="box gray-box">
 					<div class="box-header">
 						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
+						<i class="info-hover fa fa-info-circle" aria-hidden="true">
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> แสดง 5 โพสต์ที่มีคนกดไลค์/แชร์/คอมเม้น น้อยที่สุด</span>
+						</i>
 					</div>
 					<div class="box-body">
 						<ul class="products-list product-list-in-box" id="worst-box">
@@ -537,6 +654,36 @@
 		});
 	}
 
+    function createEngageClickChart( data ) 
+    {
+
+        var engage_data=[];
+		var click_data=[];
+
+		for( var key in data )
+		{
+			var row = data[key]
+			var session = row.session;
+			var engage = row.engage;
+			var click = row.click;
+			engage_data.push( [ session , engage ] );
+			click_data.push( [ session , click ] );
+		}
+
+		var engage_series = {
+			data: engage_data,
+			color: "#00a65a"
+		};
+		var click_series = {
+			data: click_data,
+			color: "#f39c12"
+		};
+
+		plotSessionGraph(engage_series , "#engage-bar-chart"); 
+		plotSessionGraph(click_series , "#click-bar-chart"); 
+		$('#click-box-body').hide();
+    }
+
     function createSessionChart( data ) 
     {
 
@@ -555,10 +702,11 @@
 			data: result,
 			color: "#237cb7"
 		};
-		plotSessionGraph(multi_series); 
+		plotSessionGraph(multi_series , "#session-bar-chart"); 
+		
     }
 	
-	function plotSessionGraph(series) 
+	function plotSessionGraph(series , target) 
 	{
 		
 		var stack = 0,
@@ -566,7 +714,7 @@
 			lines = false,
 			steps = false;
 
-		$.plot("#session-bar-chart", [series], {
+		$.plot(target, [series], {
 			grid: {
 				borderWidth: 0,
 				hoverable: true,
@@ -599,7 +747,7 @@
 			previousIndex = null,
     		previousLabel = null;
 
-		$("#session-bar-chart").on("plothover", function (event, pos, item) {
+		$(target).on("plothover", function (event, pos, item) {
 			if (item) {
 				if ((previousLabel != item.series.label) || (previousPoint != item.dataIndex) || (previousIndex != item.seriesIndex) ) 
 				{
@@ -610,7 +758,7 @@
 					$("#tooltip").remove();
 					
 					var x = item.datapoint[0];
-					var y = item.datapoint[1]-item.datapoint[2];
+					var y = parseInt(item.datapoint[1]-item.datapoint[2]).toLocaleString('en-US');
 					
 					var color = item.series.color;
 					//console.log(item.series.xaxis.ticks[x].label);               
@@ -749,6 +897,7 @@
 
 		$.plot("#rank-bar-chart2", [click_series], option);
 
+		$('#click-body').hide();
 	}
 
 	function showTooltip(x, y, color, contents) 
@@ -852,6 +1001,7 @@
 				createBarChart( data[0] );
 				createPieChart( data[0] );
 				createSessionChart( data[4] );
+				createEngageClickChart( data[4] );
 				createRankBarChart( data[3] );
 				createDetailBox( data );
                 editBestandWorstBox( data[2] );
@@ -890,19 +1040,16 @@
 		});
 	}
 
-	$(document).ready(function() 
+	function createCallbackElement() 
 	{
-		construct_min_date = moment().subtract(1, 'weeks').startOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
-		construct_max_date = moment().subtract(1, 'weeks').endOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
-
-		$('#myModal').modal('show');
-
 		$("#rank-selector").on("select2:select", function (e) { editSessionChart(e.params.data); });
+
 		$('#btn_session').on('click', function(event) {
 			var link = "<?php echo base_url() ?>"+"sessionDashboard/"+$("#session-selector").select2('data')[0].text
 			console.log( link );
 			window.open( link , '_blank' );
 		});
+
 		$('#toggle-rank').change(function() {
 			if ($(this).prop('checked') )
 			{
@@ -915,7 +1062,39 @@
 				$('#click-body').show();
 			}
 		})
+
+		$('#toggle-bar-engage').change(function() {
+			if ($(this).prop('checked') )
+			{
+				$("#engage-click-title").html( "รวม Engagement ข่าวทั้งหมด" );
+				$('#engage-box-body').show();
+				$('#click-box-body').hide();
+			}
+			else
+			{
+				$("#engage-click-title").html( "รวม Click ข่าวทั้งหมด" );
+				$('#engage-box-body').hide();
+				$('#click-box-body').show();
+			}
+		})
+
+
+		$('.info-hover').hover( 
+			function() { $(this).find(".tooltiptext").css( 'visibility' , 'visible' ); } ,
+			function() { $(this).find(".tooltiptext").css( 'visibility' , 'hidden' ); } )
+	}
+
+	$(document).ready(function() 
+	{
+		construct_min_date = moment().subtract(1, 'weeks').startOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
+		construct_max_date = moment().subtract(1, 'weeks').endOf('isoWeek').format("YYYY-MM-DD HH:mm:ss");
+
+		$('#myModal').modal('show');
+
 		
+		
+
+		createCallbackElement();
 		searchCallback( construct_min_date , construct_max_date );
 		
 	});
