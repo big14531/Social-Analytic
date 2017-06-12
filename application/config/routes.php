@@ -54,6 +54,13 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 ////////////////////////////////////////
+//              Test Zone             //
+////////////////////////////////////////
+$route['test'] = 'test_ctrl';
+
+$route['exptest'] = 'data_ctrl/trackPostExperiment';
+
+////////////////////////////////////////
 //              View Zone             //
 ////////////////////////////////////////
 
@@ -67,7 +74,6 @@ $route['updateFacebookPost/(:num)'] = 'data_ctrl/updateFacebookPost/$1';
 $route['updateTrackingPage'] = 'data_ctrl/updateTrackingPage';
 
 /*---------- update all interval , temp ----------*/
-$route['tmp'] = 'data_ctrl/tempUpdateSession';
 $route['processAnalyticPost'] = 'data_ctrl/processAnalyticPost';
 $route['updateInsight'] = 'data_ctrl/updateInsight';
 $route['updateBatchFacebookPost']  = 'data_ctrl/updateBatchFacebookPost';

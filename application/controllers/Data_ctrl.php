@@ -368,11 +368,19 @@ class Data_ctrl extends CI_Controller
 	public function trackPostExperiment()
 	{
 		$post_array = [
-			''
+			'129558990394402_2541199952563615',
+			'129558990394402_2541197672563843',
+			'1526071940947174_1940885032799194',
+			'146406732438_10155749150622439'
 		];
 		$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
-
-
+		foreach ($batch as $key => $value) 
+		{
+			$time = $value->created_time;
+			$like = $value->like->summary->total_count;
+			$share = $value->shares->count;
+			echo $time." ".$like." ----- ".$share."<br>";
+		}
 	}
 }
 ?>
