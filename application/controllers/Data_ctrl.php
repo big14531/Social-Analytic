@@ -14,6 +14,7 @@ class Data_ctrl extends CI_Controller
 		ini_set('display_errors', 1);
 
 		$this->load->library('Kcl_facebook_analytic'); 
+		$this->load->library('Google_api');
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
 		$this->load->helper('file');
@@ -64,6 +65,7 @@ class Data_ctrl extends CI_Controller
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - New Sweep Post\r\n",'a+');
 			}
 			$this->updateInsight();
+			$this->trackPostExperiment();
 		}
 
 		if($minute%1==0)
@@ -368,19 +370,44 @@ class Data_ctrl extends CI_Controller
 	public function trackPostExperiment()
 	{
 		$post_array = [
-			'129558990394402_2541199952563615',
-			'129558990394402_2541197672563843',
-			'1526071940947174_1940885032799194',
-			'146406732438_10155749150622439'
+			'129558990394402_2541426129207664',
+			'129558990394402_2541421779208099',
+			'129558990394402_2541420705874873',
+			'208428464667_10155556321879668',
+			'208428464667_10155556282584668',
+			'208428464667_10155556288784668',
+			'208428464667_10155556267099668',
+			'146406732438_10155749552117439',
+			'146406732438_10155749535812439',
+			'146406732438_10155749492907439',
+			'146406732438_10155749431292439'
 		];
 		$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
+		$tmp_batch =[];
 		foreach ($batch as $key => $value) 
-		{
-			$time = $value->created_time;
-			$like = $value->like->summary->total_count;
-			$share = $value->shares->count;
-			echo $time." ".$like." ----- ".$share."<br>";
+		{	
+			$post=[];
+			$time = nice_date(  $value->created_time, 'Y-m-d H:i');;
+			$like = empty($value->like)?0: $value->like->summary->total_count;
+			$share = empty($value->shares)?0: $value->shares->count;
+			$id = $value->id;
+			$post['created_time'] 		= $time;
+			$post['post_id'] 			= explode('_',$id)[1];
+			$post['page_id'] 			= explode('_',$id)[0];
+			$post['likes'] 				= $like;
+			$post['share'] 				= $share;
+			array_push( $tmp_batch , $post );
 		}
+		print_r( $tmp_batch );
+		$this->Posts_model->insertBatchtmp( $tmp_batch );
+
 	}
+
+	public function googletrend()
+	{
+		$result = $this->google_api->getGoogleTrends();
+		print_r( $result );
+	}
+
 }
 ?>

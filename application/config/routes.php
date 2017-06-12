@@ -59,6 +59,8 @@ $route['translate_uri_dashes'] = FALSE;
 $route['test'] = 'test_ctrl';
 
 $route['exptest'] = 'data_ctrl/trackPostExperiment';
+$route['googletrend'] = 'data_ctrl/googletrend';
+
 
 ////////////////////////////////////////
 //              View Zone             //

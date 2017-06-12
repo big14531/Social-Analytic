@@ -123,7 +123,11 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
-	
+	public function insertBatchtmp( $data )
+	{
+		$insert_query = $this->db->insert_batch('tmp', $data);
+	}
+
 	public function insertBatchOwnerPost( $data )
 	{
 		foreach ($data as $post) 
