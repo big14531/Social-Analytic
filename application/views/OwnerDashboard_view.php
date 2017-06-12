@@ -3,6 +3,9 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
+	.avg-table{
+		width: 100%;
+	}
 	.avg-table>tbody>tr>td {
 		padding: 10px;
 	}
@@ -10,13 +13,17 @@
 	{
 		background-color: #FFF;
 		border-radius: 4px;
-		width: 150px;
 		color: #000;
 		text-align:center;
 		padding-bottom:10px
 	}
+	.avg-engage{
+		background-color: #00a65a;
+	}
+	.avg-click{
+		background-color: #ec971f;
+	}
 	.session-name {
-		background-color: #1ab394;
 		border-color: #1ab394;
 		color: #FFFFFF;
 		border-top-left-radius: 4px;
@@ -186,7 +193,7 @@
 			<div class="col-sm-12">
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title" id="engage-click-title">รวม Engagement ข่าวทั้งหมด</h2>
+						<h2 class="box-title" id="engage-click-title"> Engagement รวม แบ่งตามประเภทข่าว</h2>
 						<i class="info-hover fa fa-info-circle" aria-hidden="true">
 							<span class="tooltiptext"><i class="fa fa-info-circle"></i> กราฟแสดงการกดไลค์และคลิกของโพสต์ แยกตามประเภทของข่าว</span>
 						</i>
@@ -223,63 +230,29 @@
 				</div>
 			</div>
 
-			<!--<div class="col-sm-12">
+			<div class="col-sm-12">
 				<div class="box gray-box">
 					<div class="box-header">
-						<h2 class="box-title">ค่าเฉลี่ยข่าวแต่ละประเภท</h2>
+						<h2 class="box-title" id="avg-title">ค่าเฉลี่ย Engagement ของข่าวหนึ่งต่อโพส</h2>
 						
 						<i class="info-hover fa fa-info-circle" aria-hidden="true">
-							<span class="tooltiptext"><i class="fa fa-info-circle"></i> ตารางแสดงค่ากดไลค์/คลิก เฉลี่ยของแต่ละประเภทข่าว</span>
+							<span class="tooltiptext"><i class="fa fa-info-circle"></i> ตารางแสดงค่ากดไลค์/คลิก เฉลี่ยของแต่ละประเภทข่าว โดยจะเป็นค่าเฉลี่ยนต่อ 1 โพส</span>
 						</i>
 
 						<div class="box-tools pull-right">
 							<input id="toggle-bar-avg" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Engage" data-off="Click" data-onstyle="success" data-offstyle="warning">
 						</div>
 					</div>
-					<div class="box-body">
-						<table class="avg-table">
-							<tr>
-								<td>
-									<div class="avg-box">
-										<div class="session-name">อาชญากรรมasdasdasdasdasdasdasd</div>
-										<span>1231</span>
-									</div>
-								</td>
-								<td>
-									<div class="avg-box">
-										<div class="session-name">อาชญากรรม</div>
-										<span>4123</span>
-									</div>
-								</td>
-								<td>
-									<div class="avg-box">
-										<div class="session-name">อาชญากรรม</div>
-										<span>2212</span>
-									</div>
-								</td>
-								<td>
-									<div class="avg-box">
-										<div class="session-name">อาชญากรรม</div>
-										<span>2212</span>
-									</div>
-								</td>
-								<td>
-									<div class="avg-box">
-										<div class="session-name">อาชญากรรม</div>
-										<span>2212</span>
-									</div>
-								</td>
-								<td>
-									<div class="avg-box">
-										<div class="session-name">อาชญากรรม</div>
-										<span>2212</span>
-									</div>
-								</td>
-							</tr>
+					<div class="box-body" id="avg-engage-body">
+						<table class="avg-table" id="engage-table">
+						</table>
+					</div>
+					<div class="box-body" id="avg-click-body">
+						<table class="avg-table" id="click-table">
 						</table>
 					</div>
 				</div>
-			</div>-->
+			</div>
 
 		</div>
 
@@ -684,6 +657,47 @@
 		$('#click-box-body').hide();
     }
 
+	function createAvgBox( data ) 
+	{
+		
+		var engage_table = $('#engage-table');
+		var click_table = $('#click-table');
+
+		for (var index = 0; index < data.length; index++) 
+		{
+			
+			if (index%5==0) 
+			{
+				console.log( "create" );
+				engage_table.append( "<tr></tr>" );
+				click_table.append( "<tr></tr>" );
+			}
+			var session_data = data[index];
+			console.log( session_data );
+			var engage_last_tr = engage_table.find( 'tr:last' );
+			var click_last_tr = click_table.find( 'tr:last' );
+
+			
+
+			var engage_html = 	"<td>"
+									+"<div class='avg-box'>"
+										+"<div class='avg-engage session-name'>"+session_data.session+"</div>"
+										+"<span>"+Math.round(session_data.engage_avg).toLocaleString('en-US')+"</span>"
+									+"</div>"
+								+"</td>";
+
+			var click_html = 	"<td>"
+									+"<div class='avg-box'>"
+										+"<div class='avg-click session-name'>"+session_data.session+"</div>"
+										+"<span>"+Math.round(session_data.click_avg).toLocaleString('en-US')+"</span>"
+									+"</div>"
+								+"</td>";
+			engage_last_tr.append(engage_html);
+			click_last_tr.append(click_html);
+
+		}
+	}
+
     function createSessionChart( data ) 
     {
 
@@ -831,7 +845,6 @@
 
 	function createRankBarChart( data )
 	{
-		console.log(data);
 		var result=[];
 		var engage_data =[];
 		var click_data =[];
@@ -1006,6 +1019,7 @@
 				createDetailBox( data );
                 editBestandWorstBox( data[2] );
 				createSelector( data[4] );
+				createAvgBox( data[4] );
 				$('#myModal').modal('hide');
 			}
 		});
@@ -1061,23 +1075,39 @@
 				$('#engage-body').hide();
 				$('#click-body').show();
 			}
-		})
+		});
 
 		$('#toggle-bar-engage').change(function() {
 			if ($(this).prop('checked') )
 			{
-				$("#engage-click-title").html( "รวม Engagement ข่าวทั้งหมด" );
+				$("#engage-click-title").html( "Engagement รวม แบ่งตามประเภทข่าว" );
 				$('#engage-box-body').show();
 				$('#click-box-body').hide();
 			}
 			else
 			{
-				$("#engage-click-title").html( "รวม Click ข่าวทั้งหมด" );
+				$("#engage-click-title").html( "Click รวม แบ่งตามประเภทข่าว" );
 				$('#engage-box-body').hide();
 				$('#click-box-body').show();
 			}
-		})
+		});
 
+
+		$('#avg-click-body').hide();
+		$('#toggle-bar-avg').change(function() {
+			if ($(this).prop('checked') )
+			{
+				$("#avg-title").html( "ค่าเฉลี่ย Engagement ต่อโพสแบ่งตามประเภทข่าว" );
+				$('#avg-engage-body').show();
+				$('#avg-click-body').hide();
+			}
+			else
+			{
+				$("#avg-title").html( "ค่าเฉลี่ย Click ต่อโพสแบ่งตามประเภทข่าว" );
+				$('#avg-engage-body').hide();
+				$('#avg-click-body').show();
+			}
+		});
 
 		$('.info-hover').hover( 
 			function() { $(this).find(".tooltiptext").css( 'visibility' , 'visible' ); } ,
