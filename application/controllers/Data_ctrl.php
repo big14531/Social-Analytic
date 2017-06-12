@@ -362,17 +362,5 @@ class Data_ctrl extends CI_Controller
 	// 	}
 	}
 
-	// Description
-	// This Function use for track grow rate of post
-	// And Result save in text file
-	public function trackPostExperiment()
-	{
-		$post_array = [
-			''
-		];
-		$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $post_array );
-
-
-	}
 }
 ?>
