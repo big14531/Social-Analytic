@@ -328,9 +328,9 @@
 				}	
 
 			],
-	"iDisplayLength": 20,
-	"autoWidth":false
-} );
+			"iDisplayLength": 20,
+			"autoWidth":false
+		});
 	}
 
 

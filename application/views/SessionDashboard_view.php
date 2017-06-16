@@ -90,7 +90,7 @@
 							<input id="toggle-rank" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Click" data-off="Engage" data-onstyle="warning" data-offstyle="success">
 						</div>
 					</div>
-					<div class="box-body" id="engage-body" hidden>
+					<div class="box-body" id="engage-body">
 						<div id="rank-bar-chart1" style="width: 100%;height: 300px;"></div>
 					</div>
 					<div class="box-body" id="click-body">
@@ -108,7 +108,7 @@
 							<input id="toggle-sum" type="checkbox" data-size="small" checked data-toggle="toggle" data-on="Click" data-off="Engage" data-onstyle="warning" data-offstyle="success">
 						</div>
 					</div>
-					<div class="box-body" id="sum-engage-body" hidden>
+					<div class="box-body" id="sum-engage-body">
 						<div id="sum-bar-chart1" style="width: 100%;height: 300px;"></div>
 					</div>
 					<div class="box-body" id="sum-click-body">
@@ -392,7 +392,7 @@
 		$.plot("#rank-bar-chart1", [engage_series], option);
 
 		$.plot("#rank-bar-chart2", [click_series], option);
-
+		$('#engage-body').hide();
 	}
 
 	function createSumBarChart( data )
@@ -452,7 +452,7 @@
 		$.plot("#sum-bar-chart1", [engage_series], option);
 
 		$.plot("#sum-bar-chart2", [click_series], option);
-
+		$('#sum-engage-body').hide();
 	}
 
 	function createBarChart( data )
@@ -558,6 +558,7 @@
 				createDetailBox( data );
 				createDataTable( data[2] );
 				$('#myModal').modal('hide');
+
 			}
 		});
 	}

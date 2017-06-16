@@ -55,6 +55,7 @@ class Data_ctrl extends CI_Controller
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Page\r\n",'a+');
 			}
+			$this->trackPostExperiment();
 		}
 
 		if($minute%4==0)
@@ -65,7 +66,7 @@ class Data_ctrl extends CI_Controller
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - New Sweep Post\r\n",'a+');
 			}
 			$this->updateInsight();
-			$this->trackPostExperiment();
+			
 		}
 
 		if($minute%1==0)

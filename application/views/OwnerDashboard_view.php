@@ -568,9 +568,7 @@
 					var x = item.datapoint[0];
 					var y = item.datapoint[1];
 
-					var color = item.series.color;
-
-					//console.log(item.series.xaxis.ticks[x].label);               
+					var color = item.series.color;           
 
 					showTooltip(item.pageX,
 					item.pageY,
@@ -668,12 +666,10 @@
 			
 			if (index%5==0) 
 			{
-				console.log( "create" );
 				engage_table.append( "<tr></tr>" );
 				click_table.append( "<tr></tr>" );
 			}
 			var session_data = data[index];
-			console.log( session_data );
 			var engage_last_tr = engage_table.find( 'tr:last' );
 			var click_last_tr = click_table.find( 'tr:last' );
 
@@ -840,7 +836,7 @@
 			color: color,
 			label: rank
 		};
-		plotSessionGraph(series);
+		plotSessionGraph(series , "#session-bar-chart");
 	}
 
 	function createRankBarChart( data )
@@ -1060,7 +1056,6 @@
 
 		$('#btn_session').on('click', function(event) {
 			var link = "<?php echo base_url() ?>"+"sessionDashboard/"+$("#session-selector").select2('data')[0].text
-			console.log( link );
 			window.open( link , '_blank' );
 		});
 
