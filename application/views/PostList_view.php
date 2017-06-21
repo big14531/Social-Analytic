@@ -20,6 +20,12 @@
 	.table-img{
 		width:100px;
 	}
+	.select2-search__field{
+		color: #000!important;
+	}
+	.select2-selection__choice{
+		color: #000!important;
+	}
 </style>
 
 
@@ -122,7 +128,7 @@
 
 					<div class="modal-body">
 						
-						<select id="tags" multiple="multiple" class="selector"  style="width: 100%;">
+						<select id="tags" multiple="multiple" class="selector"  style="width: 100%;color:#FFF;">
 						</select>
 						<span id="analytic-link"></span>
 					</div>	

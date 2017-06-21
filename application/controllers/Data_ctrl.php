@@ -14,6 +14,7 @@ class Data_ctrl extends CI_Controller
 		ini_set('display_errors', 1);
 
 		$this->load->library('Kcl_facebook_analytic'); 
+		$this->load->library('Google_api');
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
 		$this->load->helper('file');
@@ -54,6 +55,7 @@ class Data_ctrl extends CI_Controller
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Page\r\n",'a+');
 			}
+			$this->trackPostExperiment();
 		}
 
 		if($minute%4==0)
@@ -64,6 +66,7 @@ class Data_ctrl extends CI_Controller
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - New Sweep Post\r\n",'a+');
 			}
 			$this->updateInsight();
+			
 		}
 
 		if($minute%1==0)

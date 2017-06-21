@@ -469,7 +469,6 @@
 		}); 
 	}
 
-
 	/**
 	 * [plotGraphbyCheckbox description]
 	 *
@@ -638,6 +637,7 @@
 	 */
 	function plotOverviewGraph( dataset )
 	{
+		console.log( dataset );
 	 	var option =
 	 	{   
 	 		legend:
