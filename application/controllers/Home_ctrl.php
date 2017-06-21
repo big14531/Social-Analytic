@@ -193,7 +193,7 @@ class Home_ctrl extends CI_Controller
 	{
 		$result = array();
 		$page_id = $this->input->post('page_id');
-		$time = date("Y-m-d H:i:s", strtotime('30 minutes ago') );
+		$time = date("Y-m-d H:i:s", strtotime('60 minutes ago') );
 		foreach ($page_id as $key => $value) 
 		{
 			$post_list = $this->Posts_model->getBestReactionPostbyPageandTime( $value , $time );

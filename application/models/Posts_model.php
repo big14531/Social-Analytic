@@ -123,6 +123,20 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
+	public function getLatedCreatePost( $date )
+	{
+		$result = array();
+		$this->db->order_by('created_time', 'DESC');
+		$this->db->select('page_id,post_id,last_update_time,created_time,is_delete');
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where('post.last_update_time >',$date);
+		$this->db->where('post.created_time >',$date);
+		$this->db->where('post.is_delete <',5);
+		$result = $this->db->get();
+
+		return $result;
+	}
+
 	public function insertBatchtmp( $data )
 	{
 		$insert_query = $this->db->insert_batch('tmp', $data);

@@ -56,9 +56,9 @@ $route['translate_uri_dashes'] = FALSE;
 ////////////////////////////////////////
 //              Test Zone             //
 ////////////////////////////////////////
-$route['test'] = 'test_ctrl';
 
-$route['exptest'] = 'data_ctrl/trackPostExperiment';
+
+$route['test'] = 'data_ctrl/updateRenectPostForTimeline';
 $route['googletrend'] = 'data_ctrl/googletrend';
 
 

@@ -92,6 +92,6 @@ function rankCriteriaCalculator( $value , $fanpage )
 	elseif 	( $value>$CriteriaD  ) 	{ $rank = 'D'; }
 	elseif 	( $value>$CriteriaE  ) 	{ $rank = 'E'; }
 	elseif 	( $value>$CriteriaF  ) 	{ $rank = 'F'; }
-
+	else { $rank ='F';}
 	return $rank;
 }

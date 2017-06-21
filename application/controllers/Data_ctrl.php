@@ -76,6 +76,12 @@ class Data_ctrl extends CI_Controller
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - update Post\r\n",'a+');
 			}
+
+			$result2 = $this->updateRenectPostForTimeline();
+			if ( $result2 ) 
+			{
+				write_file($this->daily_log,date('Y-m-d H:i:s')."  - recent update Post\r\n",'a+');
+			}
 		}		
 	}
 
@@ -142,6 +148,33 @@ class Data_ctrl extends CI_Controller
 			// echo "Number Post : ". $result['posts']."<br>";
 			// var_dump( $result );
 			// echo "<br>";echo "<br>";echo "<br>";echo "<br>";
+		}
+		return true;
+	}
+
+	public function updateRenectPostForTimeline()
+	{
+		$post_array = [];
+		$date = Date("Y-m-d H:i:s" , strtotime('60 minutes ago') );
+		$post = $this->Posts_model->getLatedCreatePost( $date )->result();
+		$page = $this->getAllPageFanpage();
+		foreach ($post as $key => $value) 
+		{
+			$id = $value->page_id."_".$value->post_id;
+			array_push( $post_array , $id );
+		}
+		$post_id_array = array_chunk( $post_array , 50 );
+		
+		foreach ($post_id_array as $value) 
+		{
+			$batch = $this->kcl_facebook_analytic->batchUpdatePostFacebook( $value );
+			$result = $this->editDataForUpdate( $batch , $post , $page);
+			if ( is_string( $result[0]) ) 
+			{
+				return;
+			}
+			$this->Posts_model->updatePost( $result );
+			// print_r( $result );
 		}
 		return true;
 	}
