@@ -547,7 +547,7 @@ class Posts_model extends CI_Model
 	public function getBestReactionPostbyPageandTime ( $page_id , $time )
 	{
 		$result = array();
-		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage" );
+		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as reaction" );
 		$this->db->from('fb_facebook_post as post');
 		$this->db->where('post.page_id ',$page_id);
 		$this->db->where('post.created_time >=',$time);
@@ -847,6 +847,29 @@ class Posts_model extends CI_Model
 		$this->db->where( 'user_id' , $id );
 		$this->db->update( 'fb_user' , $array );
 	}
+
+
+	/////////////////////////////////////////////////////////////////////////////
+
+
+	public function getTestPostID()
+	{
+		$result = array();
+		$this->db->select('post_id');
+		$this->db->from('tmp');
+		$this->db->group_by('post_id');
+		$result = $this->db->get();
+		return $result->result();   
+	}
+	public function getTestPost( $post_id )
+	{
+		$result = array();
+		$this->db->select('*');
+		$this->db->from('tmp');
+		$this->db->where('post_id' , $post_id);
+		$result = $this->db->get();
+		return $result->result();   
+	}	
 
 }
 ?>

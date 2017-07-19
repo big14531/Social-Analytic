@@ -1,5 +1,7 @@
 {
     "name": "yuthapichai_cha/social-analytic",
+    "description": "A Social Analytic , Tracker Social Tools",
     "type": "project",
+    "minimum-stability": "dev",
     "require": {}
 }

@@ -21,7 +21,7 @@ class Kcl_facebook_analytic
 
 	public function getToken()
 	{
-		$_SESSION['accessToken'] = "EAAHcqxIXZB8IBAHVD8QgcrY6pa7AJGfXtqkpT1UhjR0Pz7644sl98XZCOuZCCXPGAZBfWhw5jks9kgjH0q4xjwh9OYE5C6hqJm9EEXWZCltAABZC5XCwaHn0ZB7dH9ZCToGOTveORGdehrf1ZAn4s05SwpD16SR75ws4ZD";
+		$_SESSION['accessToken'] = "EAAHcqxIXZB8IBABTaJILenRP4NWyg40ZACpoJbimNQdaj3bAHr2uZAmpXg857ShhhEOrb2sFABkQ9QZB6Lr8c7ZCd0EqqnL84PLktsO4WVjpMhRrYCpEqxNuYtNyCuVy3RVuvsZAUMCIU8ngaw49zjDiEEeC2d6Pz9tSmYot4laQZDZD";
 	}
 
 	public function getRawPostData( $pageName , $limit , $offset=0 )
