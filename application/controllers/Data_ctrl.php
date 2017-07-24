@@ -284,16 +284,17 @@ class Data_ctrl extends CI_Controller
 	public function updateInsight()
 	{
 		$page_id = "208428464667";  //Komchudluk page_id
+		// $page_id = "135182934814"; //กรุงเทพธุรกิจ page_id
+		
 		$min_date = date( "Y-m-d 00:00:00" , strtotime( "yesterday" ) );
 
 		// GET POST
 		$main_post =  $this->Posts_model->getOwnerPostsbyPageNameandDate( $page_id , $min_date )->result();
-
 		$post_id_array = [];
 		foreach ($main_post as $key => $value) 
 		{
 			array_push( $post_id_array , $value->page_id.'_'.$value->post_id );
-		}
+		} 
 
 		$post_id_array = array_chunk( $post_id_array , 50 , true );
 
@@ -341,22 +342,25 @@ class Data_ctrl extends CI_Controller
 				$data['click_rank'] = $total_click;
 				array_push( $result , $data );
 			}
-			// print_r( $result );
+			print_r( $result );
 			$this->Posts_model->updateBatchOwnerPost( $result );
 		}	
 	}
 
 	public function processAnalyticPost()
 	{
-		$this->load->library('THSplitLib/segment');
 		$page_id = "208428464667";  //Komchudluk page_id
+		// $page_id = "135182934814"; //กรุงเทพธุรกิจ page_id
+
+		$this->load->library('THSplitLib/segment');
+
 		$min_date = date( "Y-m-d 00:00:00" , strtotime( "yesterday" ) );
 		$max_date = date( "Y-m-d 23:59:59" , strtotime( "yesterday" ) );
 
 		// GET POST
 		$main_post =  $this->Posts_model->getPostsbyPageNameandTimeForAnalytic( $page_id ,$min_date ,$max_date )->result();
 		$target_post =  $this->Posts_model->getAllPostbyTime( $min_date ,$max_date );
-		print_r( $main_post );
+		
 		foreach ($main_post as $key => $post_obj) 
 		{
 			$result = [];

@@ -377,6 +377,9 @@ class Posts_model extends CI_Model
 		$this->db->where('post.created_time >',$min_date);
 		$this->db->where('post.created_time <',$max_date);
 
+		// echo $this->db->get_compiled_select();
+		// exit();
+
 		$result = $this->db->get();
 
 		return $result;
