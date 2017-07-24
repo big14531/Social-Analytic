@@ -313,7 +313,7 @@
 			$("#highlight-pic-"+key).attr( 'src' , value.picture  ).hide().fadeIn(500);
 			$("#highlight-date-"+key).text( value.last_update_time  ).hide().fadeIn(500);
 			$("#highlight-description-"+key).text( value.message ).hide().fadeIn(500);
-			$("#highlight-like-"+key).text( value.reaction ).hide().fadeIn(500);
+			$("#highlight-like-"+key).text( value.engage ).hide().fadeIn(500);
 			$("#highlight-comment-"+key).text( value.comments ).hide().fadeIn(500);
 			$("#highlight-shared-"+key).text( value.shares ).hide().fadeIn(500);
 		}
