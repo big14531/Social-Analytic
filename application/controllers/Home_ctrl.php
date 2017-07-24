@@ -15,7 +15,7 @@ class Home_ctrl extends CI_Controller
 		// ini_set('display_errors', 1);
 		// print_r( $this->session->all_userdata() );
 		// 
-		$this->load->library('THSplitLib/segment'); 
+		// $this->load->library('THSplitLib/segment'); 
 		$this->load->library('Kcl_facebook_analytic'); 
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
