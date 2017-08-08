@@ -192,10 +192,17 @@
 					<div class="box-header with-border">
 						<h2 class="box-title">กราฟรวมทุกเพจ</h2>
 
-						<div class="box-tools pull-right">
+						<div class="box-tools pull-right" data-toggle="tooltip" title="" data-original-title="เลือกประเภทแสดงผล">
+							<div class="btn-group" data-toggle="btn-toggle" id="graph-style">
+								<button type="button" class="graph-style btn btn-default btn-sm active" value="day"> วัน </i></button>
+								<button type="button" class="graph-style btn btn-default btn-sm" value="week"> สัปดาห์ </i></button>
+								<button type="button" class="graph-style btn btn-default btn-sm" value="month"> เดือน </i></button>
+							</div>
+						</div>
+						<!-- <div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
-						</div>
+						</div> -->
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
@@ -276,7 +283,7 @@
 
 	var is_first =1;
 	var dataset=[];
-
+	var global_data=[];
 	/**
 	 * [rgbToHex description]
 	 *
@@ -323,8 +330,9 @@
 	 * @param  {String} data_type 	[ data type ]
 	 * @return {[type]}	dataset		[array]
 	 */
-	function makeSeriesData( data , data_type="Posts" )
+	function makeSeriesData( data , data_type="Posts" , time_type ="day" )
 	{
+		
 		// Check data type and set key, for get result from Raw data by key
 		switch( data_type ){
 
@@ -372,24 +380,69 @@
 			var data_type="angry"
 			break;
 		}
-
+		
 		var dataset=[];
 		for ( var key in data) 
 		{
+			
 			var graphID = data[key]['id'];
 			var data_series=[];
 			var profile_graph =[];
 			var page_name = data[key].page_name;
 			var post_data = data[key]['post_data'] 
 
-			for( var value in post_data )
+			if( time_type=="day" )
 			{
-				var time = post_data[value].created_time;
-				var value = post_data[value][data_type];
-				var data_point = [ time , value ];
+				for( var value in post_data )
+				{
+					var time = post_data[value].created_time;
+					var value = post_data[value][data_type];
+					var data_point = [ time , value ];
 
-				data_series.push( data_point );
+					data_series.push( data_point );
+				}
 			}
+			else if( time_type=="week" ){
+				var sum_value=0;
+				for( var value in post_data )
+				{
+					var time = post_data[value].created_time;
+					var fine_time =  moment(time);
+					var min_time =  moment(time).startOf('week');
+					
+					if( moment(fine_time).isAfter(min_time) ){
+						inner_value = parseInt( post_data[value][data_type] );
+						sum_value += inner_value;
+						
+					}
+					else{
+						var data_point = [ min_time.unix()*1000 , sum_value ];
+						data_series.push( data_point );
+						sum_value=0;
+					}
+				}
+			}
+			else if( time_type=="month" ){
+				var sum_value=0;
+				for( var value in post_data )
+				{
+					var time = post_data[value].created_time;
+					var fine_time =  moment(time);
+					var min_time =  moment(time).startOf('month');
+					
+					if( moment(fine_time).isAfter(min_time) ){
+						inner_value = parseInt( post_data[value][data_type] );
+						sum_value += inner_value;
+						
+					}
+					else{
+						var data_point = [ min_time.unix()*1000 , sum_value ];
+						data_series.push( data_point );
+						sum_value=0;
+					}
+				}
+			}
+			
 
 			profile_graph.push( graphID );
 			profile_graph.push( page_name );
@@ -452,15 +505,16 @@
 			dataType: 'json',
 			success:function(data)
 			{
+				
 				$('#myModal').modal('hide');
 				$('.col-md-6').attr('hidden',false);
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
 				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
-
-				dataset = makeSeriesData( data , type  );
+				var time_type = $( "#graph-style" ).find( ".active" ).attr("value");
+				global_data = data;
+				dataset = makeSeriesData( data , type , time_type  );
 				if(is_first) createCheckBox( data , dataset );
-				
 				plotOverviewGraph( dataset );
 				plotSubGraph( dataset );
 				plotGraphbySelector()
@@ -507,6 +561,37 @@
 		}
 
 		plotOverviewGraph( new_dataset );		
+	}
+
+
+	/**
+	 * [plotGraphbyOption description]
+	 *
+	 *		Redraw graph by option
+	 * 
+	 */
+	function plotGraphbyOption() 
+	{
+		var time_tick =[];
+		var time_type = $( "#graph-style" ).find( ".active" ).attr("value");
+		if (time_type ==="day") {
+			time_tick = [ 1,"day" ];
+		}
+		else if(time_type ==="week"){
+			time_tick = [ 6,"day" ];
+		}
+		else if(time_type ==="month"){
+			time_tick = [ 1,"month" ];
+		}
+
+		let data_type = $('#datatype-btn').val();
+		let dataset = makeSeriesData( global_data , data_type , time_type );
+
+
+
+		plotOverviewGraph( dataset , time_tick );
+
+		
 	}
 
 	/**
@@ -635,9 +720,8 @@
 	 * @param  {[json]} input [ data from ajax ]
 	 * @return {[none]}       [plot graph]
 	 */
-	function plotOverviewGraph( dataset )
+	function plotOverviewGraph( dataset , time_type=[ 1 , "day"] )
 	{
-		console.log( dataset );
 	 	var option =
 	 	{   
 	 		legend:
@@ -673,7 +757,7 @@
 	 			mode: "time",
 	 			timeformat: "<b>%a</b> <br> %d-%b ",
 	 			timezone: "browser",
-	 			minTickSize: [1, "day"],
+	 			minTickSize: time_type,
 	 			autoscaleMargin: 0.002
 	 		},
 	 		yaxis: 
@@ -689,33 +773,7 @@
 	 		}
 	 	};  
 
-	 	var preview_option =
-	 	{   
-	 		legend:
-	 		{
-	 			show: false
-	 		},
-	 		points: 
-	 		{
-	 			show: true
-	 		},
-	 		series: {            
-	 			lines: {
-	 				show: true,
-	 			}
-	 		},
-	 		xaxis:
-	 		{
-	 			show: false
-	 		},
-	 		yaxis: 
-	 		{
-	 			show: false
-	 		},  
-	 		selection: {
-	 			mode: "xy"
-	 		}
-	 	};  
+	
 
 	 	var chart = $.plot("#overview-chart",dataset,option);
 
@@ -774,7 +832,7 @@
 	 		'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
 	 		'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	 	},
-	 	startDate: moment().subtract(6, 'days'),
+	 	startDate: moment().subtract(29, 'days'), 
 	 	endDate: moment()
 	 },
 	 function (start, end) 
@@ -830,6 +888,8 @@
 		{
 			$("#alert").slideUp(500);
 		});
+
+		$(".graph-style").click( function(){ plotGraphbyOption('test'); } );
 	});
 
 	/**

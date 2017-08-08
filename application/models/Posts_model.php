@@ -643,7 +643,8 @@ class Posts_model extends CI_Model
 				WHERE  created_time  >= '".$min_date."' 
 					AND created_time  <= '".$max_date."' 
 					AND  page_id =".$page_id." 
-				GROUP BY created_time_out";	
+				GROUP BY created_time_out
+				ORDER BY created_time_out DESC";	
 
 		$result = $this->db->query( $query );
 
