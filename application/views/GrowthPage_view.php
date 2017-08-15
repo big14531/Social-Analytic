@@ -284,6 +284,7 @@
 	var is_first =1;
 	var dataset=[];
 	var global_data=[];
+	var time_type=[];
 	/**
 	 * [rgbToHex description]
 	 *
@@ -335,7 +336,6 @@
 		
 		// Check data type and set key, for get result from Raw data by key
 		switch( data_type ){
-
 			case "Posts":
 			var data_type="post_count"
 			break;
@@ -384,7 +384,6 @@
 		var dataset=[];
 		for ( var key in data) 
 		{
-			
 			var graphID = data[key]['id'];
 			var data_series=[];
 			var profile_graph =[];
@@ -443,7 +442,6 @@
 				}
 			}
 			
-
 			profile_graph.push( graphID );
 			profile_graph.push( page_name );
 
@@ -511,7 +509,7 @@
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
 				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
-				var time_type = $( "#graph-style" ).find( ".active" ).attr("value");
+				time_type = $( "#graph-style" ).find( ".active" ).attr("value");
 				global_data = data;
 				dataset = makeSeriesData( data , type , time_type  );
 				if(is_first) createCheckBox( data , dataset );
@@ -560,7 +558,9 @@
 			}
 		}
 
-		plotOverviewGraph( new_dataset );		
+		var time_tick = getTimeTypeforGraph( time_type );
+		console.log( time_tick );
+		plotOverviewGraph( new_dataset , time_tick);		
 	}
 
 
@@ -573,26 +573,31 @@
 	function plotGraphbyOption() 
 	{
 		var time_tick =[];
-		var time_type = $( "#graph-style" ).find( ".active" ).attr("value");
-		if (time_type ==="day") {
-			time_tick = [ 1,"day" ];
-		}
-		else if(time_type ==="week"){
-			time_tick = [ 6,"day" ];
-		}
-		else if(time_type ==="month"){
-			time_tick = [ 1,"month" ];
-		}
+		time_type = $( "#graph-style" ).find( ".active" ).attr("value");
 
+		var time_tick = getTimeTypeforGraph( time_type );
 		let data_type = $('#datatype-btn').val();
 		let dataset = makeSeriesData( global_data , data_type , time_type );
-
-
-
 		plotOverviewGraph( dataset , time_tick );
 
 		
 	}
+  
+	/**
+		Helper function ti return time array for graph
+	*/
+	function getTimeTypeforGraph( time_type ){
+		if (time_type ==="day") {
+			return [ 1,"day" ];
+		}
+		else if(time_type ==="week"){
+			return [ 6,"day" ];
+		}
+		else if(time_type ==="month"){
+			return [ 1,"month" ];
+		}
+	}
+	
 
 	/**
 	 * [plotGraph description]
@@ -866,7 +871,7 @@
 	 		$("#alert").slideUp(500);
 	 	});
 	 });
-
+  
 	/**
 	* [description]
 	* 
