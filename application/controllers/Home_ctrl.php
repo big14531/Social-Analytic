@@ -213,11 +213,11 @@ class Home_ctrl extends CI_Controller
 
 	public function ajaxOwnerDashboard()
 	{
-		if( $this->cache->redis->get('result_ownerDashboard') )
-		{
-			echo json_encode( $this->cache->redis->get('result_ownerDashboard') );
-			return;
-		}
+		// if( $this->cache->redis->get('result_ownerDashboard') )
+		// {
+		// 	echo json_encode( $this->cache->redis->get('result_ownerDashboard') );
+		// 	return;
+		// }
 
 		$arrayPage = array();
 		$arrayPageValue = array();
@@ -260,7 +260,7 @@ class Home_ctrl extends CI_Controller
 			array_push( $session_array , [ 'rank' => $alphabet , 'engage_rank' => $multi_series_engage ,'click_rank'=>$multi_series_click ] );
 		}
 
-		$this->cache->redis->save('result_ownerDashboard', array( $postData ,$page_detail , $top_5 , $session_array , $all_session ), 3600);
+		// $this->cache->redis->save('result_ownerDashboard', array( $postData ,$page_detail , $top_5 , $session_array , $all_session ), 3600);
 		echo json_encode( array( $postData ,$page_detail , $top_5 , $session_array , $all_session ) );
 	}
 
