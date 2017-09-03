@@ -1,7 +1,6 @@
 <?php
-date_default_timezone_set('Asia/Bangkok');
 /**
- * CodeIgniter Version 3.1.3
+ * CodeIgniter
  *
  * An open source application development framework for PHP
  *

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');    
+﻿<?php defined('BASEPATH') OR exit('No direct script access allowed');    
 
 class Home_ctrl extends CI_Controller
 {
@@ -15,7 +15,7 @@ class Home_ctrl extends CI_Controller
 		// ini_set('display_errors', 1);
 		// print_r( $this->session->all_userdata() );
 		// 
-		$this->load->library('THSplitLib/segment'); 
+		//$this->load->library('THSplitLib/segment'); 
 		$this->load->library('Kcl_facebook_analytic'); 
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
@@ -537,8 +537,8 @@ class Home_ctrl extends CI_Controller
 	public function splitThaiWord( $text )
 	{
 		$result = array();
-		$segment = new Segment();
-		$splited = $segment->get_segment_array($text);
+		//$segment = new Segment();
+		//$splited = $segment->get_segment_array($text);
 
 		return $splited;
 	}
