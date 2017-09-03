@@ -3,6 +3,7 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 
+
 <!-- Internal CSS Zone -->
 <style>
 	.overview-box{
@@ -91,7 +92,10 @@
 		-webkit-animation-delay: 0.2s;
 		animation-delay: 0.2s; 
 	}
-
+	.select2-container--default .select2-selection--multiple .select2-selection__choice
+	{
+		color:#000;
+	}
 	@-webkit-keyframes sk-cubeGridScaleDelay 
 	{
 		0%, 70%, 100% {
@@ -124,7 +128,7 @@
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>
-			Page Dashboard
+			กราฟภาพรวม
 		</h1>
 	</section>
 
@@ -158,7 +162,7 @@
 					<div class="input-group full-width">
 						<button type="button" class="btn btn-md btn-default pull-left full-width" id="daterange-btn">
 							<span>
-								<i class="fa fa-calendar"></i> Date range
+								<i class="fa fa-calendar"></i> เลือกวันที่
 							</span>
 							<i class="fa fa-caret-down"></i>
 						</button>
@@ -166,7 +170,7 @@
 				</div>
 	
 				<div class="col-md-4">
-					<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="Select a Page" style="width: 100%;">
+					<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="เลือกเพจ" style="width: 100%;">
 					</select>
 				</div>
 
@@ -174,7 +178,7 @@
 					<div class="form-group">
 						<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 							<span>
-								<i class="fa fa-calendar"></i> Search
+								<i class="fa fa-calendar"></i> ค้นหา
 							</span>
 						</button>
 					</div>
@@ -186,12 +190,19 @@
 			<div class="col-md-12">
 				<div class="box overview-box">
 					<div class="box-header with-border">
-						<h2 class="box-title">Overview Graph</h2>
+						<h2 class="box-title">กราฟรวมทุกเพจ</h2>
 
-						<div class="box-tools pull-right">
+						<div class="box-tools pull-right" data-toggle="tooltip" title="" data-original-title="เลือกประเภทแสดงผล">
+							<div class="btn-group" data-toggle="btn-toggle" id="graph-style">
+								<button type="button" class="graph-style btn btn-default btn-sm active" value="day"> วัน </i></button>
+								<button type="button" class="graph-style btn btn-default btn-sm" value="week"> สัปดาห์ </i></button>
+								<button type="button" class="graph-style btn btn-default btn-sm" value="month"> เดือน </i></button>
+							</div>
+						</div>
+						<!-- <div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 							</button>
-						</div>
+						</div> -->
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
@@ -272,7 +283,8 @@
 
 	var is_first =1;
 	var dataset=[];
-
+	var global_data=[];
+	var time_type=[];
 	/**
 	 * [rgbToHex description]
 	 *
@@ -319,11 +331,11 @@
 	 * @param  {String} data_type 	[ data type ]
 	 * @return {[type]}	dataset		[array]
 	 */
-	function makeSeriesData( data , data_type="Posts" )
+	function makeSeriesData( data , data_type="Posts" , time_type ="day" )
 	{
+		
 		// Check data type and set key, for get result from Raw data by key
 		switch( data_type ){
-
 			case "Posts":
 			var data_type="post_count"
 			break;
@@ -368,7 +380,7 @@
 			var data_type="angry"
 			break;
 		}
-
+		
 		var dataset=[];
 		for ( var key in data) 
 		{
@@ -378,15 +390,58 @@
 			var page_name = data[key].page_name;
 			var post_data = data[key]['post_data'] 
 
-			for( var value in post_data )
+			if( time_type=="day" )
 			{
-				var time = post_data[value].created_time;
-				var value = post_data[value][data_type];
-				var data_point = [ time , value ];
+				for( var value in post_data )
+				{
+					var time = post_data[value].created_time;
+					var value = post_data[value][data_type];
+					var data_point = [ time , value ];
 
-				data_series.push( data_point );
+					data_series.push( data_point );
+				}
 			}
-
+			else if( time_type=="week" ){
+				var sum_value=0;
+				for( var value in post_data )
+				{
+					var time = post_data[value].created_time;
+					var fine_time =  moment(time);
+					var min_time =  moment(time).startOf('week');
+					
+					if( moment(fine_time).isAfter(min_time) ){
+						inner_value = parseInt( post_data[value][data_type] );
+						sum_value += inner_value;
+						
+					}
+					else{
+						var data_point = [ min_time.unix()*1000 , sum_value ];
+						data_series.push( data_point );
+						sum_value=0;
+					}
+				}
+			}
+			else if( time_type=="month" ){
+				var sum_value=0;
+				for( var value in post_data )
+				{
+					var time = post_data[value].created_time;
+					var fine_time =  moment(time);
+					var min_time =  moment(time).startOf('month');
+					
+					if( moment(fine_time).isAfter(min_time) ){
+						inner_value = parseInt( post_data[value][data_type] );
+						sum_value += inner_value;
+						
+					}
+					else{
+						var data_point = [ min_time.unix()*1000 , sum_value ];
+						data_series.push( data_point );
+						sum_value=0;
+					}
+				}
+			}
+			
 			profile_graph.push( graphID );
 			profile_graph.push( page_name );
 
@@ -433,7 +488,7 @@
 	 */
 	function ajaxCall( min_date , max_date ,type )
 	{
-		$('#search-btn').find('span').text('Searching.....');
+		$('#search-btn').find('span').text('กำลังค้นหา.....');
 		$('#search-btn').addClass('disabled');
 		$('#search-btn').prop('disabled',true); 
 		$('#myModal').modal('show');
@@ -448,15 +503,16 @@
 			dataType: 'json',
 			success:function(data)
 			{
+				
 				$('#myModal').modal('hide');
 				$('.col-md-6').attr('hidden',false);
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
-				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
-
-				dataset = makeSeriesData( data , type  );
+				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> ค้นหา');
+				time_type = $( "#graph-style" ).find( ".active" ).attr("value");
+				global_data = data;
+				dataset = makeSeriesData( data , type , time_type  );
 				if(is_first) createCheckBox( data , dataset );
-				
 				plotOverviewGraph( dataset );
 				plotSubGraph( dataset );
 				plotGraphbySelector()
@@ -464,7 +520,6 @@
 			},
 		}); 
 	}
-
 
 	/**
 	 * [plotGraphbyCheckbox description]
@@ -503,8 +558,46 @@
 			}
 		}
 
-		plotOverviewGraph( new_dataset );		
+		var time_tick = getTimeTypeforGraph( time_type );
+		console.log( time_tick );
+		plotOverviewGraph( new_dataset , time_tick);		
 	}
+
+
+	/**
+	 * [plotGraphbyOption description]
+	 *
+	 *		Redraw graph by option
+	 * 
+	 */
+	function plotGraphbyOption() 
+	{
+		var time_tick =[];
+		time_type = $( "#graph-style" ).find( ".active" ).attr("value");
+
+		var time_tick = getTimeTypeforGraph( time_type );
+		let data_type = $('#datatype-btn').val();
+		let dataset = makeSeriesData( global_data , data_type , time_type );
+		plotOverviewGraph( dataset , time_tick );
+
+		
+	}
+  
+	/**
+		Helper function ti return time array for graph
+	*/
+	function getTimeTypeforGraph( time_type ){
+		if (time_type ==="day") {
+			return [ 1,"day" ];
+		}
+		else if(time_type ==="week"){
+			return [ 6,"day" ];
+		}
+		else if(time_type ==="month"){
+			return [ 1,"month" ];
+		}
+	}
+	
 
 	/**
 	 * [plotGraph description]
@@ -632,7 +725,7 @@
 	 * @param  {[json]} input [ data from ajax ]
 	 * @return {[none]}       [plot graph]
 	 */
-	function plotOverviewGraph( dataset )
+	function plotOverviewGraph( dataset , time_type=[ 1 , "day"] )
 	{
 	 	var option =
 	 	{   
@@ -669,7 +762,7 @@
 	 			mode: "time",
 	 			timeformat: "<b>%a</b> <br> %d-%b ",
 	 			timezone: "browser",
-	 			minTickSize: [1, "day"],
+	 			minTickSize: time_type,
 	 			autoscaleMargin: 0.002
 	 		},
 	 		yaxis: 
@@ -685,33 +778,7 @@
 	 		}
 	 	};  
 
-	 	var preview_option =
-	 	{   
-	 		legend:
-	 		{
-	 			show: false
-	 		},
-	 		points: 
-	 		{
-	 			show: true
-	 		},
-	 		series: {            
-	 			lines: {
-	 				show: true,
-	 			}
-	 		},
-	 		xaxis:
-	 		{
-	 			show: false
-	 		},
-	 		yaxis: 
-	 		{
-	 			show: false
-	 		},  
-	 		selection: {
-	 			mode: "xy"
-	 		}
-	 	};  
+	
 
 	 	var chart = $.plot("#overview-chart",dataset,option);
 
@@ -765,12 +832,12 @@
 	 $('#daterange-btn').daterangepicker(
 	 {
 	 	ranges: {
-	 		'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	 		'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	 		'This Month': [moment().startOf('month'), moment().endOf('month')],
-	 		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	 		'7 วันที่ผ่านมา': [moment().subtract(6, 'days'), moment()],
+	 		'30 วันที่ผ่านมา': [moment().subtract(29, 'days'), moment()],
+	 		'เดือนนี้': [moment().startOf('month'), moment().endOf('month')],
+	 		'เดือนที่แล้ว': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 	 	},
-	 	startDate: moment().subtract(6, 'days'),
+	 	startDate: moment().subtract(29, 'days'), 
 	 	endDate: moment()
 	 },
 	 function (start, end) 
@@ -804,7 +871,7 @@
 	 		$("#alert").slideUp(500);
 	 	});
 	 });
-
+  
 	/**
 	* [description]
 	* 
@@ -826,6 +893,8 @@
 		{
 			$("#alert").slideUp(500);
 		});
+
+		$(".graph-style").click( function(){ plotGraphbyOption('test'); } );
 	});
 
 	/**

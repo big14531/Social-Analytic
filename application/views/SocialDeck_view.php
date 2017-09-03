@@ -5,7 +5,6 @@
 
 <!-- Internal CSS Zone -->
 <style>
-
 	html,body{ margin:0; padding:0; height:100%; width:100%; }
 	.page-name{
 		margin-right: 5px;
@@ -65,16 +64,59 @@
 	.highlight-post{
 		background-color: #3c8dbc;
 	}
+	.blink-item{
+		-moz-transition:all 0.5s ease-in-out;
+	    -webkit-transition:all 0.5s ease-in-out;
+	    -o-transition:all 0.5s ease-in-out;
+	    -ms-transition:all 0.5s ease-in-out;
+	    transition:all 0.5s ease-in-out;
+	    -moz-animation:blink normal 1.5s infinite ease-in-out;
+	    /* Firefox */
+	    -webkit-animation:blink normal 1.5s infinite ease-in-out;
+	    /* Webkit */
+	    -ms-animation:blink normal 1.5s infinite ease-in-out;
+	    /* IE */
+	    animation:blink normal 1.5s infinite ease-in-out;
+	    /* Opera */
+	}
 	.white{
 		color: white!important;
 	}
 	.highlight-txt{
-		margin-left: 30px;
-		margin-bottom: 5px; 
-		font-weight: 400;
-		margin-top: -5px;
-		color: white;
+		margin-left: 20px;
+	    margin-bottom: 15px;
+	    font-weight: 400;
+	    margin-top: -5px;
+	    color: rgb(255, 255, 255);
+	    font-size: 15px;
+	    text-decoration: underline;
 	}
+
+	@keyframes blink 
+	{
+	    0% {
+	           background-color: #222d32;
+	    }
+	    50% {
+	           background-color: #a8a8a8;
+	    }
+	    100% {
+	           background-color: #222d32;
+	    }
+	}
+	@-webkit-keyframes blink 
+	{
+	    0% {
+	           background-color: #222d32;
+	    }
+	    50% {
+	           background-color: #a8a8a8;
+	    }
+	    100% {
+	           background-color: #222d32;
+	    }
+	}
+
 </style>
 
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=5">
@@ -99,7 +141,7 @@
 						<ul class="list-box" id="list-box-<?=$i?>">
 							
 							<li class="highlight-post" id="highlight-post-<?=$i?>"> 
-								<div class="row highlight-txt"><b>Highlight</b></div>
+								<div class="highlight-txt">ข่าวฮิตในช่วงครึ่งชั่งโมง</div>
 								
 								<a target="_blank" href="#" class="user-pic" id="highlight-link-<?=$i?>"><img id="highlight-pic-<?=$i?>" ></a> 
 								<div class="list-right"> 
@@ -131,7 +173,6 @@
 
 	var last_time_update = []; 
 
-
 	function setHightlightOrder()
 	{
 		$("#list-box-"+0+" li:eq(0)").before($("#highlight-post-"+0));
@@ -160,7 +201,7 @@
 		+'</div>'
 		+'</div>'
 		+'</li>'
-		list_box.append( html );
+		list_box.append( $(html).hide().fadeIn(500) );
 	}
 
 	function prependPost( post , col ) 
@@ -183,7 +224,8 @@
 		+'</div>'
 		+'</div>'
 		+'</li>'
-		list_box.prepend( html );
+		list_box.prepend( $(html).hide().fadeIn(500)  );
+		$('#post-'+post.page_id+'_'+post.post_id).addClass('blink-item');
 	}
 
 	function addNewPost( data ) 
@@ -244,20 +286,36 @@
 		}	
 	}
 
+	function noHighlight( key ) 
+	{
+		$("#highlight-txt-"+key).text( ' no highlight '  );
+		$("#highlight-link-"+key).attr( 'href' , '#'  );
+		$("#highlight-pic-"+key).attr( 'src' , '#'  );
+		$("#highlight-date-"+key).text( '' );
+		$("#highlight-description-"+key).text( '' );
+		$("#highlight-like-"+key).text( '' );
+		$("#highlight-comment-"+key).text( '' );
+		$("#highlight-shared-"+key).text( '' );
+	}
+
 	function editHighlightPost( data ) 
 	{	
 		for (var key = 0; key < data.length; key++) 
 		{
 			var value = data[key][0];
-			
-			$("#highlight-txt-"+key).text( value.name  );
-			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  );
-			$("#highlight-pic-"+key).attr( 'src' , value.picture  );
-			$("#highlight-date-"+key).text( value.last_update_time  );
-			$("#highlight-description-"+key).text( value.message );
-			$("#highlight-like-"+key).text( value.engage );
-			$("#highlight-comment-"+key).text( value.comments );
-			$("#highlight-shared-"+key).text( value.shares );
+			if( typeof(value)==='undefined' )
+			{
+				noHighlight(key);
+				continue;
+			} 
+			$("#highlight-txt-"+key).text( value.name  ).hide().fadeIn(500);
+			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  ).hide().fadeIn(500);
+			$("#highlight-pic-"+key).attr( 'src' , value.picture  ).hide().fadeIn(500);
+			$("#highlight-date-"+key).text( value.last_update_time  ).hide().fadeIn(500);
+			$("#highlight-description-"+key).text( value.message ).hide().fadeIn(500);
+			$("#highlight-like-"+key).text( value.engage ).hide().fadeIn(500);
+			$("#highlight-comment-"+key).text( value.comments ).hide().fadeIn(500);
+			$("#highlight-shared-"+key).text( value.shares ).hide().fadeIn(500);
 		}
 	}
 
@@ -282,20 +340,20 @@
 		for (var i = 0; i < data.length; i++) {
 			var post = data[i];
 			var target = $("#post-"+post.id);
-
+			if ( typeof( post )=='string' ) continue;
 			if( typeof (post.reaction.summary.total_count) !== 'undefined' )
 			{
-				$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count );
+				$("#post-"+post.id).find( "#engage_number" ).text( post.reaction.summary.total_count ).hide().fadeIn(500);
 			}
 
 			if( typeof (post.comments.summary.total_count) !== 'undefined' )
 			{
-				$("#post-"+post.id).find( "#comment_number" ).text( post.comments.summary.total_count );
+				$("#post-"+post.id).find( "#comment_number" ).text( post.comments.summary.total_count ).hide().fadeIn(500);
 			}
 
 			if( typeof (post.shares) !== 'undefined' )
 			{
-				$("#post-"+post.id).find( "#share_number" ).text( post.shares.count );
+				$("#post-"+post.id).find( "#share_number" ).text( post.shares.count ).hide().fadeIn(500);
 			}
 		}
 	}
@@ -318,6 +376,7 @@
 				},
 				success:function(data)	
 				{
+
 					console.log("Get : ");
 					console.log(data);
 					addNewPost(data);
@@ -455,10 +514,10 @@
 	function initialize() 
 	{
 		ajaxCreatePageCard();
-		setTempDefault();
-		ajaxFirstTimePost();
 		setHightlightOrder();
 		ajaxGetHighlightPost();
+		setTempDefault();
+		ajaxFirstTimePost();
 	}
 
 	function removeOverPost() 
@@ -482,9 +541,9 @@
 		}
 	}
 
+	$('.feed-col').hide().fadeIn(700);
 	$(document).ready(function() 
 	{
-		
 		var box_height = $(document).height();
 		$(".gray-box").height(box_height-60);
 
@@ -492,17 +551,15 @@
 
 		$(".js-example-basic-single").on("select2:select", function (e) { ajaxEditPageCard( e.params.data.id , e.target.id ); });
 		
-
 		setInterval(function(){ 
+			$('.post-item').removeClass('blink-item');
 			ajaxUpdatePost();
 			removeOverPost();
 			ajaxGetHighlightPost();
 		}, 60000);
 		setInterval(function(){ 
 			ajaxGetNewPost();
-		}, 120000);
-
-
+		}, 70000);
 	});
 
 </script>

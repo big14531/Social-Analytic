@@ -10,19 +10,20 @@ class Kcl_facebook_analytic
 
 	public function __construct()
 	{
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 		$this->getToken();
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 	}
 
 	public function getToken()
 	{
-		$_SESSION['accessToken'] = "272658633175667|afmrK1I172gDdS-eXfc7jlJnzhU";
-	}
+		$_SESSION['accessToken'] = "EAAHcqxIXZB8IBAG8sFGC4C36kR8eRLZA39TU3bh860pOD1HVPNuXT5lY2f8vAKn3S9LgF4bkXlgSPkT7ucXp23O7ydIZCWvkaFcsFCDzZBDCSuYW77tx6Fp21VgGfg6kPWAZAXJQA0nz0VmL8YyJcpMbLw6IKV4ZCe4bSpU8GmbAZDZD";
+	}								
+
 
 	public function getRawPostData( $pageName , $limit , $offset=0 )
 	{
@@ -78,11 +79,11 @@ class Kcl_facebook_analytic
 
 	public function getRawPageDetail( $pageName )
 	{
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
@@ -126,11 +127,11 @@ class Kcl_facebook_analytic
 
 	public function getFullPageDetail( $pageName )
 	{
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
@@ -200,29 +201,26 @@ class Kcl_facebook_analytic
 		return $data;
 	}
 
-	public function batchGetPostFacebook()
+	public function batchGetPostFacebook( $page_array )
 	{
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$result = [];
+		$batch = [];
+
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
-		$request_field = '&fields=id,link,picture,message,description,object_id,name,icon,created_time,permalink_url,shares,comments.limit(0).summary(true),type';
+		$request_field = '/posts?limit=10&fields=id,link,picture,message,description,object_id,name,icon,created_time,permalink_url,type,shares,comments.limit(0).summary(true),likes.limit(0).summary(true)';
 
-		$page1 = $this->fb_obj->request('GET', '/208428464667/posts?limit=100');
-		$page2 = $this->fb_obj->request('GET', '/129558990394402/posts?limit=100');
-		$page3 = $this->fb_obj->request('GET', '/146406732438/posts?limit=100');
-
-		$batch = [
-		'page1' => $page1,
-		'page2' => $page2,
-		'page3' => $page3,
-		];
-
-		echo '<h1>Make a batch request</h1>' . "\n\n";
+		foreach ($page_array as $page_id) 
+		{
+			$page1 = $this->fb_obj->request('GET', '/'.$page_id.$request_field);
+			array_push( $batch , array( $page_id =>  $page1 ) );
+		}
 
 		try {
 			$responses = $this->fb_obj->sendBatchRequest($batch);
@@ -239,15 +237,11 @@ class Kcl_facebook_analytic
 		foreach ($responses as $key => $response) {
 			if ($response->isError()) {
 				$e = $response->getThrownException();
-				echo '<p>Error! Facebook SDK Said: ' . $e->getMessage() . "\n\n";
-				echo '<p>Graph Said: ' . "\n\n";
-				var_dump($e->getResponse());
 			} else {
-				echo "<p>(" . $key . ") HTTP status code: " . $response->getHttpStatusCode() . "<br />\n";
-				echo "Response: " . $response->getBody() . "</p>\n\n";
-				echo "<hr />\n\n";
+				array_push( $result , json_decode( $response->getBody() ) );
 			}
 		}
+		return $result;
 	}
 	
 	public function batchUpdatePostFacebook( $post_array )
@@ -255,16 +249,57 @@ class Kcl_facebook_analytic
 		$result = [];
 		$batch = [];
 		
-		$this->fb_obj= new Facebook\Facebook([
-			'app_id' => '272658633175667',
-			'app_secret' => 'dab47779eaca2c8d2deb8b5cc844a992',
-			'default_graph_version' => 'v2.7'
-			]);
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
 
 		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
 
 		$request_field = '/?fields=created_time,reactions.summary(total_count).as(reaction),reactions.type(LIKE).summary(total_count).limit(0).as(like),reactions.type(LOVE).summary(total_count).limit(0).as(love),reactions.type(WOW).summary(total_count).limit(0).as(wow),reactions.type(HAHA).summary(total_count).limit(0).as(haha),reactions.type(SAD).summary(total_count).limit(0).as(sad),reactions.type(ANGRY).summary(total_count).limit(0).as(angry),shares,comments.limit(0).summary(true)';
 
+		foreach ($post_array as $post_id) 
+		{
+			$post1 = $this->fb_obj->request('GET', '/'.$post_id.$request_field);
+			array_push( $batch , array( $post_id =>  $post1 ) );
+		}
+		
+		try {
+			$responses = $this->fb_obj->sendBatchRequest($batch);
+		} catch(Facebook\Exceptions\FacebookResponseException $e) {
+
+			echo 'Graph returned an error: ' . $e->getMessage();
+			exit;
+		} catch(Facebook\Exceptions\FacebookSDKException $e) {
+
+			echo 'Facebook SDK returned an error: ' . $e->getMessage();
+			exit;
+		}
+		foreach ($responses as $key => $response) {
+			if ($response->isError()) {
+				$e = $response->getThrownException();
+				array_push( $result , $key );
+			} else {
+				array_push( $result , json_decode( $response->getBody() ) );
+			}
+		}
+		return $result;
+	}
+
+	public function getInsightPost( $post_array )
+	{
+		$result = [];
+		$batch = [];
+		$this->fb_obj= new \Facebook\Facebook([
+              'app_id' => '524102277790658',
+              'app_secret' => '5b451c2368b7de531ee38face5591bdf',
+              'default_graph_version' => 'v2.8'
+            ]);
+
+		$this->fb_obj->setDefaultAccessToken( $_SESSION['accessToken'] );
+
+		$request_field = '/insights/post_consumptions_by_type_unique/lifetime/?fields=values';
 		foreach ($post_array as $post_id) 
 		{
 			$post1 = $this->fb_obj->request('GET', '/'.$post_id.$request_field);
@@ -291,6 +326,49 @@ class Kcl_facebook_analytic
 			}
 		}
 		return $result;
+	}
+
+
+	public function newExtractPostData( $data )
+	{
+		$result=[];
+		foreach ($data as $key => $value)
+		{
+			$post_list = $value->data;
+
+			foreach ($post_list as $in_key => $post_data) 
+			{
+				$posts=[];
+				
+				$posts['created_time'] 	= nice_date(  $post_data->created_time, 'Y-m-d H:i');
+				$posts['page_id'] 		= explode("_", $post_data->id )[0];
+				$posts['post_id'] 		= explode("_", $post_data->id )[1];
+				$posts['type'] 			= $post_data->type;
+				$posts['message'] 		= ( empty($post_data->message) ) 		? '' : $post_data->message;
+				$posts['description'] 	= ( empty($post_data->description) ) 	? '' : $post_data->description;
+				$posts['link'] 			= ( empty($post_data->link) ) 			? '' : $post_data->link;
+				$posts['permalink_url'] = ( empty($post_data->permalink_url) ) 	? '' : $post_data->permalink_url;
+				$posts['object_id'] 	= ( empty($post_data->object_id) ) 		? '' : $post_data->object_id;
+				$posts['picture'] 		= ( empty($post_data->picture) ) 		? '' : $post_data->picture; 
+				$posts['name'] 			= ( empty($post_data->name) ) 			? '' : $post_data->name;
+				$posts['icon'] 			= ( empty($post_data->icon) ) 			? '' : $post_data->icon;
+				$posts['likes'] 		= ( empty($post_data->likes->summary->total_count) ) ? 0 : $post_data->likes->summary->total_count; 
+				$posts['comments'] 		= ( empty($post_data->comments->summary->total_count) ) ? 0 : $post_data->comments->summary->total_count;
+				$posts['shares'] 		= ( empty($post_data->shares->count) ) ? 0 : $post_data->shares->count;
+				$posts['session'] 		= $this->getSessionKomchadluek( $post_data );
+				array_push( $result , $posts );
+			}
+		}
+		return $result;
+	}
+
+	public function getSessionKomchadluek($post)
+	{
+		$text = explode('/', $post->link);
+		if ($text[2]!=='www.komchadluek.net')return null;
+		$item = file_get_contents("http://www.komchadluek.net/api/section?url=".$post->link);
+		$result =  json_decode( $item );
+		return $result->section_name;
 	}
 
 }
