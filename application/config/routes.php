@@ -89,6 +89,10 @@ $route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 $route['login'] = 'validation_ctrl/index';
 $route['logout'] = 'validation_ctrl/logout';
 
+/*---------- proflie ----------*/
+$route['profile'] = 'home_ctrl/profileManage';
+$route['ajaxPagelist'] = 'home_ctrl/ajaxPagelist';
+
 /*---------- socialdesk ----------*/
 $route['socialDeck'] = 'home_ctrl/socialDeck';
 $route['ajaxFirstTimePost'] = 'home_ctrl/ajaxFirstTimePost';

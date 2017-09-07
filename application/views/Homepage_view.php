@@ -65,195 +65,193 @@
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
 
 <div class="content-wrapper">
-	<section class="content-header">
+	<div class="content-header">
 		<h1>
 			รายละเอียดของเพจ 
 		</h1>
-	</section>
-
-	<section class="content">
-		<div id='alert' class="alert alert-dismissible hidden">
-			<h3>Success!!</h3> 
-			<p>This is a green alert.</p>
-		</div>
-
-		<div class="box gray-box">
-			<div class="box-body control-box">
-				<div class="row">
-					<div class="col-md-5">
-						<select id="page-selector" class="form-control" data-placeholder="Select a Page" style="width: 100%;">
-						</select>
-					</div>
-					<div class="col-md-5">
-						<div class="input-group full-width">
-							<button type="button" class="btn btn-md btn-default pull-left full-width" id="daterange-btn">
-								<span>
-									<i class="fa fa-calendar"></i> เลือกวันที่
-								</span>
-								<i class="fa fa-caret-down"></i>
-							</button>
+	</div>
+	<div class="content">
+			<div id='alert' class="alert alert-dismissible hidden">
+				<h3>Success!!</h3> 
+				<p>This is a green alert.</p>
+			</div>
+			<div class="box gray-box">
+				<div class="box-body control-box">
+					<div class="row">
+						<div class="col-md-5">
+							<select id="page-selector" class="form-control" data-placeholder="Select a Page" style="width: 100%;">
+							</select>
+						</div>
+						<div class="col-md-5">
+							<div class="input-group full-width">
+								<button type="button" class="btn btn-md btn-default pull-left full-width" id="daterange-btn">
+									<span>
+										<i class="fa fa-calendar"></i> เลือกวันที่
+									</span>
+									<i class="fa fa-caret-down"></i>
+								</button>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
+									<span>
+										<i class="fa fa-calendar"></i> ค้นหา
+									</span>
+								</button>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-2">
-						<div class="form-group">
-							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
-								<span>
-									<i class="fa fa-calendar"></i> ค้นหา
-								</span>
-							</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4 col-xs-12" style="text-align: center;">
+					<img id="page-icon" class="page-logo" src="">
+				</div>
+				<div class="col-md-8 col-xs-12">
+					<div class="box white-box">
+						<h1 class="page-name" id="page-name"></h1>
+						<h3 class="page-name" id="time-range"></h3>
+						<p class="text-detail" id="page-about"></p>
+						<p class="text-detail" id="page-category"></p>
+					</div>	
+				</div>
+			</div>
+
+			<div class="row info-row">
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="info-box">
+						<span class="info-box-icon bg-facebook"><i class="ion ion-person-stalker icon"></i></span>
+
+						<div class="info-box-content">
+							<span class="info-box-text">จำนวนแฟนเพจ</span>
+							<span class="info-box-number" id="fanpage-box"></span>
 						</div>
+						<!-- /.info-box-content -->
 					</div>
+					<!-- /.info-box -->
 				</div>
-			</div>
-		</div>
+				<!-- /.col -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="info-box">
+						<span class="info-box-icon bg-facebook"><i class="ion ion-speedometer icon"></i></span>
 
-		<div class="row">
-			<div class="col-md-4 col-xs-12" style="text-align: center;">
-				<img id="page-icon" class="page-logo" src="">
-			</div>
-			<div class="col-md-8 col-xs-12">
-				<div class="box white-box">
-					<h1 class="page-name" id="page-name"></h1>
-					<h3 class="page-name" id="time-range"></h3>
-					<p class="text-detail" id="page-about"></p>
-					<p class="text-detail" id="page-category"></p>
-				</div>	
-			</div>
-		</div>
-
-		<div class="row info-row">
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="info-box">
-					<span class="info-box-icon bg-facebook"><i class="ion ion-person-stalker icon"></i></span>
-
-					<div class="info-box-content">
-						<span class="info-box-text">จำนวนแฟนเพจ</span>
-						<span class="info-box-number" id="fanpage-box"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			</div>
-			<!-- /.col -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="info-box">
-					<span class="info-box-icon bg-facebook"><i class="ion ion-speedometer icon"></i></span>
-
-					<div class="info-box-content">
-						<span class="info-box-text">จำนวน Engagement รวม</span>
-						<span class="info-box-number" id="engage-box"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			</div>
-			<!-- /.col -->
-
-			<!-- fix for small devices only -->
-			<div class="clearfix visible-sm-block"></div>
-
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="info-box">
-					<span class="info-box-icon bg-facebook"><i class="ion ion-chatbubbles icon"></i></span>
-
-					<div class="info-box-content">
-						<span class="info-box-text">จำนวนโพสต์</span>
-						<span class="info-box-number" id="post-box"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			</div>
-			<!-- /.col -->
-			<div class="col-md-3 col-sm-6 col-xs-6">
-				<div class="info-box">
-					<span class="info-box-icon bg-facebook"><i class="ion ion-person-add icon"></i></span>
-
-					<div class="info-box-content">
-						<span class="info-box-text">แฟนเพจใหม่</span>
-						<span class="info-box-number" id="new-fanpage-box"></span>
-					</div>
-					<!-- /.info-box-content -->
-				</div>
-				<!-- /.info-box -->
-			</div>
-			<!-- /.col -->
-		</div>
-
-		<div class="row chart-row">
-			<div class="col-sm-6 col-xs-12">
-				<!-- Donut chart -->
-				<div class="box gray-box">
-					<div class="box-header">
-						<h2 class="box-title">ประเภทของโพสต์</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
+						<div class="info-box-content">
+							<span class="info-box-text">จำนวน Engagement รวม</span>
+							<span class="info-box-number" id="engage-box"></span>
 						</div>
+						<!-- /.info-box-content -->
 					</div>
-					<div class="box-body">
-						<div id="donut-chart" style="height: 300px;"></div>
-					</div>
-					<!-- /.box-body-->
+					<!-- /.info-box -->
 				</div>
-			</div>
+				<!-- /.col -->
 
-			<div class="col-sm-6 col-xs-12">
-				<!-- Donut chart -->
-				<div class="box gray-box">
-					<div class="box-header">
-						<h2 class="box-title">จำนวนโพสเฉลี่ย</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
+				<!-- fix for small devices only -->
+				<div class="clearfix visible-sm-block"></div>
+
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="info-box">
+						<span class="info-box-icon bg-facebook"><i class="ion ion-chatbubbles icon"></i></span>
+
+						<div class="info-box-content">
+							<span class="info-box-text">จำนวนโพสต์</span>
+							<span class="info-box-number" id="post-box"></span>
 						</div>
+						<!-- /.info-box-content -->
 					</div>
-					<div class="box-body">
-						<div id="bar-chart" style="height: 300px;"></div>
-					</div>
-					<!-- /.box-body-->
+					<!-- /.info-box -->
 				</div>
-			</div>
+				<!-- /.col -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="info-box">
+						<span class="info-box-icon bg-facebook"><i class="ion ion-person-add icon"></i></span>
 
-			<div class="col-sm-6 col-xs-12">
-				<!-- Donut chart -->
-				<div class="box gray-box">
-					<div class="box-header">
-						<h2 class="box-title">โพสต์ดีที่สุด</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
+						<div class="info-box-content">
+							<span class="info-box-text">แฟนเพจใหม่</span>
+							<span class="info-box-number" id="new-fanpage-box"></span>
 						</div>
+						<!-- /.info-box-content -->
 					</div>
-					<div class="box-body" >
-						<ul class="products-list product-list-in-box" id="best-box">	
-						</ul>
-					</div>
-					<!-- /.box-body-->
+					<!-- /.info-box -->
 				</div>
+				<!-- /.col -->
 			</div>
 
-			<div class="col-sm-6 col-xs-12">
-				<!-- Donut chart -->
-				<div class="box gray-box">
-					<div class="box-header">
-						<h2 class="box-title">โพสต์แย่ที่สุด</h2>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-							</button>
+			<div class="row chart-row">
+				<div class="col-sm-6 col-xs-12">
+					<!-- Donut chart -->
+					<div class="box gray-box">
+						<div class="box-header">
+							<h2 class="box-title">ประเภทของโพสต์</h2>
+							<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+								</button>
+							</div>
 						</div>
+						<div class="box-body">
+							<div id="donut-chart" style="height: 300px;"></div>
+						</div>
+						<!-- /.box-body-->
 					</div>
-					<div class="box-body">
-						<ul class="products-list product-list-in-box" id="worst-box">
-						</ul>
-					</div>
-					<!-- /.box-body-->
 				</div>
+
+				<div class="col-sm-6 col-xs-12">
+					<!-- Donut chart -->
+					<div class="box gray-box">
+						<div class="box-header">
+							<h2 class="box-title">จำนวนโพสเฉลี่ย</h2>
+							<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<div class="box-body">
+							<div id="bar-chart" style="height: 300px;"></div>
+						</div>
+						<!-- /.box-body-->
+					</div>
+				</div>
+
+				<div class="col-sm-6 col-xs-12">
+					<!-- Donut chart -->
+					<div class="box gray-box">
+						<div class="box-header">
+							<h2 class="box-title">โพสต์ดีที่สุด</h2>
+							<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<div class="box-body" >
+							<ul class="products-list product-list-in-box" id="best-box">	
+							</ul>
+						</div>
+						<!-- /.box-body-->
+					</div>
+				</div>
+
+				<div class="col-sm-6 col-xs-12">
+					<!-- Donut chart -->
+					<div class="box gray-box">
+						<div class="box-header">
+							<h2 class="box-title">โพสต์แย่ที่สุด</h2>
+							<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<div class="box-body">
+							<ul class="products-list product-list-in-box" id="worst-box">
+							</ul>
+						</div>
+						<!-- /.box-body-->
+					</div>
+				</div>
+
 			</div>
-
-		</div>
-	</section>
-
+		
+	</div>
 	<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 		<div class="modal-dialog" role="document" style="text-align: center;">
 			<div class="sk-cube-grid">
@@ -271,8 +269,6 @@
 			<h3 style="color: #FFF">Loading....</h3>
 		</div>
 	</div>
-
-
 </div>
 
 <?php $this->load->view( 'default/bottom' ) ?>

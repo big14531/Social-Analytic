@@ -40,6 +40,7 @@ class Validation_ctrl extends CI_Controller
             $session_user['login_username'] = $data[0]->username;
             $session_user['login_name'] = $data[0]->user_name_surname;
             $session_user['login_last_login'] = $data[0]->user_last_login;
+            $session_user['profile'] = $data[0]->default_profile;
             $session_user['user_email'] = $data[0]->email;
             $session_user['permission_user'] = $data[0]->permission_user;
             $session_user['permission_manager'] = $data[0]->permission_manager;

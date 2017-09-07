@@ -1067,6 +1067,27 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $error );
 	}
 
+	
+	/**
+	* [profileManage description]
+	* 
+	*/
+	public function profileManage()
+	{
+		$user_id = $this->session->all_userdata()['login_user_id'];
+		$result = $this->Posts_model->getProfile( $user_id );
+		$data['profile_list'] = $result;
+		
+		$this->load->view( 'Profile_manage_view' , $data);
+	}
 
+	public function ajaxPagelist()
+	{
+		$user_id = $this->input->post('user_id');
+		$profile_id = $this->input->post('profile_id');
+		$result = $this->Posts_model->getPagebyProfile( $user_id , $profile_id );
+		$data['profile_list'] = $result;
+		echo json_encode( $data );
+	}
 }
-?>
+?>	

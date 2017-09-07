@@ -3,11 +3,19 @@
 <?php $this->load->view( 'default/sideMenu') ?>
 
 
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=<?=date('today')?>">
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/css/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
+
+
 <!-- Internal CSS Zone -->
 <style>
 	html,body{ margin:0; padding:0; height:100%; width:100%; }
 	.page-name{
 		margin-right: 5px;
+	}
+	.select2-container {
+    	width: 80%!important;
 	}
 	.content{
 		padding: 0px;
@@ -24,7 +32,7 @@
 		overflow:hidden;
 	}
 	.box-header{
-		background-color: #222d32;
+		background-color: #ffffff;
 	}
 	.box-body{
 		height: 100%;
@@ -43,10 +51,6 @@
 	.select2-container--default .select2-selection--single{
 		background-color: transparent!important;
 	}
-	.select2-selection__rendered{
-		color: #fff!important;
-		
-	}
 	.page-btn,.page-btn:hover, .page-btn:active, .page-btn:focus{
 		background-color: transparent;
 		border: none;
@@ -62,7 +66,8 @@
 		-webkit-box-orient: vertical;			
 	}
 	.highlight-post{
-		background-color: #3c8dbc;
+		background-color: #3c8dbc!important;
+		color: #fff;
 	}
 	.blink-item{
 		-moz-transition:all 0.5s ease-in-out;
@@ -118,11 +123,6 @@
 	}
 
 </style>
-
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=5">
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/css/jquery.mCustomScrollbar.min.css">
-<!-- Select2 -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
 
 <!-- Content Zone -->
 <div class="content-wrapper">

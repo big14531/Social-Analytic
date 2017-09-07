@@ -28,6 +28,10 @@
                                 <b>Last Login : </b>
                                 <?=$_SESSION['login_last_login']?>
                             </p>
+                            <p>
+                                <b>Profile ID : </b>
+                                <?=$_SESSION['profile']?>
+                            </p>
                             <!-- /.row -->
                         </li>
                         <!-- Menu Footer-->

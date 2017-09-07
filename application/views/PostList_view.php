@@ -3,7 +3,9 @@
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
 <style>
-
+	    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        vertical-align: middle!important;
+    }
 	.graph_tab.active a{
 		background-color:#3c8dbc!important;
 	}

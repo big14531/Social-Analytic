@@ -24,7 +24,7 @@
             <div class="box container-box">
                 <div class="box-header">    
                     <h1>
-                        Page Management<small>เพิ่ม/ลบ เพจที่ติดตาม</small>
+                        Profile Management<small>เพิ่ม/ลบ โปรไฟล์ทั้งหมด</small>
                     </h1>
                     
 
@@ -48,59 +48,31 @@
                 <!-- /.box-header -->
                 <div class="box-body"> 
                     <a class="btn btn-info" data-toggle="modal" data-target="#myModal">
-                        <i class="fa fa-edit"></i> Add Tracking page
+                        <i class="fa fa-edit"></i> Create Profile
                     </a>
                     <table id="example2" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Name</th>
-                                <th>Like</th>
-                                <th>To Page</th>
-                                <th>Website</th>
-                                <th>Status</th>
+                                <th>Facebook</th>
+                                <th>Twitter</th>
+                                <th>Last Active</th>
                                 <th></th>
                             </tr>
                         </thead>
 
                         <?php
-                        foreach ($page_list as $value) {
+                        foreach ($profile_list as $value) {
                             
-                            if ($value->is_active) {
-                                echo '<tr>';
-                            } else {
-                                echo '<tr style="background-color:#c0c0c0;">';
-                            }
+                            echo '<td class="name">'.$value->name.'</td>';
                             
-                            echo "<td class='picture'><image class='table-img' src='".$value->picture."' /></td>";
-                            
-                            if ($value->is_owner) {
-                                echo '<td class="name"><span class="label label-warning" id="status">Owner</span>    '.$value->name.'</td>';
-                            } else {
-                                echo '<td class="name">'.$value->name.'</td>';
-                            }
-                            
-                            echo '<td>'.number_format( $value->fan_count ).'</td>';
-                            echo '<td class="link"><a href="'.$value->link.'" target="blank">'.$value->link.'</a></td>';
-                            echo '<td class="website"><a href="'.$value->website.'" target="blank">'.$value->website.'</a></td>';
+                            echo '<td></td>';
+                            echo '<td></td>';
+                            echo '<td></td>';
 
-                            if ($value->is_active) {
-                                echo '<td class="status"><span class="label label-success" id="status">Active</span></th>';
-                            } else {
-                                echo '<td class="status"><span class="label label-danger" id="status">Disable</span></th>';
-                            }
-
-                            if ($value->is_active) {
-                                echo '<td>
-                                            <a class="btn btn-xs btn-warning edit" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</a>
-                                            <a class="btn btn-xs btn-danger" href="'.base_url().'editPageList/toggle/'.$value->id.'/'.$value->is_active.'"><i class="fa fa-close"></i> Disable</a>
-                                            </td>';
-                            } else {
-                                echo '<td>
-                                            <a class="btn btn-xs btn-warning edit" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</a>
-                                            <a class="btn btn-xs btn-success" href="'.base_url().'editPageList/toggle/'.$value->id.'/'.$value->is_active.'"><i class="fa fa-check"></i> Active</a>
-                                            </td>';
-                            }
+                            echo '<td>
+                                <a class="btn btn-xs btn-warning edit" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</a>
+                                </td>';
 
                             echo '</tr>';
                         }
@@ -157,6 +129,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -252,29 +226,6 @@
         $('#modal_add_id').submit();
     })
 
-    function ajaxPagelist()
-	{
-        var user_id = <?=$this->session->all_userdata()['login_user_id'];?>;
-        
-        var profile_id = <?=$this->session->all_userdata()['profile'];?>;
-		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxPagelist",   //the url where you want to fetch the data 
-				type: 'post', //type of request POST or GET   
-				dataType: 'json',
-				async: true, 
-				data: { 
-					'user_id': user_id,
-                    'profile_id': profile_id,
-				},
-				success:function(data)	
-				{
-					console.log(data);
-				}
-			});
-	}
-
-
-    ajaxPagelist();
 </script>    
 </body>
 </html>

@@ -1,5 +1,51 @@
-    h1,h2{
-        color: #b8c7ce!important;
+    .skin-blue .main-header .navbar {
+        background-color: rgba( 227 , 155, 72 ,0.4)!important;
+    }
+    .skin-blue .main-header .logo:hover {
+        background-color: #487fe3!important;
+    }
+    .skin-blue .main-header .navbar .sidebar-toggle:hover {
+        background-color: #487fe3!important;
+    }
+    .skin-blue .main-header .logo {
+        background-color: rgb( 227 , 155, 72 );
+    }
+    .skin-blue .sidebar-menu>li.header {
+        color: #fff;
+        background-color: #487fe3!important;
+    }
+    .skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a {
+        color: #fff;
+        background: rgb( 227 , 155, 72 );
+        border-left-color: #487fe3;
+    }
+    .skin-blue .sidebar a:hover {
+        border-left: 5px solid #487fe3;
+    }
+    .sidebar-mini.sidebar-collapse .sidebar-menu>li:hover>a>span {
+        margin-left: -5px;
+    }
+    .skin-blue .treeview-menu>li>a {
+        color: #fff;
+        font-size: 12px;
+    }
+    .sidebar-menu .treeview-menu>li>a {
+        padding: 12px 5px 12px 15px;
+    }
+    .sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > .treeview-menu {
+        top: 0px;
+        margin-left: 0;
+      }
+      .skin-blue .sidebar-menu>li>.treeview-menu {
+        margin: 0 1px;
+        color: #dadada!important;
+        background: rgb( 227 , 155, 72 );
+    }
+    .skin-blue .wrapper, .skin-blue .main-sidebar, .skin-blue .left-side {
+        background-color: #dadada!important;
+    }
+    .skin-blue .sidebar a {
+        color: #000000;
     }
 
     label{
@@ -7,17 +53,16 @@
     }
 
     .content-wrapper{
-        background-color: #4B4B4B!important;
+        background-color: #efefef!important;
     }
 
     .gray-background{
-        background-color: #4B4B4B!important;
+        background-color: #efefef!important;
     }
 
     .gray-box{
-        background-color: #1a2226!important;
+        background-color: #ffffff!important;
         border-top : 0px!important;
-        color: #b8c7ce!important;
     }
     .box-header.with-border{
         border-bottom: 1px solid #4B4B4B!important;
@@ -105,3 +150,5 @@
             transform: scale3D(0, 0, 1);
         } 
     }
+    
+    

@@ -88,6 +88,31 @@ class Posts_model extends CI_Model
 		return true;
 	}
 
+	public function getProfile( $user_id )
+	{
+		$result = array();
+		$this->db->where('user_owner', $user_id);
+		$this->db->order_by('id', 'ASC');
+		$result = $this->db->get( 'fb_profile' );
+
+		return $result->result();
+	}
+
+	public function getPagebyProfile( $user_id , $profile_id )
+	{
+		$result = array();
+		
+		$this->db->select('*');
+		$this->db->from('fb_profile as profile'); 
+		$this->db->join('fb_r_profile_page as relate', 'profile.id = relate.profile_id');
+		$this->db->join('fb_page_list as list', 'relate.page_id = list.id');
+		$this->db->where('profile.user_owner', $user_id);
+		$this->db->where('profile.id', $profile_id);
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 	public function getPagelist()
 	{
 		$result = array();
