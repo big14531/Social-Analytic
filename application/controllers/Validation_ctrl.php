@@ -9,6 +9,7 @@ class Validation_ctrl extends CI_Controller
           $this->load->database();
           $this->load->library('form_validation');
           $this->load->model('Login_model');
+          $this->load->model('Posts_model');
           
      }
 
@@ -19,6 +20,22 @@ class Validation_ctrl extends CI_Controller
         $this->load->view( 'Login_view' );
     }
 
+    public function register()
+    {
+		$data = array(
+			"user_name_surname" => html_escape( $this->input->post( 'name' ) ),
+			"username"          => html_escape( $this->input->post( 'email' ) ),
+			"password"          => password_hash( html_escape( $this->input->post( 'password' ) ) , PASSWORD_DEFAULT),
+			"email"             => 0,
+			"user_active"       => 1,   
+			"user_last_login"   => date("Y-m-d H:i:s"),
+			"permission_user"   => 1,
+			"permission_manager"=> 1,
+			"permission_admin"  => 1
+			);
+        $result = $this->Posts_model->createUser( $data );
+        redirect('/');
+    }
     public function verifyLogin()
     {
         // Create data
@@ -32,7 +49,6 @@ class Validation_ctrl extends CI_Controller
         // Check password and return boolean
         $result = password_verify( $password , $data[0]->password );
 
-        // Set Session with data from database
         if( $result )
         {
             $session_user['logged_in'] = TRUE;

@@ -22,6 +22,39 @@
         body{
             height: auto;
         }
+        .container {
+            width: auto;
+            position: relative;
+            perspective: 800px;
+        }
+        #card {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        #card figure {
+            margin: 0;
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        #card .back {
+            transform: rotateY( 180deg );
+        }
+        #card.flipped {
+            transform: rotateY( 180deg );
+        }
+        .signup-form{
+            text-align: center;
+            background:#fff;
+            height:400px;
+            border-radius: 20px;
+            padding: 30px;
+        }
         @-webkit-keyframes displace {
             from {
                 background-position: 0 0;
@@ -55,7 +88,7 @@
             padding: 20px;
             border-top: 0;
             color: #666;
-            height: 100%;
+            height: 400px;
             padding-top: 70px;
             border-radius: 0 20px 20px 0 ; 
             text-align: center;
@@ -66,7 +99,7 @@
         .logo-form{
             padding: 5%;
             background: #fff;
-            height: 100%;
+            height: 400px;
             text-align: center;
             border-radius: 20px 0 0 20px;
         }
@@ -94,6 +127,7 @@
         }
         .logo-img{
             width: 40%;
+            max-width: 150px;
         }
         .form-control-feedback {
             top: 10px;  
@@ -115,7 +149,9 @@
         .mobile{
             display:none;
         }
-
+        .back-icon{
+            margin-right: 10px;
+        }
         @media only screen and (max-width: 500px) {
             .desktop {
                 display: none;
@@ -156,7 +192,6 @@
                 text-align: center;
             }
         }
-        
         @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) {
             .desktop {
                 display: none;
@@ -184,64 +219,117 @@
     </style>
 </head>
 <body class="login-page">
-    <div class="login-box desktop">
-        <div class="col-xs-6 logo-form">
-            <img class="logo-img" src="<?php echo(base_url());?>assets/images/logo.png" alt="">
-            <div class="login-logo" style="color: #aaa;">
-                <b>Social</b>analytic
-                <p class="login-box-text">lemme serve help your social jobs</p>
-                <p class="login-box-text small-font">don't have account?</p>
-                <button class="btn btn-primary btn-block">Sign Up !</button>
-            </div>
+        <!-- Desktop -->
+        <div class="login-box desktop">
+            <section class="container">
+                <div id="card">
+                    <figure class="front">
+                        <div class="col-xs-6 logo-form">
+                            <img class="logo-img" src="<?php echo(base_url());?>assets/images/logo.png" alt="">
+                            <div class="login-logo" style="color: #aaa;">
+                                <b>Social</b>analytic
+                                <p class="login-box-text">lemme serve help your social jobs</p>
+                                <p class="login-box-text small-font">don't have account?</p>
+                                <button class="btn btn-primary btn-block" id="flip-btn">Sign Up !</button>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 login-box-body">
+                            <p class="login-box-text white">already have account ?</p>
+                            <?php echo validation_errors(); ?>
+                            <?php echo form_open('validation_ctrl/verifylogin'); ?>
+                            <div class="form-group has-feedback">
+                                <input name="username" type="text" class="form-control" placeholder="Username" required>
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input name="password" type="password" class="form-control" placeholder="Password" required>
+                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            </div>
+                            <div class="row">
+                                <!-- /.col -->
+                                <div class="col-xs-8 col-xs-offset-2">
+                                    <button type="submit" class="btn btn-block">Login</button>
+                                    <div class="btn btn-block fb-btn"><i class="fa fa-facebook"></i>Login via facebook</div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            </form>
+                        </div>
+                    </figure>
+                    <figure class="back">
+                        <div class="col-xs-8 col-xs-offset-2 signup-form">
+                            <p class="login-box-text">Sign up!</p>
+                            <?php echo validation_errors(); ?>
+                            <?php echo form_open('validation_ctrl/register'); ?>
+                            <div class="form-group has-feedback">
+                                <input name="name" type="text" class="form-control" placeholder="Name" required>
+                                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input name="password" type="password" class="form-control" placeholder="Password" required>
+                                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <input name="email" type="email" class="form-control" placeholder="Email" required>
+                                <span class="fa fa-envelope form-control-feedback"></span>
+                            </div>
+                            <div class="row">
+                                <!-- /.col -->
+                                <div class="col-xs-8 col-xs-offset-2">
+                                    <button type="submit" class="btn btn-info btn-block">Summit</button>
+                                    <div class="btn btn-default btn-block back-btn" id="back-btn"><i class="fa fa-arrow-left back-icon"></i>Back</div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            </form>
+                        </div>
+                    </figure>
+                </div>
+                
+            </section>
         </div>
-        <div class="col-xs-6 login-box-body">
-            <p class="login-box-text white">already have account ?</p>
-            <?php echo validation_errors(); ?>
-            <?php echo form_open('validation_ctrl/verifylogin'); ?>
-            <div class="form-group has-feedback">
-                <input name="username" type="text" class="form-control" placeholder="Username" required>
-                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-            </div>
-            <div class="form-group has-feedback">
-                <input name="password" type="password" class="form-control" placeholder="Password" required>
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            <div class="row">
-                <!-- /.col -->
-                <div class="col-xs-8 col-xs-offset-2">
-                    <button type="submit" class="btn btn-block">Login</button>
-                    <div class="btn btn-block fb-btn"><i class="fa fa-facebook"></i>Login via facebook</div>
-                </div>
-                <!-- /.col -->
-            </div>
-            </form>
-        </div>
-    </div>
-    <div class="login-box mobile">
-            <div class="col-md-6 login-box-body">
-                <p class="login-box-text white">Social Analytic</p>
-                <?php echo validation_errors(); ?>
-                <?php echo form_open('validation_ctrl/verifylogin'); ?>
-                <div class="form-group has-feedback">
-                    <input name="username" type="text" class="form-control" placeholder="Username" required>
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <input name="password" type="password" class="form-control" placeholder="Password" required>
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="row">
-                    <!-- /.col -->
-                    <div class="col-xs-8 col-xs-offset-2">
-                        <button type="submit" class="btn btn-block">Login</button>
-                        <div class="btn btn-block fb-btn"><i class="fa fa-facebook"></i>Login via facebook</div>
+
+        <!-- Mobile -->
+        <div class="login-box mobile">
+                <div class="col-md-6 login-box-body">
+                    <p class="login-box-text white">Social Analytic</p>
+                    <?php echo validation_errors(); ?>
+                    <?php echo form_open('validation_ctrl/verifylogin'); ?>
+                    <div class="form-group has-feedback">
+                        <input name="username" type="text" class="form-control" placeholder="Username" required>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
-                    <!-- /.col -->
-                </div>
-            </form>
+                    <div class="form-group has-feedback">
+                        <input name="password" type="password" class="form-control" placeholder="Password" required>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="row">
+                        <!-- /.col -->
+                        <div class="col-xs-8 col-xs-offset-2">
+                            <button type="submit" class="btn btn-block">Login</button>
+                            <div class="btn btn-block fb-btn"><i class="fa fa-facebook"></i>Login via facebook</div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-<!-- /.login-box -->
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+          
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-body">
+                  <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+          
+            </div>
+        </div>
 
 <!-- jQuery 2.2.3 -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -251,10 +339,29 @@
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
+        
+        $('.signup-form').find('form').submit(function() {
+            $('#myModal').modal({
+                show: 'false'
+            });
+            return false; // return false to cancel form action
+        });
+
+        $('#flip-btn').on( 'click' , function(){
+            $('#card').addClass('flipped');
+            setTimeout(function(){
+                $('.logo-form').attr( 'hidden' , true );
+                $('.login-box-body').attr( 'hidden' , true );
+            }, 200);
+        });
+
+        $('#back-btn').on( 'click' , function(){
+            $('#card').removeClass('flipped');
+            setTimeout(function(){
+                $('.logo-form').attr( 'hidden' , false);
+                $('.login-box-body').attr( 'hidden' , false);
+            }, 200);
+
         });
     });
 </script>

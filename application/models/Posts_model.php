@@ -874,7 +874,6 @@ class Posts_model extends CI_Model
 		$this->db->update( 'fb_user' , $array );
 	}
 
-
 	/////////////////////////////////////////////////////////////////////////////
 
 
