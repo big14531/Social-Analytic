@@ -26,6 +26,20 @@ class Home_ctrl extends CI_Controller
 	/* ---------------- Dashboard Zone ---------------- */
 
 	/**
+	* [allfeed description]
+	*
+	*		render all feed 
+	* 
+	*/
+	public function allFeed()
+	{
+		$this->load->view( 'AllFeed_view' );
+	}
+
+
+	/* ---------------- Dashboard Zone ---------------- */
+
+	/**
 	* [dashboard description]
 	*
 	*		Index function
@@ -429,9 +443,10 @@ class Home_ctrl extends CI_Controller
 		$link = $this->input->post('link');
 		$website = $this->input->post('website');
 		$id = $this->input->post('page_id');
+		$category_list = $this->input->post('category_list');
 		$is_owner = ( $this->input->post('is_owner')=='on'? 1:0 );
 
-		$this->Posts_model->updateEditPage( $id , $link , $website , $is_owner );
+		$this->Posts_model->updateEditPage( $id , $link , $website , $is_owner , $category_list );
 
 		redirect('/editPageList');
 	}

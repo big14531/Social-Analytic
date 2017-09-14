@@ -34,7 +34,7 @@ class Data_ctrl extends CI_Controller
 		{
 			return false;
 		}
-
+		$time_pre = microtime(true);
 		$minute = date('i');
 		$hour = date('H');
 		write_file($this->daily_log,"\n"."--- RUN Crontab --- ".date('Y-m-d H:i:s')."\r\n",'a+');
@@ -82,7 +82,11 @@ class Data_ctrl extends CI_Controller
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - recent update Post\r\n",'a+');
 			}
-		}		
+		}	
+		$time_post = microtime(true);
+		$exec_time = $time_post - $time_pre;
+		write_file($this->daily_log,"Run time : ".$exec_time ."seconds \r\n",'a+');
+
 	}
 
 	public function newSweepFacebookPost()

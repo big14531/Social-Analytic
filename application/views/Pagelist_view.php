@@ -5,6 +5,12 @@
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/iCheck/all.css">
 
+<style>
+    .input-box{
+        width: 100%;
+        margin: 10px 0px;
+    }
+</style>
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -48,6 +54,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Page Name</th>
+                                <th>Category</th>
                                 <th>Like</th>
                                 <th>To Page</th>
                                 <th>Website</th>
@@ -72,7 +79,7 @@
                             {
                                 echo '<td class="name">'.$value->name.'</td>';
                             }
-                            
+                            echo '<td class="category_list">'. $value->category_list.'</td>';
                             echo '<td>'.number_format( $value->fan_count ).'</td>';
                             echo '<td class="link"><a href="'.$value->link.'" target="blank">'.$value->link.'</a></td>';
                             echo '<td class="website"><a href="'.$value->website.'" target="blank">'.$value->website.'</a></td>';
@@ -143,11 +150,12 @@
                 <br>
 
                 <form action="<?php echo base_url(); ?>editPageList/save" method="post" id="modal_add_id">
-                    <div class="input-group">
-                        <input type="text" name="pageName" class="form-control input-lg" placeholder="Page Name...">
-
+                    <div class="input-group input-box">
+                        <input type="text" name="pageName" class="form-control" placeholder="ชื่อเพจ...">
                     </div>
-
+                    <div class="input-group input-box">
+                        <input type="text" name="category" class="form-control" placeholder="category...">
+                    </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary btn_save" id="btn_add">Save changes</button>
@@ -172,30 +180,33 @@
             </div>
 
             <div class="modal-body">
-
                 <form action="<?php echo base_url(); ?>editPageList/edit" method="post" id="modal_edit_id">
                     <input id="editModal_is_active" name="is_active" hidden />
-                <input id="editModal_id" name="page_id" hidden />
-            <div class="input-group">
-                <span class="input-group-addon">Link</span>
-                <input id="editModal_link" type="text" class="form-control input-lg" name="link" placeholder="Link..." />
-            </div>   
+                    <input id="editModal_id" name="page_id" hidden />
+                    <div class="input-group">
+                        <span class="input-group-addon">Category</span>
+                        <input id="editModal_category_list" type="text" class="form-control input-lg" name="category_list" placeholder="Category..." />
+                    </div>   
+                    <div class="input-group">
+                        <span class="input-group-addon">Link</span>
+                        <input id="editModal_link" type="text" class="form-control input-lg" name="link" placeholder="Link..." />
+                    </div>   
 
-            <div class="input-group">
-                <span class="input-group-addon">Website</span>
-                <input id="editModal_website" type="text" class="form-control input-lg" name="website" placeholder="Website..." />
-            </div>
-            <br>
-            <div class="input-group">
-                <input type="checkbox" class="icheckbox_flat-green" name="is_owner" id="editModal_is_owner">
-                <span>Owner</span>
-            </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">Website</span>
+                        <input id="editModal_website" type="text" class="form-control input-lg" name="website" placeholder="Website..." />
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <input type="checkbox" class="icheckbox_flat-green" name="is_owner" id="editModal_is_owner">
+                        <span>Owner</span>
+                    </div>
 
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary btn_save" id="btn_edit">Save changes</button>
-        </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn_save" id="btn_edit">Save changes</button>
+                </div>
+            </form>
         </div>
 </div>
 </div>
@@ -228,14 +239,15 @@
         var this_link = this_p.find('.link').text(); 
         var this_website = this_p.find('.website').text(); 
         var this_id = this_p.find('.id').text(); 
+        var this_category_list = this_p.find('.category_list').text(); 
         var this_is_active = this_p.find('.status span').text(); 
-
+        
         $("#editModal_id").val( this_id );
         $("#editModal_name").text( this_name );
         $("#editModal_link").val( this_link );
         $("#editModal_website").val(this_website);
         $("#editModal_is_active").val(this_is_active);
-
+        $("#editModal_category_list").val(this_category_list);
         if( this_name.search('Owner')==0)
         { 
             $('#editModal_is_owner').iCheck('check'); 

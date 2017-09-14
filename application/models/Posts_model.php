@@ -219,13 +219,14 @@ class Posts_model extends CI_Model
 		}   
 	}
 
-	public function updateEditPage( $id , $link , $website , $is_owner )
+	public function updateEditPage( $id , $link , $website , $is_owner , $category_list )
 	{
 		$array = array
 		(
 			'link' => $link,
 			'website' => $website,
-			'is_owner' => $is_owner
+			'is_owner' => $is_owner,
+			'category_list' => $category_list
 			);
 		$this->db->where( 'id' , $id );
 		$this->db->update( 'fb_page_list' , $array );
@@ -536,7 +537,7 @@ class Posts_model extends CI_Model
 		$this->db->from('fb_facebook_post as post');
 		$this->db->where('post.page_id ',$page_id);
 		$this->db->order_by('created_time', 'DESC');
-		$this->db->limit( 10 );
+		$this->db->limit( 30 );
 		// echo $this->db->get_compiled_select();
 		// exit();
 		$result = $this->db->get();

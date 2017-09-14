@@ -46,7 +46,7 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo" style="color: white;"">
+  <div class="login-logo" style="color: white;">
     <b>Social</b>analytic <span style="font-size: 0.33em;">by nationgroup</span>
   </div>
   <!-- /.login-logo -->
