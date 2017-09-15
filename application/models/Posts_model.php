@@ -1,7 +1,11 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Posts_model extends CI_Model
 {
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> master
 	function isEmpty($result)
 	{
 		return ( $result->num_rows() > 0 ) ? $result->result() : false;
@@ -14,11 +18,15 @@ class Posts_model extends CI_Model
 		$this->load->database();
 		$this->load->helper('file');
 	}
+<<<<<<< HEAD
 		
-	public function insertPostData( $posts )
-	{   
+=======
 
-		$data = array( 
+>>>>>>> master
+	public function insertPostData( $posts )
+	{
+
+		$data = array(
 			'page_id' => $posts['page_id'],
 			'post_id' => $posts['post_id'],
 			'type' => $posts['type'],
@@ -42,7 +50,7 @@ class Posts_model extends CI_Model
 			);
 
 
-		$query = "INSERT IGNORE INTO fb_facebook_post 
+		$query = "INSERT IGNORE INTO fb_facebook_post
 		(
 		page_id,
 		post_id,
@@ -64,8 +72,8 @@ class Posts_model extends CI_Model
 		sad,
 		angry,
 		created_time
-		) 
-		VALUES 
+		)
+		VALUES
 		(
 		".$posts['page_id'].",
 		".$posts['post_id'].",
@@ -95,10 +103,17 @@ class Posts_model extends CI_Model
 	}
 
 	public function insertCategory( $cat_name )
+<<<<<<< HEAD
 	{   
 		$this->db->db_debug = FALSE;
 		$check = $this->db->insert( 'fb_page_category' , ['id' => $cat_name , 'name' => $cat_name ] );
 		if ($check===TRUE) 
+=======
+	{
+		$this->db->db_debug = FALSE;
+		$check = $this->db->insert( 'fb_page_category' , ['id' => $cat_name , 'name' => $cat_name ] );
+		if ($check===TRUE)
+>>>>>>> master
 		{
 			return;
 		}
@@ -106,7 +121,11 @@ class Posts_model extends CI_Model
 		{
 			$this->db->error();
 			return "ERROR Already have this Category!!";
+<<<<<<< HEAD
 		}   
+=======
+		}
+>>>>>>> master
 	}
 
 	public function getCategorylist()
@@ -114,16 +133,28 @@ class Posts_model extends CI_Model
 		$result = $this->db->get( 'fb_page_category' );
 		return $result->result();
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> master
 	public function getPagelist()
 	{
 		$result = array();
 		$this->db->select('* ,list.id as id ,list.name as name,  cat.name as category_list');
+<<<<<<< HEAD
 		$this->db->from('fb_page_list as list'); 
 		$this->db->join('fb_page_category as cat', 'list.category_list = cat.id' ,'left');
 		$this->db->order_by('is_owner', 'DESC');
 		$this->db->order_by('is_active', 'DESC');
 		$result = $this->db->get();	
+=======
+		$this->db->from('fb_page_list as list');
+		$this->db->join('fb_page_category as cat', 'list.category_list = cat.id' ,'left');
+		$this->db->order_by('is_owner', 'DESC');
+		$this->db->order_by('is_active', 'DESC');
+		$result = $this->db->get();
+>>>>>>> master
 
 		return $this->isEmpty($result);
 	}
@@ -154,6 +185,7 @@ class Posts_model extends CI_Model
 	}
 
 	public function getLatedCreatePost( $date )
+<<<<<<< HEAD
 	{
 		$result = array();
 		$this->db->order_by('created_time', 'DESC');
@@ -192,6 +224,46 @@ class Posts_model extends CI_Model
 		}
 	}
 
+=======
+	{
+		$result = array();
+		$this->db->order_by('created_time', 'DESC');
+		$this->db->select('page_id,post_id,last_update_time,created_time,is_delete');
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where('post.last_update_time >',$date);
+		$this->db->where('post.created_time >',$date);
+		$this->db->where('post.is_delete <',5);
+		$result = $this->db->get();
+
+		return $result;
+	}
+
+	public function insertBatchtmp( $data )
+	{
+		$insert_query = $this->db->insert_batch('tmp', $data);
+	}
+
+	public function insertBatchOwnerPost( $data )
+	{
+		foreach ($data as $post)
+		{
+			$insert_query = $this->db->insert_string('fb_owner_post', $post);
+			$insert_query = str_replace('INSERT INTO','INSERT IGNORE INTO',$insert_query);
+			$this->db->query($insert_query);
+		}
+	}
+
+	public function insertBatchPost( $data )
+	{
+		foreach ($data as $post)
+		{
+			$insert_query = $this->db->insert_string('fb_facebook_post', $post);
+			$insert_query = str_replace('INSERT INTO','INSERT IGNORE INTO',$insert_query);
+			$this->db->query($insert_query);
+		}
+	}
+
+>>>>>>> master
 	public function updateBatchOwnerPost( $data )
 	{
 		$this->db->update_batch('fb_owner_post', $data, 'post_id');
@@ -199,7 +271,17 @@ class Posts_model extends CI_Model
 
 	public function updatePost( $data )
 	{
-		$this->db->update_batch('fb_facebook_post', $data, 'post_id');
+		if($data)
+		{
+			foreach($data as $k =>$v)
+			{
+				$post_id=$v['post_id'];
+				unset($v['post_id']);
+				$this->db->update('fb_facebook_post', $v,array('post_id'=>$post_id));
+			}
+		}
+
+		//$this->db->update_batch('fb_facebook_post', $data, 'post_id');
 	}
 
 	public function getActivePagelist()
@@ -238,7 +320,7 @@ class Posts_model extends CI_Model
 
 		$check = $this->db->insert( 'fb_page_list' , $array );
 
-		if ($check===TRUE) 
+		if ($check===TRUE)
 		{
 			return;
 		}
@@ -246,7 +328,7 @@ class Posts_model extends CI_Model
 		{
 			$this->db->error();
 			return "ERROR Already have this Page!!";
-		}   
+		}
 	}
 
 	public function updateEditPage( $id , $link , $website , $is_owner , $category_list )
@@ -256,7 +338,11 @@ class Posts_model extends CI_Model
 			'link' => $link,
 			'website' => $website,
 			'is_owner' => $is_owner,
+<<<<<<< HEAD
 			'category_list' => $category_list	
+=======
+			'category_list' => $category_list
+>>>>>>> master
 			);
 		$this->db->where( 'id' , $id );
 		$this->db->update( 'fb_page_list' , $array );
@@ -321,7 +407,7 @@ class Posts_model extends CI_Model
 		$result = $this->db->get( 'fb_page_log' );
 
 		return $result;
-	}	
+	}
 
 	public function getPostRateLog( $page )
 	{
@@ -347,16 +433,16 @@ class Posts_model extends CI_Model
 	public function getTopPostbyPageIDandDate( $page_id , $min_date , $max_date )
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					* ,
 					( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
 					( likes+love+wow+haha+sad+angry ) as reaction
-				FROM  fb_facebook_post  
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
+				FROM  fb_facebook_post
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
 				ORDER BY engage DESC
-				LIMIT 5";	
+				LIMIT 5";
 
 		$result = $this->db->query( $query );
 		return $result->result();
@@ -365,16 +451,16 @@ class Posts_model extends CI_Model
 	public function getMinPostbyPageIDandDate( $page_id , $min_date , $max_date )
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					* ,
 					( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
 					( likes+love+wow+haha+sad+angry ) as reaction
-				FROM  fb_facebook_post  
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
+				FROM  fb_facebook_post
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
 				ORDER BY engage ASC
-				LIMIT 5";	
+				LIMIT 5";
 
 		$result = $this->db->query( $query );
 		return $result->result();
@@ -389,7 +475,11 @@ class Posts_model extends CI_Model
 		$this->db->where( 'page_id' , $page_id );
 		$this->db->where( 'post_id' , $post_id );
 		$this->db->update( 'fb_facebook_post' , $data );
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> master
 		return true;
 	}
 
@@ -398,7 +488,11 @@ class Posts_model extends CI_Model
 		$result = array();
 
 		$this->db->select('post.* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, , list.name as page_name');
+<<<<<<< HEAD
 		$this->db->from('fb_facebook_post as post'); 
+=======
+		$this->db->from('fb_facebook_post as post');
+>>>>>>> master
 
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
 		$this->db->where('list.page_id',$page_id);
@@ -418,7 +512,11 @@ class Posts_model extends CI_Model
 		$result = array();
 
 		$this->db->select('session , count(session) as count ,sum(owner.other_clicks+link_clicks+photo_view+video_play) as click , sum( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , avg( owner.other_clicks+link_clicks+photo_view+video_play ) as click_avg , avg(  post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage_avg');
+<<<<<<< HEAD
 		$this->db->from('fb_facebook_post as post'); 
+=======
+		$this->db->from('fb_facebook_post as post');
+>>>>>>> master
 		$this->db->join('fb_owner_post as owner', 'post.post_id = owner.post_id');
 		$this->db->where('post.page_id',$page_id);
 		$this->db->where('post.is_delete<',5);
@@ -439,7 +537,11 @@ class Posts_model extends CI_Model
 		$result = array();
 
 		$this->db->select('post.engage_rank , count(engage_rank) as count');
+<<<<<<< HEAD
 		$this->db->from('fb_facebook_post as post'); 
+=======
+		$this->db->from('fb_facebook_post as post');
+>>>>>>> master
 		// $this->db->join('fb_owner_post as owner', 'post.post_id = list.post_id');
 		$this->db->where('post.page_id',$page_id);
 		$this->db->where('post.is_delete<',5);
@@ -459,7 +561,11 @@ class Posts_model extends CI_Model
 		$result = array();
 
 		$this->db->select('owner.click_rank , count( owner.click_rank ) as count , SUM( owner.other_clicks+link_clicks+photo_view+video_play ) as sum_click , SUM( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as sum_engage');
+<<<<<<< HEAD
 		$this->db->from('fb_facebook_post as post'); 
+=======
+		$this->db->from('fb_facebook_post as post');
+>>>>>>> master
 		$this->db->join('fb_owner_post as owner', 'post.post_id = owner.post_id');
 		$this->db->where('post.page_id',$page_id);
 		$this->db->where('post.is_delete<',5);
@@ -479,7 +585,11 @@ class Posts_model extends CI_Model
 		$result = array();
 
 		$this->db->select('owner.*');
+<<<<<<< HEAD
 		$this->db->from('fb_owner_post as owner'); 
+=======
+		$this->db->from('fb_owner_post as owner');
+>>>>>>> master
 		$this->db->where('owner.page_id',$page_id);
 		$this->db->where('owner.created_time >',$min_date);
 		$this->db->order_by('owner.updated_time', 'asc');
@@ -493,7 +603,11 @@ class Posts_model extends CI_Model
 		$result = array();
 
 		$this->db->select('post.* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, , list.name as page_name');
+<<<<<<< HEAD
 		$this->db->from('fb_facebook_post as post'); 
+=======
+		$this->db->from('fb_facebook_post as post');
+>>>>>>> master
 
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
 		$this->db->where('list.page_id',$page_id);
@@ -598,7 +712,7 @@ class Posts_model extends CI_Model
 		$this->db->from('fb_facebook_post as post');
 		$this->db->where('post.page_id ',$page_id);
 		$this->db->where('post.created_time >=',$time);
-		$this->db->order_by('post.likes', 'DESC'); 
+		$this->db->order_by('post.likes', 'DESC');
 		$this->db->limit( 1 );
 		// echo $this->db->get_compiled_select();
 		// exit();
@@ -631,10 +745,17 @@ class Posts_model extends CI_Model
 		$this->db->where('list.category_list =',$category_name );
 		// $this->db->join('fb_facebook_post as post', 'list.page_id = post.page_id','right' );
 		// $this->db->where('post.created_time >',$min_date );
+<<<<<<< HEAD
 		$result = $this->db->get(); 
 		return $result->result();	
 	}
 	
+=======
+		$result = $this->db->get();
+		return $result->result();
+	}
+
+>>>>>>> master
 
 	public function getActivePageSummary( $min_date , $max_date)
 	{
@@ -682,10 +803,10 @@ class Posts_model extends CI_Model
 	public function getPageSummaryGroupbyDate( $page_id , $min_date , $max_date)
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					page_id,
 					DATE_FORMAT( created_time,  '%Y-%m-%d' ) as created_time_out,
-					sum(likes) as likes, 
+					sum(likes) as likes,
 					sum( love ) as love ,
 					sum( wow ) as wow ,
 					sum( haha ) as haha ,
@@ -699,6 +820,56 @@ class Posts_model extends CI_Model
 					( sum(shares)+sum(comments)+sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as total,
 					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
 					count( post_id ) as post_count
+				FROM  fb_facebook_post
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
+				GROUP BY created_time_out
+				ORDER BY created_time_out DESC";
+
+		$result = $this->db->query( $query );
+
+		return $result->result();
+	}
+
+	public function getPostbySessionPageTimeRank( $page_id , $session , $min_date , $max_date )
+	{
+
+		$result = array();
+		$this->db->select('post.*, ( owner.other_clicks+link_clicks+photo_view+video_play ) as sum_click, owner.click_rank , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact ');
+		$this->db->from('fb_facebook_post as post');
+		$this->db->join('fb_owner_post as owner', 'post.post_id = owner.post_id');
+		$this->db->where('post.page_id =',$page_id);
+		$this->db->where('post.session =',$session);
+		$this->db->where('post.is_delete <',5);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
+	public function getSessionSummaryGroupbyDate( $page_id , $session , $min_date , $max_date)
+	{
+		$result = array();
+		$query = "SELECT
+					page_id,
+					DATE_FORMAT( created_time,  '%Y-%m-%d' ) as created_time_out,
+					sum(likes) as likes,
+					sum( love ) as love ,
+					sum( wow ) as wow ,
+					sum( haha ) as haha ,
+					sum( sad ) as sad ,
+					sum( angry ) as angry ,
+					sum( shares ) as shares ,
+					count(case type when 'link' then 1 else null end) as link ,
+					count(case type when 'video' then 1 else null end) as video ,
+					count(case type when 'photo' then 1 else null end) as photo ,
+					sum( comments ) as comments ,
+					( sum(shares)+sum(comments)+sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as total,
+					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
+					count( post_id ) as post_count
+<<<<<<< HEAD
 				FROM  fb_facebook_post  
 				WHERE  created_time  >= '".$min_date."' 
 					AND created_time  <= '".$max_date."' 
@@ -755,6 +926,15 @@ class Posts_model extends CI_Model
 					AND  session ='".$session."'
 					AND  is_delete <'5'
 				GROUP BY created_time_out";	
+=======
+				FROM  fb_facebook_post
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
+					AND  session ='".$session."'
+					AND  is_delete <'5'
+				GROUP BY created_time_out";
+>>>>>>> master
 
 		$result = $this->db->query( $query );
 
@@ -764,10 +944,10 @@ class Posts_model extends CI_Model
 	public function getPageSummaryGroupbyHour( $page_id , $min_date , $max_date)
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					page_id,
 					DATE_FORMAT( created_time,  '%H' ) as created_time_out,
-					sum(likes) as likes, 
+					sum(likes) as likes,
 					sum( love ) as love ,
 					sum( wow ) as wow ,
 					sum( haha ) as haha ,
@@ -779,10 +959,10 @@ class Posts_model extends CI_Model
 					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
 					count( post_id ) as posts
 				FROM  fb_facebook_post as post
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
-				GROUP BY created_time_out";	
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
+				GROUP BY created_time_out";
 
 		$result = $this->db->query( $query );
 
@@ -805,7 +985,25 @@ class Posts_model extends CI_Model
 	  //   exit()
 		$result = $this->db->get();
 
-		return $result->result();   
+		return $result->result();
+	}
+
+	public function getAllPostbyTime( $min_date , $max_date )
+	{
+		$result = array();
+
+		$this->db->select('post.*,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact  ,  list.name as page_name , list.picture as page_picture , list.link as page_link');
+		$this->db->from('fb_facebook_post as post');
+
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
+		$this->db->where('list.is_active',1);
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+	  // echo $this->db->get_compiled_select();
+	  //   exit()
+		$result = $this->db->get();
+
+		return $result->result();
 	}
 
 	public function getAllPostbyTime( $min_date , $max_date )
@@ -835,21 +1033,34 @@ class Posts_model extends CI_Model
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
 		$this->db->where('post.page_id =',$page_id);
 		$this->db->where('post.post_id =',$post_id );
-		$result = $this->db->get(); 
+		$result = $this->db->get();
 
+		return $result->result();
+	}
+
+<<<<<<< HEAD
 		return $result->result();
 	}
 
 	public function getPostbyArrayID( $id_array )
 	{
 
+=======
+	public function getPostbyArrayID( $id_array )
+	{
+
+>>>>>>> master
 		$result = array();
 		$this->db->select('post.*, ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact  , list.name as page_name , list.picture as page_picture , list.link as page_link');
 		$this->db->from('fb_facebook_post as post');
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
 		$this->db->where_in('post.post_id',$id_array );
 		$this->db->order_by( 'engage' ,'DESC');
+<<<<<<< HEAD
 		$result = $this->db->get(); 
+=======
+		$result = $this->db->get();
+>>>>>>> master
 
 		return $result->result();
 	}
@@ -858,8 +1069,8 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 		$this->db->from('fb_user');
-		$result = $this->db->get(); 
-		return $result->result(); 
+		$result = $this->db->get();
+		return $result->result();
 	}
 
 	public function createUser( $data )
@@ -895,7 +1106,7 @@ class Posts_model extends CI_Model
 		$this->db->where( 'page_id' , $page_id );
 		$this->db->where( 'post_id' , $post_id );
 		$this->db->update( 'fb_facebook_post' , $data );
-		
+
 		return true;
 	}
 
@@ -909,6 +1120,7 @@ class Posts_model extends CI_Model
 		$this->db->update( 'fb_user' , $array );
 	}
 
+<<<<<<< HEAD
 
 	/////////////////////////////////////////////////////////////////////////////
 
@@ -943,7 +1155,30 @@ class Posts_model extends CI_Model
 
 
 
+=======
+>>>>>>> master
+
+	/////////////////////////////////////////////////////////////////////////////
 
 
+	public function getTestPostID()
+	{
+		$result = array();
+		$this->db->select('post_id');
+		$this->db->from('tmp');
+		$this->db->group_by('post_id');
+		$result = $this->db->get();
+		return $result->result();
+	}
+	public function getTestPost( $post_id )
+	{
+		$result = array();
+		$this->db->select('*');
+		$this->db->from('tmp');
+		$this->db->where('post_id' , $post_id);
+		$result = $this->db->get();
+		return $result->result();
+	}
 
-
+}
+?>

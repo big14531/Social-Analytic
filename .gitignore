@@ -9,8 +9,14 @@ application/config/config\.php
 
 application/config/database\.php
 
+<<<<<<< HEAD
 test\.php
 
 \.vscode/
 
 /vendor/
+=======
+sftp-config\.json
+
+\.vscode/ftp-sync\.json
+>>>>>>> master
