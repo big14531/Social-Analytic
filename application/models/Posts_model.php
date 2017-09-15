@@ -1,6 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Posts_model extends CI_Model
 {
+	
+	function isEmpty($result)
+	{
+		return ( $result->num_rows() > 0 ) ? $result->result() : false;
+	}
+
 	function __construct()
 	{
 		// Call the Model constructor
@@ -88,14 +94,38 @@ class Posts_model extends CI_Model
 		return true;
 	}
 
+	public function insertCategory( $cat_name )
+	{   
+		$this->db->db_debug = FALSE;
+		$check = $this->db->insert( 'fb_page_category' , ['id' => $cat_name , 'name' => $cat_name ] );
+		if ($check===TRUE) 
+		{
+			return;
+		}
+		else
+		{
+			$this->db->error();
+			return "ERROR Already have this Category!!";
+		}   
+	}
+
+	public function getCategorylist()
+	{
+		$result = $this->db->get( 'fb_page_category' );
+		return $result->result();
+	}
+	
 	public function getPagelist()
 	{
 		$result = array();
+		$this->db->select('* ,list.id as id ,list.name as name,  cat.name as category_list');
+		$this->db->from('fb_page_list as list'); 
+		$this->db->join('fb_page_category as cat', 'list.category_list = cat.id' ,'left');
 		$this->db->order_by('is_owner', 'DESC');
 		$this->db->order_by('is_active', 'DESC');
-		$result = $this->db->get( 'fb_page_list' );
+		$result = $this->db->get();	
 
-		return $result;
+		return $this->isEmpty($result);
 	}
 
 	public function getPageID()
@@ -189,14 +219,14 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
-	public function insertPageDetail( $data )
+	public function insertPageDetail( $data , $category_name )
 	{
 		$this->db->db_debug = FALSE;
 
 		$array = array
 		(
 			'about' => $data['about'],
-			/*'category_list' => $data['category_list']['0']['name'],*/
+			'category_list' => $category_name,
 			'cover_photo' => $data['cover']['source'],
 			'fan_count' => $data['fan_count'],
 			'link' => $data['link'],
@@ -226,7 +256,7 @@ class Posts_model extends CI_Model
 			'link' => $link,
 			'website' => $website,
 			'is_owner' => $is_owner,
-			'category_list' => $category_list
+			'category_list' => $category_list	
 			);
 		$this->db->where( 'id' , $id );
 		$this->db->update( 'fb_page_list' , $array );
@@ -545,6 +575,22 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function getRecentPostbyPagelist( $page_id_list )
+	{
+		$result = array();
+
+		$this->db->select( "* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact" );
+		$this->db->from('fb_facebook_post as post');
+		$this->db->where_in('post.page_id ',$page_id_list);
+		$this->db->order_by('created_time', 'DESC');
+		$this->db->limit( 100 );
+		// echo $this->db->get_compiled_select();
+		// exit();
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 	public function getBestReactionPostbyPageandTime ( $page_id , $time )
 	{
 		$result = array();
@@ -576,6 +622,19 @@ class Posts_model extends CI_Model
 
 		return $result->result();
 	}
+
+	public function getPagebyCategory( $category_name  )
+	{
+		$result = array();
+		$this->db->select('*');
+		$this->db->from('fb_page_list as list');
+		$this->db->where('list.category_list =',$category_name );
+		// $this->db->join('fb_facebook_post as post', 'list.page_id = post.page_id','right' );
+		// $this->db->where('post.created_time >',$min_date );
+		$result = $this->db->get(); 
+		return $result->result();	
+	}
+	
 
 	public function getActivePageSummary( $min_date , $max_date)
 	{

@@ -156,6 +156,38 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $result );
 	}
 
+	public function ajaxGetNewPostListbyPageID()
+	{
+		$result=[];
+		$page_id_list = $this->input->post('page_id_list');
+		$min_date = $this->input->post('min_date');
+		$result = $this->Posts_model->getRecentPostbyPagelist( $page_id_list );
+		echo json_encode( $result );
+		
+	}
+
+	public function ajaxGetNewPostListbyCat()
+	{
+		$result=[];
+		$category_name = $this->input->post('category_name');
+		$min_date = $this->input->post('min_date');
+		$page_list = $this->Posts_model->getPagebyCategory( $category_name  , $min_date );
+		if( $page_list==false )
+		{
+			echo json_encode( false );
+			return;
+		}
+		$page_id_list =[];
+		foreach ($page_list as $key => $value) 
+		{
+			array_push( $page_id_list, $value->page_id );
+		}
+
+		$result = $this->Posts_model->getRecentPostbyPagelist( $page_id_list );
+		echo json_encode( array( $page_list , $result ) );
+		
+	}
+
 	/**
 	* [ajaxEditPageCard description]
 	*
@@ -380,7 +412,7 @@ class Home_ctrl extends CI_Controller
 	{
 		checkManagerAutho($this->session->all_userdata());
 		$result = $this->Posts_model->getPagelist();
-		$data['page_list'] = $result->result();
+		$data['page_list'] = $result;
 		$this->load->view( 'Pagelist_view' ,  $data );   
 	}
 
@@ -395,19 +427,8 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function addPagelist()
 	{
-		$array = array
-		(
-			'about' => '',
-			'category_list' => null,
-			'cover_photo' => '',
-			'fan_count' => '',
-			'link' => '',
-			'name' => '',
-			'website' => '',
-			'page_id' => '',
-			'picture' => ''
-			);
 
+		$category =	$this->input->post('category');
 		$pageName = $this->input->post('pageName');
 		$result = $this->kcl_facebook_analytic->getRawPageDetail( $pageName );
 		// var_dump( $result );
@@ -419,10 +440,27 @@ class Home_ctrl extends CI_Controller
 		}
 		else
 		{
-			$error = $this->Posts_model->insertPageDetail( $result );
+			$error = $this->Posts_model->insertPageDetail( $result , $category );
 			$_SESSION['addPageError'] = $error;
 			redirect('/editPageList');
 		}
+	}
+
+	/**
+	* [addCategory description]
+	*
+	* 		Create new category
+	* 		
+	* @param  array  $pageName [ get from POST]
+	* @return redirect to editPageList [description]
+	* 
+	*/
+	public function addCategory()
+	{
+		$cat_name = $this->input->post('category_list');
+		$error = $this->Posts_model->insertCategory( $cat_name );
+		$_SESSION['addPageError'] = $error;
+		redirect('/editPageList');
 	}
 
 	/**
@@ -467,6 +505,12 @@ class Home_ctrl extends CI_Controller
 		$this->Posts_model->toggleIsActivePage( $id , $is_active );
 
 		redirect('/editPageList');
+	}
+
+	public function ajaxGetPageCategory()
+	{
+		$result = $this->Posts_model->getCategorylist();
+		echo json_encode( $result );
 	}
 
 	/* ---------------- PostList_view Zone ---------------- */

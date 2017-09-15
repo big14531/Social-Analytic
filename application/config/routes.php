@@ -100,6 +100,8 @@ $route['ajaxUpdatePost'] = 'home_ctrl/ajaxUpdatePost';
 $route['ajaxEditPageCard'] = 'home_ctrl/ajaxEditPageCard';
 $route['ajaxGetNewPost'] = 'home_ctrl/ajaxGetNewPost';
 $route['ajaxGetHighlightPost'] = 'home_ctrl/ajaxGetHighlightPost';
+$route['ajaxGetNewPostListbyPageID'] = 'home_ctrl/ajaxGetNewPostListbyPageID';
+$route['ajaxGetNewPostListbyCat'] = 'home_ctrl/ajaxGetNewPostListbyCat';
 
 /*---------- analyticList ----------*/
 $route['analyticList'] = 'home_ctrl/analyticList';
@@ -141,9 +143,11 @@ $route['growthPage'] = 'home_ctrl/growthPage';
 $route['ajaxGrowthPage'] = 'home_ctrl/ajaxGrowthPage';
 
 /*---------- edit page  ----------*/
+$route['ajaxGetPageCategory'] = 'home_ctrl/ajaxGetPageCategory';
 $route['editPageList'] = 'home_ctrl/pagelist';
 $route['editPageList/save'] = 'home_ctrl/addPagelist';
 $route['editPageList/edit'] = 'home_ctrl/editPagelist';
+$route['editPageList/addCategory'] = 'home_ctrl/addCategory';
 $route['editPageList/toggle/(:num)/(:num)'] = 'home_ctrl/toggleIsActivePage/$1/$2';
 
 /*---------- deleted post page  ----------*/

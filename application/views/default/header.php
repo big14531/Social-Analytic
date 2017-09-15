@@ -35,6 +35,6 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+<body class="hold-transition skin-blue sidebar-mini">
     <!-- close tag is in bottom.php -->
     <div class="wrapper" id="wrapper">

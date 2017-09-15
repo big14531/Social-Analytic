@@ -211,7 +211,7 @@
                     <div class="box-header pull-right">
                         <p>ชื่อเพจ</p> <select class="js-example-basic-single" id="selector-0"></select>
                         <p>ประเภท</p> <select class="js-example-basic-single " id="selector-1"></select>
-                        <!-- <button class="btn btn-info btn-block">เพิ่มเพจ</button> -->
+                        <button class="btn btn-info btn-block btn-sm" id="reset-btn">รีเซ็ต</button>
 						<ul class="pagelist-control">
                         </ul>
                         
@@ -248,17 +248,22 @@
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.full.min.js"></script>
 <script src="<?php echo(base_url());?>assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-
+	var current_page =[];
 	var last_time_update = []; 
     var page_data =[];
 
-    function addNewPage( page_id ) 
+    function addNewPageControl( page_id ) 
 	{
+		if( current_page.indexOf( page_id ) !== -1 )
+		{
+			return;
+		}
+
         page_data.forEach(function(element) {
-            if ( page_id==element.page_id ) {
-                ;
-                var html =  '<li class="item-control">'+
-                                '<button class="btn btn-alert close-btn-control"><i class="fa fa-close"></i></button>'+
+            if ( page_id==element.page_id) {
+				current_page.push( element.page_id );
+                var html =  '<li class="item-control" id="control_'+element.page_id+'">'+
+                                '<button class="btn btn-alert close-btn-control" onclick="removePageControl('+element.page_id+')"><i class="fa fa-close"></i></button>'+
                                 '<img class="page-logo pull-left" id="page-logo" src='+element.picture+'>'+
                                 '<p class="pagename-control">'+element.name+'</p>'+
                             '</li>';
@@ -268,6 +273,18 @@
         
 	}
 
+	function removePageControl( object ) 
+	{
+		var index = current_page.indexOf(object);
+		current_page.splice(index, 1);
+		$('.pagelist-control').find( "#control_"+object ).remove();
+	}
+
+	function clearControl() 
+	{
+		current_page =[];
+		$('.pagelist-control').empty().fadeIn(500);	
+	}
 
 	function setHightlightOrder()
 	{
@@ -277,9 +294,17 @@
 		$("#list-box-"+3+" li:eq(0)").before($("#highlight-post-"+3));
 	}
 
-	function appendPost( post , col ) 
+	function addPosttoFeed( data ) 
 	{
-		var list_box = $("#list-box-"+col);
+		$("#list-box-0").empty();
+		data.forEach(function(element) {
+			appendPost( element );
+		}, this);
+	}
+
+	function appendPost( post ) 
+	{
+		var list_box = $("#list-box-0");
 		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
 		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
 		+'<div class="list-right">'
@@ -352,28 +377,19 @@
 		{
 			var name = data[i].name;
 			var page_id = data[i].page_id;
+			var category_list = data[i].category_list;
 			page_list.push( { id: page_id, text: name} );
-		}
-        
-		for (var i = 0; i < data.length; i++) 
-		{
-			var name = data[i].category_list;
-			var page_id = data[i].page_id;
-			cat_list.push( { id: page_id, text: name} );
 		}
 		$("#selector-0").select2({
 			data: page_list
 		});
-		$("#selector-1").select2({
-			data: cat_list
-		});
+
         var page_obj = data[0];
         var object = $("#col-0");
         var selector = $("#selector-0");
         selector.val( page_obj.page_id ).trigger("change");
         var page_logo_obj = $("#page-logo-0");
         page_logo_obj.attr( 'src' ,page_obj.picture );
-		
 	}
 
 	function createFirstTimePost( data ) 
@@ -462,6 +478,21 @@
 		}
 	}
 
+	function createSelector( data ) 
+	{
+		var cat_list=[];
+		for (var i = 0; i < data.length; i++) 
+		{
+			var id = data[i].id;
+			var name = data[i].name;
+			cat_list.push( { id: id, text: name } );
+		}
+		$("#selector-1").select2({
+			width: '100%',
+			minimumResultsForSearch: Infinity,
+			data:cat_list
+		});
+	}
 	/**
 	*	AJAX ZONE	
 	*/
@@ -482,29 +513,51 @@
 			});
 	}
 
-	function ajaxGetNewPost()
+	function ajaxGetNewPostList( category_name )
 	{
-		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ];
+		console.log( category_name );
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetNewPost",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>ajaxGetNewPostListbyCat",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
 				data: { 
-					'page_id': page_id,
+					'category_name': category_name,
 					'min_date': last_time_update
 				},
 				success:function(data)	
 				{
-
-					// console.log("Get : ");
-					// console.log(data);
-					addNewPost(data);
-					setHightlightOrder();
+					console.log(data);
+					clearControl();
+					data[0].forEach(function(element) {
+						addNewPageControl( element.page_id );
+					}, this);
+					addPosttoFeed( data[1] );
+					
 				}
 			});
 	}
 
+	function ajaxGetNewPost( current_page )
+	{
+		console.log( current_page );
+		$.ajax({
+				url:  "<?php echo(base_url());?>ajaxGetNewPostListbyPageID",   //the url where you want to fetch the data 
+				type: 'post', //type of request POST or GET   
+				dataType: 'json',
+				async: true, 
+				data: { 
+					'page_id_list': current_page,
+					'min_date': last_time_update
+				},
+				success:function(data)	
+				{
+					console.log(data);
+					addPosttoFeed( data );
+				}
+			});
+	}
+	
 	function ajaxGetHighlightPost()
 	{
 		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ];
@@ -588,28 +641,23 @@
 		});
 	}
 
-
-	/**
-	* [setTempDefault description]
-	*
-	*	Set default for first value
-	* 
-	* @param {[type]} argument [description]
-	*/
-	
-	function setTempDefault() 
+	function ajaxGetPageCategory() 
 	{
-		$("#selector-0").val( '208428464667' ).trigger("change");
-		$("#selector-1").val( '129558990394402' ).trigger("change");
-		$("#selector-2").val( '146406732438' ).trigger("change");
-		$("#selector-3").val( '401831669848423' ).trigger("change");
-
-		$("#page-logo-0").attr( 'src' ,'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/14633025_10154714845219668_8361881400074819233_n.jpg?oh=6486778c78e03fd3a35a1c0f313c854f&oe=59757D5D' );
-		$("#page-logo-1").attr( 'src' ,'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/16473072_2314160078600938_4945021136999623596_n.jpg?oh=b31cb9f290883305123ab770b9ff3d6c&oe=59B6CE5C' );
-		$("#page-logo-2").attr( 'src' ,'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/10455805_10152859061547439_8950444073785058069_n.jpg?oh=9672bfc1899745829ce94016b20cfbff&oe=59B2FD1E' );
-		$("#page-logo-3").attr( 'src' ,'https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/15253552_1389781397720107_6557593025367614641_n.jpg?oh=462cd729acb43ac9e585835ce3977a8f&oe=59BC3E8B' );
+		$.ajax({
+			url:  "<?php echo(base_url());?>ajaxGetPageCategory",   //the url where you want to fetch the data 
+			type: 'post', //type of request POST or GET   
+			dataType: 'json',
+			async: false, 
+			success:function(data)	
+			{
+				console.log(data);
+				createSelector( data )
+				
+			}
+		});
 	}
-
+   
+	
 	/**
 	* [initialize description]
 	*
@@ -622,30 +670,31 @@
 		ajaxGetActivePage();
 		setHightlightOrder();
 		ajaxGetHighlightPost();
-		// setTempDefault();
+		ajaxGetPageCategory();
 		ajaxFirstTimePost();
 	}
 
 	function removeOverPost() 
 	{
-		for (var i = 0; i < 4; i++) 
+
+		var list_box = $("#list-box-"+i);
+		list_box.each(function() 
 		{
-			var list_box = $("#list-box-"+i);
-			list_box.each(function() 
+			$(this).find( 'li' ).each(function( index )
 			{
-				$(this).find( 'li' ).each(function( index )
+				if ( index>30 ) 
 				{
-					if ( index>10 ) 
-					{
-						// console.log("Del : ");
-						// console.log( $( this ) );
-						$(this).remove();
-					}
-					
-				});
+					// console.log("Del : ");
+					// console.log( $( this ) );
+					$(this).remove();
+				}
+				
 			});
-		}
+		});
+		
 	}
+
+
 
 	$(document).ready(function() 
 	{
@@ -654,11 +703,24 @@
 
 		initialize();
 
-		$(".js-example-basic-single").on("select2:select", function (e) { 
+		$("#selector-0").on("select2:select", function (e) { 
             ajaxEditPageCard( e.params.data.id , e.target.id ); 
-            addNewPage( e.params.data.id );
+            addNewPageControl( e.params.data.id );
+			ajaxGetNewPost( current_page )
         });
 		
+		$("#selector-1").on("select2:select", function (e) { 
+			ajaxGetNewPostList( e.params.data.id )
+        });
+		
+		$('#reset-btn').on( 'click' , function(){
+			clearControl();
+		});
+
+		$( ".close-btn-control" ).click(function(){
+			console.log('ddddf');
+		});
+
 		setInterval(function(){ 
 			$('.post-item').removeClass('blink-item');
 			ajaxUpdatePost();
