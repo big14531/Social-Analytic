@@ -8,11 +8,11 @@ class Posts_model extends CI_Model
 		$this->load->database();
 		$this->load->helper('file');
 	}
-	
-	public function insertPostData( $posts )
-	{   
 
-		$data = array( 
+	public function insertPostData( $posts )
+	{
+
+		$data = array(
 			'page_id' => $posts['page_id'],
 			'post_id' => $posts['post_id'],
 			'type' => $posts['type'],
@@ -36,7 +36,7 @@ class Posts_model extends CI_Model
 			);
 
 
-		$query = "INSERT IGNORE INTO fb_facebook_post 
+		$query = "INSERT IGNORE INTO fb_facebook_post
 		(
 		page_id,
 		post_id,
@@ -58,8 +58,8 @@ class Posts_model extends CI_Model
 		sad,
 		angry,
 		created_time
-		) 
-		VALUES 
+		)
+		VALUES
 		(
 		".$posts['page_id'].",
 		".$posts['post_id'].",
@@ -148,7 +148,16 @@ class Posts_model extends CI_Model
 
 	public function updatePost( $data )
 	{
-		$this->db->update_batch('fb_facebook_post', $data, 'post_id');
+		if($data)
+		{
+			foreach($data as $k =>$v)
+			{
+				$post_id=$v['post_id'];
+				unset($v['post_id']);
+				$this->db->update('fb_facebook_post', $v,array('post_id'=>$post_id));
+			}
+		}
+		//$this->db->update_batch('fb_facebook_post', $data, 'post_id');
 	}
 
 	public function getActivePagelist()
@@ -179,7 +188,7 @@ class Posts_model extends CI_Model
 
 		$check = $this->db->insert( 'fb_page_list' , $array );
 
-		if ($check===TRUE) 
+		if ($check===TRUE)
 		{
 			return;
 		}
@@ -187,7 +196,7 @@ class Posts_model extends CI_Model
 		{
 			$this->db->error();
 			return "ERROR Already have this Page!!";
-		}   
+		}
 	}
 
 	public function updateEditPage( $id , $link , $website , $is_owner )
@@ -253,7 +262,7 @@ class Posts_model extends CI_Model
 	public function getPageLog( $min_date , $max_date , $page )
 	{
 		//  EXMAPLE JOIN TABLE
-		// 
+		//
 		// $result = array();
 		// $this->db->select('*');
 		// $this->db->from('fb_page_log as log');
@@ -274,12 +283,12 @@ class Posts_model extends CI_Model
 		$result = $this->db->get( 'fb_page_log' );
 
 		return $result;
-	}	
+	}
 
 	public function getPostRateLog( $page )
 	{
 		//  EXMAPLE JOIN TABLE
-		// 
+		//
 		// $result = array();
 		// $this->db->select('*');
 		// $this->db->from('fb_page_log as log');
@@ -313,16 +322,16 @@ class Posts_model extends CI_Model
 	public function getTopPostbyPageIDandDate( $page_id , $min_date , $max_date )
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					* ,
 					( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
 					( likes+love+wow+haha+sad+angry ) as reaction
-				FROM  fb_facebook_post  
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
+				FROM  fb_facebook_post
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
 				ORDER BY engage DESC
-				LIMIT 5";	
+				LIMIT 5";
 
 		$result = $this->db->query( $query );
 		return $result->result();
@@ -331,16 +340,16 @@ class Posts_model extends CI_Model
 	public function getMinPostbyPageIDandDate( $page_id , $min_date , $max_date )
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					* ,
 					( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
 					( likes+love+wow+haha+sad+angry ) as reaction
-				FROM  fb_facebook_post  
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
+				FROM  fb_facebook_post
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
 				ORDER BY engage ASC
-				LIMIT 5";	
+				LIMIT 5";
 
 		$result = $this->db->query( $query );
 		return $result->result();
@@ -439,7 +448,7 @@ class Posts_model extends CI_Model
 		$this->db->from('fb_facebook_post as post');
 		$this->db->where('post.page_id ',$page_id);
 		$this->db->where('post.created_time >=',$time);
-		$this->db->order_by('post.likes', 'DESC'); 
+		$this->db->order_by('post.likes', 'DESC');
 		$this->db->limit( 1 );
 		// echo $this->db->get_compiled_select();
 		// exit();
@@ -495,10 +504,10 @@ class Posts_model extends CI_Model
 	public function getPageSummaryGroupbyDate( $page_id , $min_date , $max_date)
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					page_id,
 					DATE_FORMAT( created_time,  '%Y-%m-%d' ) as created_time_out,
-					sum(likes) as likes, 
+					sum(likes) as likes,
 					sum( love ) as love ,
 					sum( wow ) as wow ,
 					sum( haha ) as haha ,
@@ -512,11 +521,11 @@ class Posts_model extends CI_Model
 					( sum(shares)+sum(comments)+sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as total,
 					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
 					count( post_id ) as post_count
-				FROM  fb_facebook_post  
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
-				GROUP BY created_time_out";	
+				FROM  fb_facebook_post
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
+				GROUP BY created_time_out";
 
 		$result = $this->db->query( $query );
 
@@ -526,10 +535,10 @@ class Posts_model extends CI_Model
 	public function getPageSummaryGroupbyHour( $page_id , $min_date , $max_date)
 	{
 		$result = array();
-		$query = "SELECT 
+		$query = "SELECT
 					page_id,
 					DATE_FORMAT( created_time,  '%H' ) as created_time_out,
-					sum(likes) as likes, 
+					sum(likes) as likes,
 					sum( love ) as love ,
 					sum( wow ) as wow ,
 					sum( haha ) as haha ,
@@ -541,10 +550,10 @@ class Posts_model extends CI_Model
 					( sum(likes)+sum(love)+sum(wow)+sum(haha)+sum(sad)+sum(angry) ) as reaction,
 					count( post_id ) as posts
 				FROM  fb_facebook_post as post
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
-				GROUP BY created_time_out";	
+				WHERE  created_time  >= '".$min_date."'
+					AND created_time  <= '".$max_date."'
+					AND  page_id =".$page_id."
+				GROUP BY created_time_out";
 
 		$result = $this->db->query( $query );
 
@@ -567,7 +576,7 @@ class Posts_model extends CI_Model
 	  //   exit()
 		$result = $this->db->get();
 
-		return $result->result();   
+		return $result->result();
 	}
 
 	public function getPostbyID( $page_id , $post_id )
@@ -579,7 +588,7 @@ class Posts_model extends CI_Model
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
 		$this->db->where('post.page_id =',$page_id);
 		$this->db->where('post.post_id =',$post_id );
-		$result = $this->db->get(); 
+		$result = $this->db->get();
 
 
 	   //  $result = array();
@@ -595,8 +604,8 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 		$this->db->from('fb_user');
-		$result = $this->db->get(); 
-		return $result->result(); 
+		$result = $this->db->get();
+		return $result->result();
 	}
 
 	public function createUser( $data )
@@ -632,7 +641,7 @@ class Posts_model extends CI_Model
 		$this->db->where( 'page_id' , $page_id );
 		$this->db->where( 'post_id' , $post_id );
 		$this->db->update( 'fb_facebook_post' , $data );
-		
+
 		return true;
 	}
 
@@ -647,17 +656,3 @@ class Posts_model extends CI_Model
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
