@@ -10,3 +10,5 @@ application/config/config\.php
 application/config/database\.php
 
 sftp-config\.json
+
+\.vscode/ftp-sync\.json
