@@ -23,10 +23,14 @@
         margin: 0px 10px;
     }
     .list-name {
-        padding: 5px 0px;
-        font-size: 18px;
-        color: white;
-        font-weight: 300;
+		padding: 5px 0px;
+		font-size: 15px;
+		color: #efefef;
+		font-weight: 300;
+		white-space: nowrap;
+		width: 30em;
+		overflow: hidden;
+		text-overflow: ellipsis;
     }
     .list-box li {
         padding: 10px 10px;
@@ -49,7 +53,7 @@
 		overflow:hidden;
 	}
     .list-right {
-        width: 90%;
+        width: 80%;
     }
 	.box-header{
 		background-color: #222d32;
@@ -88,16 +92,15 @@
 		color: white;
 	}
 	.list-txt {
-        font-size: 13px;
-        font-weight: 300;
-        width: 80%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        line-height: 16px;
-        max-height: 48px;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
+		font-size: 13px;
+		font-weight: 300;
+		width: 80%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		/* display: -webkit-box; */
+		line-height: 16px;
+		max-height: 16px;
+		
     }
     .list-social{
         font-size: 1.3em;
@@ -173,6 +176,12 @@
     .pagename-control{
         color:#FFF;
     }
+	.page_icon{
+		display: inline-block;
+		border-radius: 50%;
+		position: absolute;
+    	right: 20px;
+	}
 	@keyframes blink 
 	{
 	    0% {
@@ -218,10 +227,8 @@
 					</div>
 					<div class="box-body mCustomScrollbar">
 						<ul class="list-box" id="list-box-0">
-							
 							<li class="highlight-post" id="highlight-post-0"> 
 								<div class="highlight-txt">ข่าวฮิตในช่วงครึ่งชั่งโมง</div>
-								
 								<a target="_blank" href="#" class="user-pic" id="highlight-link-0"><img id="highlight-pic-0" ></a> 
 								<div class="list-right"> 
 									<p id="highlight-name-0" class=" list-name"><span id="highlight-txt-0"></span><span id="highlight-date-0" class="white list-date"></span></p> 
@@ -270,7 +277,7 @@
                 $('.pagelist-control').append( $(html).hide().fadeIn(500) );
             }
         }, this);
-        
+        console.log( current_page );
 	}
 
 	function removePageControl( object ) 
@@ -286,14 +293,6 @@
 		$('.pagelist-control').empty().fadeIn(500);	
 	}
 
-	function setHightlightOrder()
-	{
-		$("#list-box-"+0+" li:eq(0)").before($("#highlight-post-"+0));
-		$("#list-box-"+1+" li:eq(0)").before($("#highlight-post-"+1));
-		$("#list-box-"+2+" li:eq(0)").before($("#highlight-post-"+2));
-		$("#list-box-"+3+" li:eq(0)").before($("#highlight-post-"+3));
-	}
-
 	function addPosttoFeed( data ) 
 	{
 		$("#list-box-0").empty();
@@ -307,47 +306,50 @@
 		var list_box = $("#list-box-0");
 		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
 		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
+		+'<img class="page_icon" src="'+post.page_picture+'" alt="">'
 		+'<div class="list-right">'
 		+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
-		+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
+		+'<p class="list-name">'+post.name+'</p>'
+		
 		+'</a>'
 		+'<div class="list-txt">'
 		+post.message	
 		+'</div>'
 
 		+'<div class="list-social">'
-		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span  class="post-number" id="engage_number">'+post.engage+'</span></div>'
+		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span  class="post-number" id="engage_number">'+post.likes+'</span></div>'
 		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span  class="post-number" id="comment_number">'+post.comments+'</span></div>'
 		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span  class="post-number" id="share_number">'+post.shares+'</span></div>'
+		+'<span class="list-date">'+post.created_time+'</span>'
 		+'</div>'
 		+'</div>'
 		+'</li>'
 		list_box.append( $(html).hide().fadeIn(500) );
 	}
 
-	function prependPost( post , col ) 
-	{
-		var list_box = $("#list-box-"+col);
-		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
-		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
-		+'<div class="list-right">'
-		+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
-		+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
-		+'</a>'
-		+'<div class="list-txt">'
-		+post.message	
-		+'</div>'
+	// function prependPost( post , col ) 
+	// {
+	// 	var list_box = $("#list-box-"+col);
+	// 	var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
+	// 	+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
+	// 	+'<div class="list-right">'
+	// 	+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
+	// 	+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
+	// 	+'</a>'
+	// 	+'<div class="list-txt">'
+	// 	+post.message	
+	// 	+'</div>'
 
-		+'<div class="list-social">'
-		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
-		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
-		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
-		+'</div>'
-		+'</div>'
-		+'</li>'
-		list_box.prepend( $(html).hide().fadeIn(500)  );
-		$('#post-'+post.page_id+'_'+post.post_id).addClass('blink-item');
-	}
+	// 	+'<div class="list-social">'
+	// 	+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
+	// 	+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
+	// 	+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
+	// 	+'</div>'
+	// 	+'</div>'
+	// 	+'</li>'
+	// 	list_box.prepend( $(html).hide().fadeIn(500)  );
+	// 	$('#post-'+post.page_id+'_'+post.post_id).addClass('blink-item');
+	// }
 
 	function addNewPost( data ) 
 	{
@@ -439,22 +441,6 @@
 		}
 	}
 
-	function editOneNewPost( data , target ) 
-	{
-		$("#list-box-"+target+" li:not(:first)").remove();		
-		for (var key = 0; key < data.length; key++) 
-		{
-			var post = data[key];
-			appendPost( post , target );
-		}
-	}
-
-	function editBoxHead( data , target ) 
-	{
-		var page_logo_obj = $("#page-logo-"+target);
-		page_logo_obj.attr( 'src' ,data[0].picture );
-	}
-
 	function updatePost( data ) 
 	{
 		for (var i = 0; i < data.length; i++) {
@@ -497,22 +483,6 @@
 	*	AJAX ZONE	
 	*/
 
-	function ajaxGetActivePage()
-	{		
-		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
-				type: 'post', //type of request POST or GET   
-				dataType: 'json',
-				async: false, 
-				success:function(data)
-				{
-                    console.log( data ); 
-                    page_data = data;   
-					createPageCard(data);
-				}
-			});
-	}
-
 	function ajaxGetNewPostList( category_name )
 	{
 		console.log( category_name );
@@ -538,9 +508,8 @@
 			});
 	}
 
-	function ajaxGetNewPost( current_page )
+	function ajaxGetNewPost()
 	{
-		console.log( current_page );
 		$.ajax({
 				url:  "<?php echo(base_url());?>ajaxGetNewPostListbyPageID",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
@@ -558,67 +527,6 @@
 			});
 	}
 	
-	function ajaxGetHighlightPost()
-	{
-		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ];
-		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetHighlightPost",   //the url where you want to fetch the data 
-				type: 'post', //type of request POST or GET   
-				dataType: 'json',
-				async: true, 
-				data: { 
-					'page_id': page_id
-				},
-				success:function(data)	
-				{
-					// console.log("Highlight : ");
-					// console.log(data);
-					editHighlightPost( data );
-				}
-			});
-	}
-
-	function ajaxFirstTimePost()
-	{		
-		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ]
-		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxFirstTimePost",   //the url where you want to fetch the data 
-				type: 'post', //type of request POST or GET   
-				dataType: 'json',
-				async: true, 
-				data: { 
-					'page_id': page_id
-				},
-				success:function(data)	
-				{
-					createFirstTimePost(data);
-					removeOverPost();
-				}
-			});
-	}
-
-	function ajaxEditPageCard( page_id , target )
-	{	
-		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxEditPageCard",   //the url where you want to fetch the data 
-				type: 'post', //type of request POST or GET   
-				dataType: 'json',
-				async: true, 
-				data: { 
-					'page_id': page_id
-				},
-				success:function(data)
-				{
-					// console.log("Edit : ");
-					// console.log(data);
-					editOneNewPost( data[0] , target.substr(-1) );
-					editBoxHead( data[1] , target.substr(-1) );
-					ajaxGetHighlightPost();
-					setHightlightOrder();
-				}
-			});
-	}
-
 	function ajaxUpdatePost()
 	{		
 		var post_array = $('.post-item').map(function(){
@@ -641,7 +549,23 @@
 		});
 	}
 
-	function ajaxGetPageCategory() 
+	function createPageSelector()
+	{		
+		// Create Page Selector and set global page variables
+		$.ajax({
+				url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
+				type: 'post', //type of request POST or GET   
+				dataType: 'json',
+				async: false, 
+				success:function(data)
+				{
+                    page_data = data;   
+					createPageCard(data);
+				}
+			});
+	}
+
+	function createCategorySelector() 
 	{
 		$.ajax({
 			url:  "<?php echo(base_url());?>ajaxGetPageCategory",   //the url where you want to fetch the data 
@@ -651,38 +575,33 @@
 			success:function(data)	
 			{
 				console.log(data);
-				createSelector( data )
-				
+				createSelector( data )			
 			}
 		});
 	}
-   
-	
-	/**
-	* [initialize description]
-	*
-	*		Run first time
-	* 
-	* @return {[type]} [description]
-	*/
+
 	function initialize() 
 	{
-		ajaxGetActivePage();
-		setHightlightOrder();
-		ajaxGetHighlightPost();
-		ajaxGetPageCategory();
-		ajaxFirstTimePost();
+		var box_height = $(document).height();
+		$(".gray-box").height(box_height-60);
+		
+		// Default load komchadluek
+		
+		createPageSelector();
+		createCategorySelector();
+		setCallbaktoSelector();
+		addNewPageControl( '208428464667' );
+		ajaxGetNewPost();
 	}
 
 	function removeOverPost() 
 	{
-
-		var list_box = $("#list-box-"+i);
+		var list_box = $("#list-box-0");
 		list_box.each(function() 
 		{
 			$(this).find( 'li' ).each(function( index )
 			{
-				if ( index>30 ) 
+				if ( index>100 ) 
 				{
 					// console.log("Del : ");
 					// console.log( $( this ) );
@@ -694,19 +613,11 @@
 		
 	}
 
-
-
-	$(document).ready(function() 
+	function setCallbaktoSelector() 
 	{
-		var box_height = $(document).height();
-		$(".gray-box").height(box_height-60);
-
-		initialize();
-
-		$("#selector-0").on("select2:select", function (e) { 
-            ajaxEditPageCard( e.params.data.id , e.target.id ); 
-            addNewPageControl( e.params.data.id );
-			ajaxGetNewPost( current_page )
+		$("#selector-0").on("select2:select", function (e) {  
+			addNewPageControl( e.params.data.id );
+			ajaxGetNewPost( e.params.data.id )
         });
 		
 		$("#selector-1").on("select2:select", function (e) { 
@@ -716,19 +627,16 @@
 		$('#reset-btn').on( 'click' , function(){
 			clearControl();
 		});
+	}
 
-		$( ".close-btn-control" ).click(function(){
-			console.log('ddddf');
-		});
+	$(document).ready(function() 
+	{
+		initialize();
 
 		setInterval(function(){ 
-			$('.post-item').removeClass('blink-item');
-			ajaxUpdatePost();
-			removeOverPost();
-			ajaxGetHighlightPost();
-		}, 60000);
-		setInterval(function(){ 
-			ajaxGetNewPost();
+			
+			ajaxGetNewPost( current_page );
+			
 		}, 70000);
 	});
 

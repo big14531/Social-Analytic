@@ -590,9 +590,11 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 
-		$this->db->select( "* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, ( post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as interact" );
+		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , list.picture as page_picture , post.picture as picture , post.name as name , (list.fan_count*(0.5/100) ) as min_rate " );
 		$this->db->from('fb_facebook_post as post');
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
 		$this->db->where_in('post.page_id ',$page_id_list);
+		$this->db->having('engage > min_rate');
 		$this->db->order_by('created_time', 'DESC');
 		$this->db->limit( 100 );
 		// echo $this->db->get_compiled_select();
