@@ -166,6 +166,17 @@ class Home_ctrl extends CI_Controller
 		
 	}
 
+	public function ajaxGetNewHighlightbyPageID()
+	{
+		$result=[];
+		$page_id_list = $this->input->post('page_id_list');
+		$min_date = $this->input->post('min_date');
+		$result = $this->Posts_model->getHighlightPostbyPagelist( $page_id_list );
+		echo json_encode( $result );
+		
+	}
+	
+
 	public function ajaxGetNewPostListbyCat()
 	{
 		$result=[];
@@ -373,6 +384,7 @@ class Home_ctrl extends CI_Controller
 		foreach ($page_list as $value) 
 		{
 			$page_id = $value->page_id;
+			$page_rank = $value->rank;
 			$top_post_list = $this->Posts_model->getTopPostbyPageIDandDate( $page_id , $min_date , $max_date );
 
 			$min_post_list = $this->Posts_model->getMinPostbyPageIDandDate( $page_id , $min_date , $max_date );

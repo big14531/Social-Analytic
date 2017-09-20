@@ -2,7 +2,7 @@
 <?php $this->load->view( 'default/topMenu' ) ?>
 <?php $this->load->view( 'default/sideMenu') ?>
 
-<link href="https://fonts.googleapis.com/css?family=Kanit:200,300,400" rel="stylesheet">
+
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=5">
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/jquery.mCustomScrollbar.min.css">
 <!-- Select2 -->
@@ -34,6 +34,7 @@
     }
     .list-box li {
         padding: 10px 10px;
+		min-height: 80px;
     }
 	.page-name{
 		margin-right: 5px;
@@ -111,8 +112,8 @@
     .social-icon i {
         margin-right: 5px
     }
-	.highlight-post{
-		background-color: #3c8dbc;
+	.highlight-post-item{
+		background-color: #3c8dbc!important;
 	}
 	.blink-item{
 		-moz-transition:all 0.5s ease-in-out;
@@ -140,6 +141,9 @@
 	    color: rgb(255, 255, 255);
 	    font-size: 15px;
 	    text-decoration: underline;
+	}
+	.highlight-text{
+		color:#FFF;
 	}
     .pagelist-control {
         padding: 20px 0;
@@ -270,7 +274,7 @@
             if ( page_id==element.page_id) {
 				current_page.push( element.page_id );
                 var html =  '<li class="item-control" id="control_'+element.page_id+'">'+
-                                '<button class="btn btn-alert close-btn-control" onclick="removePageControl('+element.page_id+')"><i class="fa fa-close"></i></button>'+
+                                // '<button class="btn btn-alert close-btn-control" onclick="removePageControl('+element.page_id+')"><i class="fa fa-close"></i></button>'+
                                 '<img class="page-logo pull-left" id="page-logo" src='+element.picture+'>'+
                                 '<p class="pagename-control">'+element.name+'</p>'+
                             '</li>';
@@ -301,6 +305,40 @@
 		}, this);
 	}
 
+	function addPosttoHighlight( data ) 
+	{
+		data.forEach(function(element) {
+			prependPost( element );
+		}, this);	
+	}
+
+	function prependPost( post ) 
+	{
+		var list_box = $("#list-box-0");
+		var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="highlight-post-item">'
+		+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
+		+'<img class="page_icon" src="'+post.page_picture+'" alt="">'
+		+'<div class="list-right">'
+		+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
+		+'<p class="list-name">'+post.name+'</p>'
+		
+		+'</a>'
+		+'<div class="list-txt">'
+		+post.message	
+		+'</div>'
+
+		+'<div class="list-social">'
+		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span  class="highlight-text post-number" id="engage_number">'+post.likes+'</span></div>'
+		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span  class="highlight-text post-number" id="comment_number">'+post.comments+'</span></div>'
+		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span  class="highlight-text post-number" id="share_number">'+post.shares+'</span></div>'
+		+'<span class="highlight-text list-date">'+post.created_time+'</span>'
+		+'</div>'
+		+'</div>'
+		+'</li>'
+		list_box.prepend( $(html) );
+		// $('#post-'+post.page_id+'_'+post.post_id).addClass('blink-item');
+	}
+
 	function appendPost( post ) 
 	{
 		var list_box = $("#list-box-0");
@@ -326,30 +364,6 @@
 		+'</li>'
 		list_box.append( $(html).hide().fadeIn(500) );
 	}
-
-	// function prependPost( post , col ) 
-	// {
-	// 	var list_box = $("#list-box-"+col);
-	// 	var html =  '<li id="post-'+post.page_id+"_"+post.post_id+'" class="post-item">'
-	// 	+'<a href="'+post.permalink_url+'" class="user-pic" target="_blank"><img src="'+post.picture+'" alt=""></a>'
-	// 	+'<div class="list-right">'
-	// 	+'<a href="'+post.permalink_url+'" class="list-name" target="_blank">'
-	// 	+'<p class="list-name">'+post.name+'<span class="list-date">'+post.created_time+'</span></p>'
-	// 	+'</a>'
-	// 	+'<div class="list-txt">'
-	// 	+post.message	
-	// 	+'</div>'
-
-	// 	+'<div class="list-social">'
-	// 	+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span>'+post.engage+'</span></div>'
-	// 	+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span>'+post.comments+'</span></div>'
-	// 	+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span>'+post.shares+'</span></div>'
-	// 	+'</div>'
-	// 	+'</div>'
-	// 	+'</li>'
-	// 	list_box.prepend( $(html).hide().fadeIn(500)  );
-	// 	$('#post-'+post.page_id+'_'+post.post_id).addClass('blink-item');
-	// }
 
 	function addNewPost( data ) 
 	{
@@ -394,53 +408,6 @@
         page_logo_obj.attr( 'src' ,page_obj.picture );
 	}
 
-	function createFirstTimePost( data ) 
-	{
-		for (var col = 0; col < data.length; col++) 
-		{
-			var post_list = data[col];
-			for (var key = 0; key < post_list.length; key++) 
-			{
-				var post = post_list[key];
-				appendPost( post , col );
-			}
-			last_time_update[col] = post_list[0].created_time;
-		}	
-	}
-
-	function noHighlight( key ) 
-	{
-		$("#highlight-txt-"+key).text( ' no highlight '  );
-		$("#highlight-link-"+key).attr( 'href' , '#'  );
-		$("#highlight-pic-"+key).attr( 'src' , '#'  );
-		$("#highlight-date-"+key).text( '' );
-		$("#highlight-description-"+key).text( '' );
-		$("#highlight-like-"+key).text( '' );
-		$("#highlight-comment-"+key).text( '' );
-		$("#highlight-shared-"+key).text( '' );
-	}
-
-	function editHighlightPost( data ) 
-	{	
-		for (var key = 0; key < data.length; key++) 
-		{
-			var value = data[key][0];
-			if( typeof(value)==='undefined' )
-			{
-				noHighlight(key);
-				continue;
-			} 
-			$("#highlight-txt-"+key).text( value.name  ).hide().fadeIn(500);
-			$("#highlight-link-"+key).attr( 'href' , value.permalink_url  ).hide().fadeIn(500);
-			$("#highlight-pic-"+key).attr( 'src' , value.picture  ).hide().fadeIn(500);
-			$("#highlight-date-"+key).text( value.last_update_time  ).hide().fadeIn(500);
-			$("#highlight-description-"+key).text( value.message ).hide().fadeIn(500);
-			$("#highlight-like-"+key).text( value.engage ).hide().fadeIn(500);
-			$("#highlight-comment-"+key).text( value.comments ).hide().fadeIn(500);
-			$("#highlight-shared-"+key).text( value.shares ).hide().fadeIn(500);
-		}
-	}
-
 	function updatePost( data ) 
 	{
 		for (var i = 0; i < data.length; i++) {
@@ -479,13 +446,31 @@
 			data:cat_list
 		});
 	}
+	
 	/**
 	*	AJAX ZONE	
 	*/
 
+	function ajaxGetNewHighlight()
+	{
+		$.ajax({
+				url:  "<?php echo(base_url());?>ajaxGetNewHighlightbyPageID",   //the url where you want to fetch the data 
+				type: 'post', //type of request POST or GET   
+				dataType: 'json',
+				async: true, 
+				data: { 
+					'page_id_list': current_page,
+					'min_date': last_time_update
+				},
+				success:function(data)	
+				{
+					addPosttoHighlight( data );
+				}
+			});
+	}
+
 	function ajaxGetNewPostList( category_name )
 	{
-		console.log( category_name );
 		$.ajax({
 				url:  "<?php echo(base_url());?>ajaxGetNewPostListbyCat",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
@@ -503,6 +488,7 @@
 						addNewPageControl( element.page_id );
 					}, this);
 					addPosttoFeed( data[1] );
+					ajaxGetNewHighlight();
 					
 				}
 			});
@@ -521,8 +507,8 @@
 				},
 				success:function(data)	
 				{
-					console.log(data);
 					addPosttoFeed( data );
+					ajaxGetNewHighlight();
 				}
 			});
 	}
@@ -632,11 +618,8 @@
 	$(document).ready(function() 
 	{
 		initialize();
-
 		setInterval(function(){ 
-			
-			ajaxGetNewPost( current_page );
-			
+			ajaxGetNewPost();
 		}, 70000);
 	});
 

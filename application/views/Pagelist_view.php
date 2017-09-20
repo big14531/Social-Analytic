@@ -12,6 +12,18 @@
         width: 100%;
         margin: 10px 0px;
     }
+    .link{
+        max-width: 100px;
+        overflow: hidden;  
+        white-space: nowrap;
+        text-overflow: ellipsis;        
+    }
+    .website{
+        max-width: 100px;
+        overflow: hidden;  
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 </style>
 
 <div class="content-wrapper">

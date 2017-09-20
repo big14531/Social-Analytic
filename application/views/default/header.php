@@ -7,8 +7,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="robots" content="noindex">
     <meta name="googlebot" content="noindex,nofollow">
-    <!-- social-analytic style -->
-    <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/social-analytic.css?version=0">
+
 
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/bootstrap/css/bootstrap.min.css">
@@ -33,6 +32,9 @@
     <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/datepicker3.css">
 
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Kanit:200,300,400" rel="stylesheet">
+    <!-- social-analytic style -->
+    <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/social-analytic.css?version=<?=time()?>">
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">

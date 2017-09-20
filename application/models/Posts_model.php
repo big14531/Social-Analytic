@@ -295,7 +295,9 @@ class Posts_model extends CI_Model
 			'website' => $result['website'],
 			'page_id' => $result['id'],
 			'post_rate_p' => $result['post_rate_p'],
-			'picture' => $result['picture']['data']['url']
+			'picture' => $result['picture']['data']['url'],
+			'rank' => $result['rank'],
+			'avg_engagement' => $result['avg_engagement']
 			);
 		$this->db->where( 'id' , $id );
 		$this->db->update( 'fb_page_list' , $array1 );
@@ -359,16 +361,17 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 		$query = "SELECT 
-					* ,
-					( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
-					( likes+love+wow+haha+sad+angry ) as reaction
-				FROM  fb_facebook_post  
-				WHERE  created_time  >= '".$min_date."' 
-					AND created_time  <= '".$max_date."' 
-					AND  page_id =".$page_id." 
-				ORDER BY engage DESC
-				LIMIT 5";	
-
+						* ,
+						( shares+comments+likes+love+wow+haha+sad+angry ) as engage,
+						( likes+love+wow+haha+sad+angry ) as reaction
+					FROM  fb_facebook_post  
+					WHERE  created_time  >= '".$min_date."' 
+						AND created_time  <= '".$max_date."' 
+						AND  page_id =".$page_id." 
+					GROUP BY message
+					ORDER BY engage DESC
+					LIMIT 5";	
+		$result = $this->db->query( " SET sql_mode = ''; " );
 		$result = $this->db->query( $query );
 		return $result->result();
 	}
@@ -517,10 +520,25 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
+	public function getAvgEngagementWeekAgo( $page_id )
+	{
+		$result = array();
+		
+		$min_date = Date("Y-m-d 00:00:00",strtotime("-7 days"));
+		$max_date = Date("Y-m-d 23:59:59",strtotime("-1 days"));
+
+		$this->db->select(' AVG( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as avg_engage , SUM( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as sum_engage');
+		$this->db->from('fb_facebook_post as post'); 
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$this->db->where('post.page_id',$page_id);
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 	public function getYesterdayPostRate( $page_id )
 	{
-
-
 		$min_date = Date("Y-m-d 00:00:00",strtotime("-1 days"));
 		$max_date = Date("Y-m-d 23:59:59",strtotime("-1 days"));
 
@@ -594,16 +612,35 @@ class Posts_model extends CI_Model
 		$this->db->from('fb_facebook_post as post');
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
 		$this->db->where_in('post.page_id ',$page_id_list);
-		$this->db->having('engage > min_rate');
+		// $this->db->having('engage > min_rate');
+		$this->db->having('engage >', 500);
 		$this->db->order_by('created_time', 'DESC');
 		$this->db->limit( 100 );
 		// echo $this->db->get_compiled_select();
 		// exit();
 		$result = $this->db->get();
-
 		return $result->result();
 	}
 
+	public function getHighlightPostbyPagelist( $page_id_list )
+	{
+		$result = array();
+		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , list.picture as page_picture , post.picture as picture , post.name as name , (list.fan_count*(0.5/100) ) as min_rate " );
+		$this->db->from('fb_facebook_post as post');
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
+		$this->db->where_in('post.page_id ',$page_id_list);
+		// $this->db->having('engage > min_rate');
+		$this->db->having('engage >', 1000);
+		$this->db->order_by('created_time', 'DESC');
+		$this->db->limit( 5 );
+		// echo $this->db->get_compiled_select();
+		// exit();
+		$result = $this->db->get();
+		return $result->result();
+	}
+
+
+	
 	public function getBestReactionPostbyPageandTime ( $page_id , $time )
 	{
 		$result = array();

@@ -123,7 +123,7 @@ class Data_ctrl extends CI_Controller
 			$result = $this->kcl_facebook_analytic->getRawPageDetail( $page_id );
 			$posts = $this->Posts_model->getSummaryPostsbyPageNameandTime( $page_id , $min_date , $max_date );
 			$post_rate = $this->Posts_model->getYesterdayPostRate( $page_id );
-
+			$avg_engagement = $this->Posts_model->getAvgEngagementWeekAgo( $page_id );
 			if ( is_array( $result )==false || $result['link']==false || $result['name']==false || $result['id']==false ) 
 			{
 				write_file($this->daily_log,date('Y-m-d H:i:s')."  - Page Error\r\n ".$result."\r\n",'a+');
@@ -131,7 +131,15 @@ class Data_ctrl extends CI_Controller
 			}
 
 			$post_rate = empty($post_rate)==1?0:$post_rate[0]->post_rate;
+		
+			
+			if		( $avg_engagement[0]->sum_engage >=1000000 ) $rank = 1;
+			elseif	( $avg_engagement[0]->sum_engage >=100000 )  $rank = 2;
+			else  	$rank = 3;
 
+	
+			$result['rank'] = $rank;
+			$result['avg_engagement'] = $avg_engagement[0]->avg_engage;
 			$result['post_rate_p'] = $post_rate;
 			$result['posts'] = $posts[0]->count;
 			$result['shares'] = $posts[0]->shares;

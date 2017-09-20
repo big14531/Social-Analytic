@@ -6,16 +6,34 @@
 			<!-- Main menu -->
 			<li class="header">เมนูหลัก</li>
 
-
 			<li class="treeview">
-				<a href="<?php echo base_url(); ?>socialDeck">
-					<i class="fa fa-facebook"></i> <span>ฟีด เฟสบุ๊ค</span>
+				<a href="#">
+					<i class="fa fa-heartbeat"></i> <span>ระบบเรียลไทม์</span>
 					<span class="pull-right-container">
-						<!-- <small class="label pull-right bg-green">16</small> -->
+						<i class="fa fa-angle-left pull-right"></i>
 					</span>
 				</a>
+				<ul class="treeview-menu">
+					<li class="treeview">
+						<a href="<?php echo base_url(); ?>socialDeck">
+							<i class="fa fa-feed"></i> <span>ติดตาม 4 เพจ</span>
+							<span class="pull-right-container">
+								<!-- <small class="label pull-right bg-green">16</small> -->
+							</span>
+						</a>
+					</li>
+				</ul>
+				<ul class="treeview-menu">
+					<li class="treeview">
+						<a href="<?php echo base_url(); ?>allFeed">
+							<i class="fa fa-eye"></i> <span>ติดตามรวม</span>
+							<span class="pull-right-container">
+								<!-- <small class="label pull-right bg-green">16</small> -->
+							</span>
+						</a>
+					</li>
+				</ul>
 			</li>
-
 			<li class="treeview">
 				<a href="#">
 					<i class="fa fa-table"></i> <span>ตารางทั้งหมด</span>

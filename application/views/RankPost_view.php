@@ -2,12 +2,27 @@
 <?php $this->load->view( 'default/topMenu' ) ?>
 <?php $this->load->view( 'default/sideMenu' ) ?>
 
+<!-- daterange picker -->
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.css">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/datepicker3.css">
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
+
 <style>
 	li{
 		color:black!important;
 	}
+	.btn{
+		border-radius: 30px;
+	}
+	.social-icon {
+		display: inline-block;
+		margin: 0px 7px;
+		color: #83c8f7;
+    }
 	li.header{
-
 	}
 	.full-width{
 		width:100%;
@@ -18,24 +33,35 @@
 	.table-img{
 		width:30px;
 	}
-	.box-page-name{
-		font-size: 15px;
-		padding-top: 10px;
-		margin-left: 60px;
-		padding-right: 10px;
-	}
+	.list-social{
+		font-size: 0.8em;
+    }
 	.page-icon{
 		float: left;
+		width: 40px;
+		border-radius: 5px;
 	}
 	.box-header{
-		font-weight: 600;
 		color:#b8c7ce;
+		text-align: center;
+	}
+	.page-name{
+		text-overflow: ellipsis;
+		width: 75%;
+		overflow: hidden;
+		font-size: 1.25em;
+		padding: 7px 40px;
+		padding-left: 70px;
+		white-space: nowrap;
+		margin: 0px;
+		float: left;
+		font-weight: 300;
 	}
 	.box-body {   
 		padding-bottom: 0px;
 	}
 	.box-content{
-		background-color: #222d32;
+    	padding:0px;
 	}
 	.btn-choose{
 		color: #222d32;
@@ -45,17 +71,19 @@
 		padding-right: 10px;
 		background-color: gray;
 		background-color: #1a2226;
-		margin-bottom: 10px;
+		border-top: 1px solid #4b4b4b;
+		height: 80px;
 	}
 	.ranking-number{
 		color: white;
-		padding-top: 5px;
-		font-size: 20px;
+		padding: 5px;
+		font-size: 15px;
 		text-align: center;
-
 		float: left;
-		height: 40px;
-		width:40px;
+		height: 30px;
+		width: 30px;
+		border-radius: 50%;
+		margin-top: 10px;
 	}
 	.best.ranking-number{
 		background-color: #008d4c;		
@@ -66,11 +94,15 @@
 	.post-detail{
 		padding-left: 10px;
 		padding-right: 10px;
+		padding-top: 8px;
 		float: left;
+		width: 70%;
 	}
 	.post-img{
 		float: right;
-		width: 70px;
+		max-width: 50px;
+		max-height: 50px;
+		border-radius: 5px;
 	}
 	.black-box{
 		background-color: #222d32!important;
@@ -79,6 +111,19 @@
 	}
 	.detail-text{
 		margin: 0px;
+		padding: 5px 0px;
+		font-size: 15px;
+		color: #efefef;
+		font-weight: 300;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.date-text{
+		font-size: 14px;
+		font-style: italic;
+		display: inline-block;
+		float: right;
 	}
 	.detail-box{
 		margin: 0px;
@@ -92,16 +137,24 @@
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
+	.list-date{
+		font-style: italic;
+		font-weight: 400;
+		font-size: 12px;
+		float: right;
+	}
+	.collapse-btn{
+		margin-top: 8px;
+		width: 30px;
+		height: 30px;
+		padding: 0;
+	}
+	.card-body{
+		padding:0px;
+	}
 </style>
 
 
-<!-- daterange picker -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.css">
-<!-- bootstrap datepicker -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/datepicker3.css">
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
-<!-- Select2 -->
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
 <!-- Content Here -->
 
 <div class="content-wrapper">
@@ -125,8 +178,8 @@
 
 		<div class="box gray-box control-box">
 			<div class="box-body">
-				<div class="row">
-					<div class="col-md-8">
+				<div class="row control-row">
+					<div class="col-md-2">
 						<div class="input-group full-width">
 							<button type="button" class="selectpicker btn btn-md btn-default full-width" id="daterange-btn">
 								<span>
@@ -136,8 +189,11 @@
 							</button>
 						</div>
 					</div>
-
-					<div class="col-md-4">
+					<div class="col-md-3">
+						<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="เลือกเพจ" style="width: 100%;">
+						</select>
+					</div>
+					<div class="col-md-2">
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-info full-width" id="search-btn">
 								<span>
@@ -145,43 +201,30 @@
 								</span>
 							</button>
 						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="box gray-box control-box ">
-			<div class="box-body">
-				<div class="row control-row">
-					<div class="col-md-3">
+					</div>	
+					<div class="col-md-2">
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-success full-width" id="best-btn">
 								<span>
-									<i class="fa fa-thumbs-up"></i> เลือก 5 อันดับดีที่สุด
+									<i class="fa fa-thumbs-up"></i> อันดับดีที่สุด
 								</span>
 							</button>
 						</div>
 					</div>
 
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<div class="form-group">
 							<button type="button" class="btn btn-md btn-danger full-width" id="worst-btn">
 								<span>
-									<i class="fa fa-thumbs-down"></i> เลือก 5 อันดับแย่ที่สุด
+									<i class="fa fa-thumbs-down"></i> อันดับแย่ที่สุด
 								</span>
 							</button>
 						</div>
-					</div>
-
-					<div class="col-md-6">
-						<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="เลือกเพจ" style="width: 100%;">
-						</select>
-					</div>
+					</div>			
 				</div>
 			</div>
 		</div>
-
-		<hr style="border-top: 3px solid #1a2226;">
+	
 		<div class="row card-row" id="card-row">
 		</div>
 
@@ -214,15 +257,27 @@
 
 			// Create Card in Row
 			var main_row = $("#card-row");
-			main_row.append('<div class="col-md-6" id="'+card_id+'" page-name="'+page_name+'"></div>');
+			main_row.append('<div class="col-md-4" id="'+card_id+'" page-name="'+page_name+'"></div>');
 
 			// Create Box in Card
 			var main_card = $("#"+card_id);
-			main_card.append('<div class="box gray-box collapsed-box" id="'+box_id+'"></div>');
+			main_card.append('<div class="box gray-box" id="'+box_id+'"></div>');
 
 			var box_card = $("#"+box_id);
 
-			box_card.append('<div class="box-header"><img class="page-icon" src="'+icon+'"><div class="box-page-name"><span class="page-name">'+page_name+'</span><button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="box-body" title="Collapse" style="margin-right: 5px;"><i class="fa fa-plus"></i></button></div></div><div id="best_'+content_id+'" class="best-box box-body box-content"></div><div id="worst_'+content_id+'" class="worst-box box-body box-content" style="display:none;!important"></div>');
+			var html = '<div class="box-header">'+
+						'<img class="page-icon" src="'+icon+'">'+
+						'<span class="page-name">'+page_name+'</span>'+
+						'<button type="button" class="btn btn-primary btn-sm pull-right collapse-btn" data-widget="collapse" data-toggle="box-body" title="Collapse">'+
+						'<i class="fa fa-plus"></i>'+
+						'</button>'+
+						'</div>'+
+						'<div class="box-body">'+
+						'<div id="best_'+content_id+'" class="best-box box-content"></div>'+
+						'<div id="worst_'+content_id+'" class="worst-box box-content" style="display:none;!important"></div>'+
+						'</div>';
+
+			box_card.append( html );
 		}
 	}
 
@@ -265,18 +320,27 @@
 		var link 			= post_data.link;
 		var permalink_url 	= post_data.permalink_url;
 
-		content.append( '<div class="col-xs-12 page-list"><div class="box black-box" id="'+box_content_id+'"><div class="'+type+' ranking-number">'+key+'</div></div></div>');
+		var html_box = '<div class="col-xs-12 page-list">'+
+							'<div class="box black-box" id="'+box_content_id+'">'+
+							'<div class="'+type+' ranking-number">'+key+'</div>'+
+							'<a href="'+permalink_url+'" target="_blank"><img class="post-img" src="'+picture+'"/></a>'+
+							'</div>'+
+						'</div>';
+		content.append( html_box );
 
 		var box_content = $("#"+box_content_id);
 		var html = 
 		"<div class='post-detail col-xs-8'>"
 		+"<p class='detail-text'>"+name+"</p>"
-		+"<p class='detail-text'>Time :"+created_time.substr(0,10)+"</p>"
-		+"<div class='detail-box'><img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'> :"+parseInt(engage).toLocaleString('en-US')+"</div>"
-		+"<div class='detail-box'><i class='fa fa-comment'></i> :"+parseInt(comments).toLocaleString('en-US')+"</div>"
-		+"<div class='detail-box'><i class='fa fa-share'></i> :"+parseInt(shares).toLocaleString('en-US')+"</div>"
-		+"</div>"
-		+"<a href='"+permalink_url+"' target='_blank'><img class='post-img' src='"+picture+"'></a>";
+
+		+'<div class="list-social">'
+		+'<div class="like social-icon"><i class="fa fa-thumbs-up" aria-hidden="true"></i><span  class="post-number" id="engage_number"> '+parseInt(engage).toLocaleString('en-US')+'</span></div>'
+		+'<div class="comment social-icon"><i class="fa fa-comment" aria-hidden="true"></i><span  class="post-number" id="comment_number"> '+parseInt(comments).toLocaleString('en-US')+'</span></div>'
+		+'<div class="shared social-icon"><i class="fa fa-share" aria-hidden="true"></i><span  class="post-number" id="share_number"> '+parseInt(shares).toLocaleString('en-US')+'</span></div>'
+		+'<span class="list-date">'+created_time.substr(0,10)+'</span>'
+		+'</div>'
+
+		
 		box_content.append( html );
 	}
 
@@ -325,9 +389,9 @@
 					$('#alert').find('p').text('');
 					$('#alert').removeClass( 'hidden');
 					editBoxPage(data);
-					bestButtonCallback();
 					console.log(data);
 				}
+				bestButtonCallback();
 				$('#search-btn').prop('disabled',false);
 				$('#search-btn').removeClass('disabled');
 				$('#search-btn').find('span').html('<i class="fa fa-calendar"></i> Search');
@@ -374,14 +438,15 @@
 
 	}
 
-
-	function bestButtonCallback(argument) {
+	function bestButtonCallback() 
+	{
 		$(".worst-box").css('display','')
 		$(".best-box").prop('hidden',false);
 		$(".worst-box").prop('hidden',true)
 	}
 
-	function worstButtonCallback(argument) {
+	function worstButtonCallback() 
+	{
 		$(".best-box").css('display','')
 		$(".best-box").prop('hidden',true);
 		$(".worst-box").prop('hidden',false);
@@ -394,7 +459,7 @@
 
 		$('#daterange-btn').daterangepicker({
 			singleDatePicker: true,
-			showDropdowns: true
+			showDropdowns: true,
 		}, 
 		function(start, end) {
 			$('#daterange-btn span').html(start.format('MMMM D, YYYY'));
@@ -436,6 +501,9 @@
 			});
 		});
 
+		$('.box').on('hidden.bs.collapse', function (e) {
+			alert('Event fired on #' + e.currentTarget.id);
+		})
 
 		$('#page-selector').change(function(){
 
@@ -461,6 +529,7 @@
 
 		});
 	});
+
 </script>
 
 </body>

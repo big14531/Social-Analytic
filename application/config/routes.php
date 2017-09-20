@@ -91,6 +91,9 @@ $route['logout'] = 'validation_ctrl/logout';
 
 /*---------- allfeed ----------*/
 $route['allFeed'] = 'home_ctrl/allFeed';
+$route['ajaxGetNewPostListbyPageID'] = 'home_ctrl/ajaxGetNewPostListbyPageID';
+$route['ajaxGetNewPostListbyCat'] = 'home_ctrl/ajaxGetNewPostListbyCat';
+$route['ajaxGetNewHighlightbyPageID'] = 'home_ctrl/ajaxGetNewHighlightbyPageID';
 
 
 /*---------- socialdesk ----------*/
@@ -100,8 +103,7 @@ $route['ajaxUpdatePost'] = 'home_ctrl/ajaxUpdatePost';
 $route['ajaxEditPageCard'] = 'home_ctrl/ajaxEditPageCard';
 $route['ajaxGetNewPost'] = 'home_ctrl/ajaxGetNewPost';
 $route['ajaxGetHighlightPost'] = 'home_ctrl/ajaxGetHighlightPost';
-$route['ajaxGetNewPostListbyPageID'] = 'home_ctrl/ajaxGetNewPostListbyPageID';
-$route['ajaxGetNewPostListbyCat'] = 'home_ctrl/ajaxGetNewPostListbyCat';
+
 
 /*---------- analyticList ----------*/
 $route['analyticList'] = 'home_ctrl/analyticList';
