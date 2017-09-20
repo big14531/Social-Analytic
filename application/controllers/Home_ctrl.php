@@ -23,7 +23,7 @@ class Home_ctrl extends CI_Controller
 		isLoggedin($this->session->all_userdata());
 	}
 	
-	/* ---------------- Dashboard Zone ---------------- */
+	/* ---------------- allfeed Zone ---------------- */
 
 	/**
 	* [allfeed description]
@@ -36,6 +36,20 @@ class Home_ctrl extends CI_Controller
 		$this->load->view( 'AllFeed_view' );
 	}
 
+	/* ---------------- trends Zone ---------------- */
+
+	/**
+	* [trends description]
+	*
+	*		trends all day 
+	* 
+	*/
+	public function trends()
+	{
+		$this->load->view( 'TrendsofDay_view' );
+	}
+
+	
 
 	/* ---------------- Dashboard Zone ---------------- */
 

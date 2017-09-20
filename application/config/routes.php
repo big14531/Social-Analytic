@@ -95,6 +95,9 @@ $route['ajaxGetNewPostListbyPageID'] = 'home_ctrl/ajaxGetNewPostListbyPageID';
 $route['ajaxGetNewPostListbyCat'] = 'home_ctrl/ajaxGetNewPostListbyCat';
 $route['ajaxGetNewHighlightbyPageID'] = 'home_ctrl/ajaxGetNewHighlightbyPageID';
 
+/*---------- allfeed ----------*/
+$route['trends'] = 'home_ctrl/trends';
+
 
 /*---------- socialdesk ----------*/
 $route['socialDeck'] = 'home_ctrl/socialDeck';

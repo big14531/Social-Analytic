@@ -8,7 +8,7 @@
 
 			<li class="treeview">
 				<a href="#">
-					<i class="fa fa-heartbeat"></i> <span>ระบบเรียลไทม์</span>
+					<i class="fa fa-desktop"></i> <span>ระบบเรียลไทม์</span>
 					<span class="pull-right-container">
 						<i class="fa fa-angle-left pull-right"></i>
 					</span>
@@ -22,8 +22,7 @@
 							</span>
 						</a>
 					</li>
-				</ul>
-				<ul class="treeview-menu">
+				
 					<li class="treeview">
 						<a href="<?php echo base_url(); ?>allFeed">
 							<i class="fa fa-eye"></i> <span>ติดตามรวม</span>
@@ -32,7 +31,22 @@
 							</span>
 						</a>
 					</li>
+					<li class="treeview">
+						<a href="<?php echo base_url(); ?>rankPosts">
+							<i class="fa fa-trophy"></i> <span>จัดอันดับโพสต์</span>
+							<span class="pull-right-container">
+							</span>
+						</a>
+					</li>
+					<li class="treeview">
+						<a href="<?php echo base_url(); ?>trends">
+							<i class="fa fa-heartbeat"></i> <span>Trends ต่อวัน</span>
+							<span class="pull-right-container">
+							</span>
+						</a>
+					</li>
 				</ul>
+				
 			</li>
 			<li class="treeview">
 				<a href="#">
@@ -109,16 +123,6 @@
 				</a>
 			</li>
 
-			<li class="treeview">
-				<a href="<?php echo base_url(); ?>rankPosts">
-					<i class="fa fa-trophy"></i> <span>จัดอันดับโพสต์</span>
-					<span class="pull-right-container">
-						<!-- <small class="label pull-right bg-green">16</small> -->
-					</span>
-				</a>
-			</li>
-
-			
 
 			<li class="treeview">
 				<a href="<?php echo base_url(); ?>postGraph">
