@@ -199,20 +199,20 @@
 		// Get the column API object
 		var table = $('#example1').DataTable();
 		
-		var column_love = table.column( 9 ).visible();
-		var column_wow = table.column( 10 ).visible();
-		var column_haha = table.column( 11 ).visible();
-		var column_sad = table.column( 12 ).visible();
-		var column_angry = table.column( 13 ).visible();
-		var column_likes = table.column( 14 ).visible();
+		var column_love 	= table.column( 10 ).visible();
+		var column_wow 		= table.column( 11 ).visible();
+		var column_haha 	= table.column( 12 ).visible();
+		var column_sad 		= table.column( 13 ).visible();
+		var column_angry 	= table.column( 14 ).visible();
+		var column_likes 	= table.column( 15 ).visible();
 		// Hide a column
 		
-		table.column( 9 ).visible( !column_love );
-		table.column( 10 ).visible( !column_wow );
-		table.column( 11 ).visible( !column_haha );
-		table.column( 12 ).visible( !column_sad );
-		table.column( 13).visible( !column_angry );    
-		table.column( 14 ).visible( !column_likes ); 
+		table.column( 10 ).visible( !column_love );
+		table.column( 11 ).visible( !column_wow );
+		table.column( 12 ).visible( !column_haha );
+		table.column( 13 ).visible( !column_sad );
+		table.column( 14).visible( !column_angry );    
+		table.column( 15 ).visible( !column_likes ); 
 	}
 
 	function renderTable(data)
@@ -268,6 +268,7 @@
 			parseInt ( value.fan_count ).toLocaleString('en-US'),
 			parseInt ( value.count ).toLocaleString('en-US'),
 			parseInt ( value.post_rate_p ).toLocaleString('en-US'),
+			parseInt ( value.avg_engagement ).toLocaleString('en-US'),
 			engagement.toLocaleString('en-US'),
 			parseInt ( value.shares ).toLocaleString('en-US'),
 			parseInt ( value.comments ).toLocaleString('en-US'),
@@ -306,6 +307,7 @@
 				{ title: "จำนวแฟนเพจ" },
 				{ title: "โพสต่อเพจ" },
 				{ title: "โพสต์ / ชั่วโมง" },
+				{ title: "Engage เฉลี่ย" },
 				{ title: "Engage" },
 				{ title: "Share" },
 				{ title: "Comments" },
@@ -326,6 +328,7 @@
 					$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
 					}
 				}	
+				
 
 			],
 			"iDisplayLength": 20,
