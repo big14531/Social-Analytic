@@ -49,7 +49,13 @@ class Home_ctrl extends CI_Controller
 		$this->load->view( 'TrendsofDay_view' );
 	}
 
-	
+	public function ajaxGetTrendsData()
+	{
+		$min_date = date("Y-m-d 00:00:00" );
+		$max_date = date("Y-m-d 23:59:00" );
+		$keyword = $this->Posts_model->getTrendbyDate( $min_date , $max_date );
+		echo json_encode( $keyword );
+	}
 
 	/* ---------------- Dashboard Zone ---------------- */
 

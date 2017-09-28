@@ -48,6 +48,15 @@ class Data_ctrl extends CI_Controller
 			}
 		}
 
+		if( $minute%50==0 )
+		{
+			if ( $result )
+			{
+				write_file($this->daily_log,date('Y-m-d H:i:s')."  - processKeyword\r\n",'a+');
+			}
+			$this->processKeyword();
+		}
+
 		if($minute%30==0)
 		{	
 			$result = $this->updateTrackingPage();
@@ -387,28 +396,81 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
-	public function tempUpdateSession()
+
+	public function social_clean_str_keyword($str)
 	{
-	// 	for ($i=15; $i <= 25 ; $i++) 
-	// 	{ 
-	// 		$post = $this->Posts_model->getPostsbyPageNameandTime( '208428464667' , '2017-05-'.$i.' 00:00:00' , '2017-05-'.$i.' 23:59:00' );
-	// 		$out=[];
-	// 		foreach ($post->result() as  $value) 
-	// 		{
-	// 			$item = file_get_contents("http://www.komchadluek.net/api/section?url=".$value->link);
-	// 			$result =  json_decode( $item );
-	// 			if (  $item=='null' || isset($result->error) )
-	// 			{
-	// 				continue;
-	// 			}
-	// 			echo $value->post_id." ".$result->section_name."<br>";
-	// 			array_push( $out,['post_id'=>$value->post_id , 'session'=>$result->section_name] );
+		$str=str_replace(array('“','”',"'",'"',"’","‘"),'',$str);
+		$str=@preg_replace('/[&\/\\#,+()$~%.\'"!:*?<>{}]/', '', $str);
+		return $str;
+	} 
+
+	public function custom_get_keyword($str_keyword)
+	{
+		// Delete Html
+		$str_keyword=strip_tags($str_keyword);
+		
+		// Replace other to double qoate
+		$str_keyword=str_replace(array('“','”',"'",'"',"’","‘"),'"',$str_keyword);
+		$str_keyword=str_replace(array('" ',' "'),'"',$str_keyword);
+		$new_keyword=array();
+	
+		@preg_match_all( '/"([^"]+)"/i' ,$str_keyword, $match );
+		if($match[0])
+		{
+			foreach($match[0] as $k =>$v)
+			{
+				$word=trim($v);
+				$word=$this->social_clean_str_keyword($word);
+				$word=trim($word);
+
+				if( strlen( $word ) < 90 && strlen( $word ) > 10 )
+				{	
+					array_push($new_keyword,$word);
+					// echo( $word."  - ".strlen( $word )."<br>" );
+				}
 				
-	// 		}
-	// 		// print_r( $out );
-	// 		$this->Posts_model->updatePost($out);
-	// 	}
+			}
+		}
+		return $new_keyword;
 	}
 
+	public function processKeyword()
+	{
+		
+		// Load Post 1 hour ago
+		$min_date = date( "Y-m-d H:i:s" , strtotime( "1 hour ago" ) );
+		$max_date = date( "Y-m-d H:i:s" );
+
+		$post_list =  $this->Posts_model->getAllPostbyTime( $min_date ,$max_date );
+
+		// loop post
+		$long_text = [];
+		foreach ($post_list as $key => $value) 
+		{
+			// get all text from post
+			$result =[];
+			$keyword1 = [];
+			$keyword2 = [];
+			$text = $value->name." ".$value->message." ".$value->description;
+			$keyword1 = $this->custom_get_keyword($text);
+			$long_text = array_merge( $long_text , array_unique( $keyword1 ) );
+			
+
+		}
+		$long_text = array_count_values( $long_text );	
+		asort( $long_text );
+
+		// Format Data
+		$resultFromFacebook = [];
+		foreach ($long_text as $key => $value) 
+		{
+			$keyword = [ "keyword" => $key , "intensive" => $value , "created_time" =>date( "Y-m-d H:00:00" , strtotime( "1 hour ago" ) ) , "source" => "facebook"];
+			array_push(  $resultFromFacebook , $keyword );
+		}
+		$resultFromGoogle = $this->google_api->getGoogleTrends();
+		$result = array_merge( $resultFromFacebook , $resultFromGoogle );
+
+		$this->Posts_model->insertKeyword( $result );
+	}
 }
 ?>

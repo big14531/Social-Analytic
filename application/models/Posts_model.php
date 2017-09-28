@@ -167,10 +167,25 @@ class Posts_model extends CI_Model
 		return $result;
 	}
 
-	public function insertBatchtmp( $data )
+	public function insertKeyword( $keyword_list )
 	{
-		$insert_query = $this->db->insert_batch('tmp', $data);
+		foreach ($keyword_list as $key => $value) 
+		{	
+			$keyword = $value['keyword'];
+			$created_time = $value['created_time'];
+			$this->db->select( 'keyword , created_time' );
+			$this->db->from( 'keyword' ); 
+			$this->db->where( 'created_time' , $created_time );
+			$this->db->where( 'keyword' , $keyword );
+			$is_insert = $this->db->get()->result();
+			if( !$is_insert )
+			{
+				$this->db->insert( 'keyword' , $value );
+			}
+			
+	   }
 	}
+
 
 	public function insertBatchOwnerPost( $data )
 	{
@@ -357,6 +372,18 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
+	public function getTrendbyDate( $min_date , $max_date )
+	{
+		$result = array();
+		$this->db->select( '*' );
+		$this->db->from('keyword');
+		$this->db->where('created_time >',$min_date);
+		$this->db->where('created_time <',$max_date);
+		$result = $this->db->get();
+
+		return $result->result();
+	}
+
 	public function getTopPostbyPageIDandDate( $page_id , $min_date , $max_date )
 	{
 		$result = array();
@@ -506,15 +533,16 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 
-		$this->db->select('post.* , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, , list.name as page_name');
+		$this->db->select('post.* , list.picture as page_logo , ( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage, , list.name as page_name');
 		$this->db->from('fb_facebook_post as post'); 
 
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id');
-		$this->db->where('list.page_id',$page_id);
+		$this->db->where_in('list.page_id',$page_id);
 		$this->db->where('list.is_active',1);
 		$this->db->where('post.created_time >',$min_date);
 		$this->db->where('post.created_time <',$max_date);
-
+		$this->db->order_by('last_update_time', 'DESC');
+		$this->db->limit( 2000 );
 		$result = $this->db->get();
 
 		return $result;

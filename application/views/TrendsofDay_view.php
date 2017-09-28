@@ -89,6 +89,9 @@
     .post-example>div{
         padding: 2px 0px;
     }
+    .widget-footer-container{
+        display:none!important;
+    }
 </style>
 
 
@@ -112,6 +115,7 @@
                     <select id="category-selector"></select>
                 </div>
             </div>
+
             <div class="feed-col col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
                 <div class="box-body mCustomScrollbar">
                     <ul class="list-box" id="list-box-0">
@@ -168,7 +172,6 @@
                     </ul>
                 </div>
             </div>
-
 	</section>
 </div>
 
@@ -178,6 +181,8 @@
 <script src="<?php echo(base_url());?>assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
 
 <script>
+
+    
 
     function createDatepicker() 
     {
@@ -221,6 +226,20 @@
 		});
 	}
 
+    function getTrendsData() 
+    {
+        $.ajax({
+			url:  "<?php echo(base_url());?>ajaxGetTrendsData",
+			type: 'post', 
+			dataType: 'json',
+			async: false, 
+			success:function(data)	
+			{
+				console.log(data);		
+			}
+		});    
+    }
+
     function initialize() 
     {
         var box_height = $(window).height();
@@ -228,6 +247,7 @@
 
         createDatepicker();
         createCategorySelector();
+        getTrendsData();
     }
 
     $(document).ready(function() 

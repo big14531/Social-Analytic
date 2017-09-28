@@ -63,7 +63,7 @@ $route['googletrend'] = 'data_ctrl/googletrend';
 
 
 ////////////////////////////////////////
-//              View Zone             //
+//              Process Zone             //
 ////////////////////////////////////////
 
 /*---------- get new post link ----------*/
@@ -82,6 +82,9 @@ $route['updateBatchFacebookPost']  = 'data_ctrl/updateBatchFacebookPost';
 $route['newSweepFacebookPost']  = 'data_ctrl/newSweepFacebookPost';
 $route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 
+/*---------- processKeyword ----------*/
+$route['processKeyword'] = 'data_ctrl/processKeyword';
+
 ////////////////////////////////////////
 //              View Zone             //
 ////////////////////////////////////////
@@ -95,8 +98,9 @@ $route['ajaxGetNewPostListbyPageID'] = 'home_ctrl/ajaxGetNewPostListbyPageID';
 $route['ajaxGetNewPostListbyCat'] = 'home_ctrl/ajaxGetNewPostListbyCat';
 $route['ajaxGetNewHighlightbyPageID'] = 'home_ctrl/ajaxGetNewHighlightbyPageID';
 
-/*---------- allfeed ----------*/
+/*---------- trends ----------*/
 $route['trends'] = 'home_ctrl/trends';
+$route['ajaxGetTrendsData'] = 'home_ctrl/ajaxGetTrendsData';
 
 
 /*---------- socialdesk ----------*/

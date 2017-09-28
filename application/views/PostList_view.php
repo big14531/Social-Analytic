@@ -18,13 +18,16 @@
 		margin: 0px;
 	}
 	.table-img{
-		width:100px;
+		width:70px;
 	}
 	.select2-search__field{
 		color: #000!important;
 	}
 	.select2-selection__choice{
 		color: #000!important;
+	}
+	.table-img-page{
+		width:40px;
 	}
 </style>
 
@@ -74,7 +77,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-3">
+					<!-- <div class="col-md-3">
 						<div class="form-group">
 							<select class="btn btn-lg btn-default" id="page-selector" style="width: 100%;">
 								<option selected="selected">เลือกเพจ</option>
@@ -86,6 +89,12 @@
 								?>
 							</select>
 						</div>
+						
+					</div> -->
+
+					<div class="col-md-3">
+						<select id="page-selector" class="form-control select2 selector" multiple="multiple" data-placeholder="เลือกเพจ" style="width: 100%;">
+						</select>
 					</div>
 
 					<div class="col-md-4">
@@ -171,6 +180,8 @@
 	{
 		$(document).ready(function() 
 		{
+			$(".select2").select2();
+			ajaxCreatePageCard()
 			$('#tags').select2({
 				tags: true,
 				tokenSeparators: [','], 
@@ -181,44 +192,50 @@
 			{
 				columns: 
 				[
+				{ title: "เพจ" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+				{
+					$(nTd).html("<image class='table-img-page' src='"+sData+"' />");
+				}
+				},
 				{ title: "ภาพ" ,
 				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 				{
 					$(nTd).html("<image class='table-img' src='"+sData+"' />");
 				}
-			},
-			{ title: "วันที" },
-			{ title: "เวลาอัพเดท" },
-			{ title: "ข้อความ" },
-			{ title: "Engagement" },
-			{ title: "Rank" },
-			{ title: "Share" },
-			{ title: "Comments" },
-			{ title: "Reaction" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
-			{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
-			{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
+				},
+				{ title: "วันที" },
+				{ title: "เวลาอัพเดท" },
+				{ title: "ข้อความ" },
+				{ title: "Engagement" },
+				{ title: "Rank" },
+				{ title: "Share" },
+				{ title: "Comments" },
+				{ title: "Reaction" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/like.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/love.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/wow.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/smile.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/sad.png'>" },
+				{ title: "<img class='table-icon' src='<?php echo(base_url());?>assets/images/angry.png'>" },
+				{ title: "<i class='fa fa-globe' aria-hidden='true'>" ,
+					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+					{
+						$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
+					}
+				},
+				{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
 				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
 				{
 					$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
 				}
-			},
-			{ title: "<i class='fa fa-facebook-official' aria-hidden='true'>" ,
-			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-			{
-				$(nTd).html("<a href='"+sData+"' target='_blank'><i class='fa fa-link' aria-hidden='true'></a>");
-			}
-			},
-			{ title: "<i class='fa fa-line-chart' aria-hidden='true'>" ,
-			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
-			{
-				$(nTd).html("<a class='open-modal' data-toggle='modal' data-target='#editModal' id='"+sData+"' ><i class='fa fa-line-chart' aria-hidden='true'></a>");
-			}
-			},
+				},
+				{ title: "<i class='fa fa-line-chart' aria-hidden='true'>" ,
+				"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) 
+				{
+					$(nTd).html("<a class='open-modal' data-toggle='modal' data-target='#editModal' id='"+sData+"' ><i class='fa fa-line-chart' aria-hidden='true'></a>");
+				}
+				},
 			],
 			"iDisplayLength": 100,
 			'order': [[ 4, "ASC" ]]
@@ -257,6 +274,38 @@
 			$('#daterange-btn').val(start.format('YYYY-MM-DD 00:00:00') + ' to ' + end.format('YYYY-MM-DD 23:59:59'));
 		}
 		);
+
+		function createSelector( data ) 	
+		{
+			// Create Card in Row
+			var selector = $("#page-selector");
+			var page_list = [];
+			for (var i = 0; i < data.length; i++) 
+			{
+				var page_data = data[i];
+				var page_name = page_data.name;
+				var page_id = page_data.page_id;
+				page_list.push( { id: page_id, text: page_name} );
+			}
+			$(selector).select2({
+				data: page_list
+			});
+		}
+
+		function ajaxCreatePageCard()
+		{		
+			$.ajax({
+				url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
+				type: 'post', //type of request POST or GET   
+				dataType: 'json',
+				async: true, 
+				success:function(data)
+				{
+					createSelector(data);
+				}
+			});
+		}
+
 
 		function renderTable(data)
 		{
@@ -306,6 +355,7 @@
 				var last_update_time = convertTime( value.last_update_time );
 				dataset[key] = 
 				[
+				value.page_logo,
 				value.picture,
 				created_time,
 				last_update_time,
@@ -335,20 +385,20 @@
 			// Get the column API object
 			var table = $('#example1').DataTable();
 
-			var column_likes = table.column( 9 ).visible();
-			var column_love = table.column( 10 ).visible();
-			var column_wow = table.column( 11 ).visible();
-			var column_haha = table.column( 12 ).visible();
-			var column_sad = table.column( 13 ).visible();
-			var column_angry = table.column( 14 ).visible();
+			var column_likes = table.column( 10 ).visible();
+			var column_love = table.column( 11 ).visible();
+			var column_wow = table.column( 12 ).visible();
+			var column_haha = table.column( 13 ).visible();
+			var column_sad = table.column( 14 ).visible();
+			var column_angry = table.column( 15 ).visible();
 
 			// Hide a column
-			table.column( 9 ).visible( !column_likes );
-			table.column( 10 ).visible( !column_love );
-			table.column( 11 ).visible( !column_wow );
-			table.column( 12 ).visible( !column_haha );
-			table.column( 13 ).visible( !column_sad );
-			table.column( 14 ).visible( !column_angry );		
+			table.column( 10 ).visible( !column_likes );
+			table.column( 11 ).visible( !column_love );
+			table.column( 12 ).visible( !column_wow );
+			table.column( 13 ).visible( !column_haha );
+			table.column( 14 ).visible( !column_sad );
+			table.column( 15 ).visible( !column_angry );		
 		}
 
 		function ajaxCall( page_id , min_date , max_date )
@@ -411,12 +461,13 @@
 
 		$('#search-btn').click(function()
 		{
-			var page_id = $('#page-selector').find(':selected').attr('id');
+			var selected_page = $('#page-selector').val();
 			var date_range = $('#daterange-btn').val();
 			var date = date_range.split(' to ');
-			if ( Boolean(page_id) && Boolean(date_range) ) 
+			if ( Boolean(selected_page) && Boolean(date_range) ) 
 			{
-				ajaxCall(  page_id , date[0] , date[1] );
+				
+				ajaxCall(  selected_page , date[0] , date[1] );
 			}
 			else
 			{
