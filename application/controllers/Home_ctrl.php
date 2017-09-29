@@ -51,10 +51,20 @@ class Home_ctrl extends CI_Controller
 
 	public function ajaxGetTrendsData()
 	{
-		$min_date = date("Y-m-d 00:00:00" );
-		$max_date = date("Y-m-d 23:59:00" );
+		$min_date = (empty( $this->input->post('min_date'))) ? date("Y-m-d 00:00:00" ) :$this->input->post('min_date'); 
+		$max_date = (empty( $this->input->post('max_date'))) ? date("Y-m-d 23:59:00" ) :$this->input->post('max_date'); 
+		$post_array =[];
 		$keyword = $this->Posts_model->getTrendbyDate( $min_date , $max_date );
-		echo json_encode( $keyword );
+
+		foreach ($keyword as $key => $value) 
+		{
+			$post_like = [];
+			$post_like = $this->Posts_model->getBestReactionPostbyKeywordandTime( $value->keyword , $min_date , $max_date );
+			$page_like = $this->Posts_model->getPagebyKeywordandTime( $value->keyword , $min_date , $max_date );
+			array_push( $post_array , [ $post_like , $page_like ] );
+		}
+
+		echo json_encode( [$keyword ,$post_array] );
 	}
 
 	/* ---------------- Dashboard Zone ---------------- */

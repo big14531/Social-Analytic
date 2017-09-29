@@ -375,10 +375,14 @@ class Posts_model extends CI_Model
 	public function getTrendbyDate( $min_date , $max_date )
 	{
 		$result = array();
-		$this->db->select( '*' );
+		$result = $this->db->query( " SET sql_mode = ''; " );
+		$this->db->select( '*,sum(intensive) as count' );
 		$this->db->from('keyword');
 		$this->db->where('created_time >',$min_date);
 		$this->db->where('created_time <',$max_date);
+		$this->db->group_by( 'keyword' );
+		$this->db->order_by( 'count' , 'DESC' );
+		$this->db->limit( 20 );
 		$result = $this->db->get();
 
 		return $result->result();
@@ -657,17 +661,45 @@ class Posts_model extends CI_Model
 		$this->db->from('fb_facebook_post as post');
 		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id','inner' );
 		$this->db->where_in('post.page_id ',$page_id_list);
-		// $this->db->having('engage > min_rate');
 		$this->db->having('engage >', 1000);
 		$this->db->order_by('created_time', 'DESC');
 		$this->db->limit( 5 );
-		// echo $this->db->get_compiled_select();
-		// exit();
 		$result = $this->db->get();
 		return $result->result();
 	}
 
+	public function getPagebyKeywordandTime( $keyword , $min_date , $max_date )
+	{
+		$result = array();
+		$this->db->select( "list.page_id , list.name , list.picture" );
+		$this->db->from('fb_facebook_post as post');
+		$this->db->join('fb_page_list as list', 'post.page_id = list.page_id' );
+		$this->db->where('post.created_time >',$min_date);
+		$this->db->where('post.created_time <',$max_date);
+		$this->db->where( "(post.message LIKE '%".$keyword."%' OR post.name LIKE '%".$keyword."%' OR post.description LIKE '%".$keyword."%')", NULL, FALSE );
+		$this->db->group_by( 'post.page_id' );
+		$result = $this->db->get();	
+		return $result->result();
+	}
 
+	public function getBestReactionPostbyKeywordandTime ( $keyword , $min_date , $max_date )
+	{
+		$result = array();
+		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as reaction" );
+		$this->db->from('fb_facebook_post as post');
+		// $this->db->join('fb_page_list as list', 'post.page_id = list.page_id' );
+		$this->db->where('created_time >',$min_date);
+		$this->db->where('created_time <',$max_date);
+		$this->db->where( "(message LIKE '%".$keyword."%' OR name LIKE '%".$keyword."%' OR description LIKE '%".$keyword."%')", NULL, FALSE );
+		$this->db->order_by('engage', 'DESC'); 
+		$this->db->limit( 2 );
+
+		// echo $this->db->get_compiled_select();
+		// exit();
+		$result = $this->db->get();
+
+		return $result->result();
+	}
 	
 	public function getBestReactionPostbyPageandTime ( $page_id , $time )
 	{

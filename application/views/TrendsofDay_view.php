@@ -10,9 +10,9 @@
 
 <!-- Internal CSS Zone -->
 <style>
-.list-box>li{
-    vertical
-}
+    .list-box>li{
+        padding: 10px 0px;
+    }
 	.mCSB_inside>.mCSB_container{
 		margin-right:10px!important;
 	}
@@ -43,6 +43,7 @@
         width:100%;
     }
     .item-image{
+        height:100px;
         padding:0px;
         text-align: center;
     }
@@ -60,13 +61,12 @@
         margin: 0px 5px;
     }
     .count-text{
-        padding: 5px 0px;
-        display:block;
-        float:left;
-        margin-right: 10px;
+        display: inline;
+        margin-left: 10px;
+        font-size: 14px;
     }
     .keyword-text{
-        font-size: 2.5em;
+        font-size: 2em;
     }
     .status-bar{
         display: inline-flex;
@@ -92,6 +92,15 @@
     .widget-footer-container{
         display:none!important;
     }
+    .post-description{
+        width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 16px;
+        max-height: 16px;
+    }
+   
+
 </style>
 
 
@@ -106,69 +115,25 @@
 
 	<section class="content"> 
             <div class="control-row col-md-12">
-                <div class="date-picker col-md-6">
+                <div class="date-picker col-md-4">
                     <button type="button" class="selectpicker btn btn-md btn-block btn-default" id="daterange-btn">
                         <span><i class="fa fa-calendar"></i> เลือกวันที่</span><i class="fa fa-caret-down"></i>
                     </button>
                 </div>
-                <div class="category-selector col-md-6">
+                <!-- <div class="category-selector col-md-4">
                     <select id="category-selector"></select>
+                </div> -->
+                <div class="category-selector col-md-4">
+                    <button class="btn btn-info btn-block" id="submit-btn">
+                        <span><i class="fa fa-calendar"></i> ค้นหา</span>
+                    </button>
                 </div>
+                
             </div>
 
             <div class="feed-col col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
                 <div class="box-body mCustomScrollbar">
                     <ul class="list-box" id="list-box-0">
-                        <li>
-                            <div class="rank-number col-md-1"> 1 </div>
-                            <div class="item-image col-md-3">
-                                <img src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                            </div>
-                            <div class="item-detail col-md-8">
-                                <div class="keyword-text">บิ๊กตู่</div>
-                                <div class="status-bar">
-                                    <div class="count-text">10000+ words</div> 
-                                    <div class="page-logo" >
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                    </div>
-                                    
-                                </div>
-                                <div class="post-example">
-                                    <div class="post-head">
-                                        <a href="" target="_blank">11 ปีแห่งความหลัง"บิ๊กบัง"เสียของ แปรเป็นพิมพ์เขียว"บิ๊กตู่"</a>
-                                    </div>
-                                    <div class="post-description">11 ปีแห่งความหลัง"บิ๊กบัง"เสียของ แปรเป็นพิมพ์เขียว"บิ๊กตู่"</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="rank-number col-md-1"> 1 </div>
-                            <div class="item-image col-md-3">
-                                <img src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                            </div>
-                            <div class="item-detail col-md-8">
-                                <div class="keyword-text">บิ๊กตู่</div>
-                                <div class="status-bar">
-                                    <div class="count-text">10000+ words</div> 
-                                    <div class="page-logo" >
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                        <img class="page-logo-statusbar" src="https://external.xx.fbcdn.net/safe_image.php?d=AQCEfGBl08rZFN5B&w=130&h=130&url=http%3A%2F%2Fmedia.komchadluek.net%2Fimg%2Fsize1%2F2017%2F09%2F20%2Ffhaakf785hbdc576b5i5c.JPG&cfs=1&sx=0&sy=0&sw=438&sh=438&_nc_hash=AQCPLN0PkyOwZCGO" alt="">
-                                    </div>
-                                    
-                                </div>
-                                <div class="post-example">
-                                    <div class="post-head">
-                                        <a href="" target="_blank">11 ปีแห่งความหลัง"บิ๊กบัง"เสียของ แปรเป็นพิมพ์เขียว"บิ๊กตู่"</a>
-                                    </div>
-                                    <div class="post-description">11 ปีแห่งความหลัง"บิ๊กบัง"เสียของ แปรเป็นพิมพ์เขียว"บิ๊กตู่"</div>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -182,7 +147,61 @@
 
 <script>
 
-    
+    function createCard( data ) 
+    {
+
+        var keyword = data[0];
+        var post_array = data[1];
+        var number = 1;
+        for (var index = 0; index < keyword.length; index++) 
+        {
+            var keyword_item = keyword[index];
+            var post_item = post_array[index][0];
+            var page_item = post_array[index][1];
+            if( post_item.length )
+            {
+                var page_icon_html = '';
+                page_item.forEach(function(element) 
+                {
+                    page_icon_html+= '<img class="page-logo-statusbar" src="'+element.picture+'" alt="">'
+                }, this);
+
+                var html =  '<li>'+
+                            '<div class="rank-number col-md-1">'+number+'</div>'+
+                            '<div class="item-image col-md-2">'+
+                                '<img class="item-image" src="'+post_item[0].picture+'" alt="">'+
+                            '</div>'+
+                            '<div class="item-detail col-md-9">'+
+                                '<div class="keyword-text">'+keyword_item.keyword+
+                                    '<div class="count-text">'+( keyword_item.count)+' posts</div> '+
+                                '</div>'+
+                                '<div class="status-bar">'+
+                                    
+                                    '<div class="page-logo" >'+
+                                        page_icon_html+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="post-example">'+
+                                    '<div class="post-head">'+
+                                        '<a href="'+post_item[0].permalink_url+'" target="_blank">'+post_item[0].name+'</a>'+
+                                    '</div>'+
+                                    '<div class="post-description">'+post_item[0].description+'</div>'+
+                                    '</div>'+
+                            '</div>'+
+                        '</li>';
+                number +=1;
+                appendItem( html );
+                
+            }
+            
+            
+        }
+    }    
+
+    function appendItem( html ) 
+    {
+        $('#list-box-0').append( html );    
+    }
 
     function createDatepicker() 
     {
@@ -226,16 +245,22 @@
 		});
 	}
 
-    function getTrendsData() 
+    function getTrendsData( min_date , max_date ) 
     {
         $.ajax({
 			url:  "<?php echo(base_url());?>ajaxGetTrendsData",
 			type: 'post', 
 			dataType: 'json',
 			async: false, 
+            data: {  
+				'min_date': min_date,
+				'max_date': max_date
+			}, 
 			success:function(data)	
 			{
-				console.log(data);		
+				console.log(data);
+                $('#list-box-0').empty();		
+                createCard( data );
 			}
 		});    
     }
@@ -244,15 +269,26 @@
     {
         var box_height = $(window).height();
 		$(".feed-col").height(box_height-180);
-
         createDatepicker();
-        createCategorySelector();
+        // createCategorySelector();
         getTrendsData();
     }
 
     $(document).ready(function() 
 	{
 		initialize();
+        $( '#submit-btn' ).on( 'click' , function(){
+            var date =  $('#daterange-btn').val().split( ' to ' );
+            var type = $('#category-selector').val();
+
+            if (date) {
+                getTrendsData( date[0] , date[1] );
+            }
+            else{
+                alert( 'กรุณาเลือกวันที่' )
+            }
+            
+        });
 	});
 </script>
 
