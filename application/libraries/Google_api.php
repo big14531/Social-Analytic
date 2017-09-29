@@ -10,6 +10,7 @@ class Google_api
         $check_url_https=FALSE;
 
         $ch = curl_init();
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,10);
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_PROXY,'192.168.52.125:3128');
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
