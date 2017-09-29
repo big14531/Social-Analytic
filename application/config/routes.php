@@ -92,6 +92,7 @@ $route['logout'] = 'validation_ctrl/logout';
 /*---------- proflie ----------*/
 $route['profile'] = 'home_ctrl/profileManage';
 $route['ajaxPagelist'] = 'home_ctrl/ajaxPagelist';
+$route['ajaxProfileAll'] = 'home_ctrl/ajaxProfileAll';
 
 /*---------- socialdesk ----------*/
 $route['socialDeck'] = 'home_ctrl/socialDeck';

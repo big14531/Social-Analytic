@@ -36,6 +36,7 @@ class Validation_ctrl extends CI_Controller
         $result = $this->Posts_model->createUser( $data );
         redirect('/');
     }
+    
     public function verifyLogin()
     {
         // Create data

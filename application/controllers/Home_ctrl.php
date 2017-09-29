@@ -16,11 +16,13 @@ class Home_ctrl extends CI_Controller
 		// print_r( $this->session->all_userdata() );
 		// 
 		//$this->load->library('THSplitLib/segment'); 
+
 		$this->load->library('Kcl_facebook_analytic'); 
 		$this->load->model('Posts_model');
 		$this->load->helper('date');
 		$this->load->driver('cache');
 		isLoggedin($this->session->all_userdata());
+		// isEmyptyProfile($this->session->all_userdata());
 	}
 	
 	/* ---------------- Dashboard Zone ---------------- */
@@ -1089,5 +1091,34 @@ class Home_ctrl extends CI_Controller
 		$data['profile_list'] = $result;
 		echo json_encode( $data );
 	}
+
+	public function ajaxProfileAll()
+	{
+		$user_id = $this->input->post('user_id');
+		$profile_list = $this->Posts_model->getProfile( $user_id );
+		foreach ($profile_list as $key => $value) {
+			$profile_id = $value->id;
+			$profile_list[$key]->page_list = $this->Posts_model->getPagebyProfile( $user_id , $profile_id );
+		}
+		echo json_encode( $profile_list );
+	}
+
+	public function createProfile()
+	{
+		$data['profile_name'] =  $this->input->post( 'profile_name' );
+		$data['fb_mypage'] =  $this->input->post( 'fb_mypage' );
+		$data['user_owner'] =  $this->input->post( 'user_id' );
+		$this->Posts_model->createProfile( $data );
+		redirect('/profile');
+	}
+
+	public function deleteProfile()
+	{
+		$data['user_id'] =  $this->input->post( 'user_id' );
+		$data['profile_id'] =  $this->input->post( 'profile_id' );
+		
+		// redirect('/profile');
+	}
+	
 }
 ?>	

@@ -20,6 +20,20 @@
 		}
 	}
 
+	function isEmptyProfile($session_data)
+	{
+		if(isset($session_data['login_user_id']) && isset($session_data['logged_in']) )
+		{
+			redirect('/manage', 'refresh');
+			exit();
+		}
+		else
+		{
+			redirect('/login', 'refresh');
+			exit();
+		}
+	}
+
 	/**
 	 * [checkLoginPage description]
 	 *

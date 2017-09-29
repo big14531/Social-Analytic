@@ -6,14 +6,102 @@
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/iCheck/all.css">
 
 <style>
-    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
-        vertical-align: middle!important;
-    }
     .btn-info{
         margin-bottom:10px;
     }
     .container-box{
         padding: 0 20px 20px;
+    }
+    /* Style the tab */
+    div.tab {
+        float: left;
+        width: 20%;
+        min-height: 300px;
+    }
+
+    /* Style the buttons inside the tab */
+    div.tab button {
+        display: block;
+        background-color: inherit;
+        color: black;
+        padding: 22px 16px;
+        width: 100%;
+        border: none;
+        outline: none;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.1s;
+    }
+
+    /* Change background color of buttons on hover */
+    div.tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current "tab button" class */
+    div.tab button.active {
+        background-color: #bbb;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        float: left;
+        padding: 0px 12px;
+        border: 1px solid #ccc;
+        width: 80%;
+        min-height: 300px;
+    }
+    .table>tbody>tr>td{
+        vertical-align: middle;
+    }
+    .control-box{
+        padding: 3px;
+        background-color: #ddd;
+    }
+    .control-btn{
+        padding: 5px 10px;
+        font-size: 0.8em;
+    }
+    .fb-tab{
+        
+    }
+    .nav-tab-custom{
+        width: 190px;
+        text-align: center;
+    }
+    .create-modal-body {
+        padding: 0px;
+    }
+    .nav-tabs-custom>.nav-tabs>li {
+        margin-bottom: -2px;
+    }
+    .nav-tabs-custom>.tab-content {
+        background: #ddd;
+        padding: 20px;
+    }
+    .nav-tabs-custom>.nav-tabs>li.active>a {
+        background: #ddd;
+        font-weight: 600;
+    }
+    .nav-tabs-custom>.nav-tabs>li.active>a, .nav-tabs-custom>.nav-tabs>li.active:hover>a {
+        background: #ddd;
+    }
+    .register-btn{
+        background-color: #3d8dbc;
+        color: #ededed;
+        border-color: #ddd;
+        border-radius: 20px;
+    }
+    .facebook-btn{
+        background-color: #3b5998;
+        color: #f7f7f7;
+    }
+    .facebook-btn:hover , .facebook-btn:focus{
+        background-color: #8b9dc3;
+        color: #f7f7f7;
+    }
+    .facebook-btn-icon{
+        color: #f7f7f7;
     }
 </style>    
 
@@ -24,207 +112,207 @@
             <div class="box container-box">
                 <div class="box-header">    
                     <h1>
-                        Profile Management<small>เพิ่ม/ลบ โปรไฟล์ทั้งหมด</small>
+                        Profile Management <small> จัดการโปรไฟล์ทั้งหมด</small>
                     </h1>
-                    
-
                 </div>
-
-                <?php
-                if (isset( $_SESSION['addPageError'] )) {
-                    echo '<div class="box-body">';
-                    echo '<div class="alert alert-danger alert-dismissible">';
-                    echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
-                    echo '<h4><i class="icon fa fa-ban"></i> Alert!</h4>';
-                    echo '<b>'.$_SESSION["addPageError"].'</b>';
-                    echo '<br>ข้อมูลไม่ถูกต้อง กรุณากรอกชื่อเพจใหม่ ';
-                    echo '</div>';
-                    echo '</div>';
-
-                    unset(  $_SESSION['addPageError'] );
-                }
-
-                ?>
                 <!-- /.box-header -->
-                <div class="box-body"> 
-                    <a class="btn btn-info" data-toggle="modal" data-target="#myModal">
-                        <i class="fa fa-edit"></i> Create Profile
-                    </a>
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Facebook</th>
-                                <th>Twitter</th>
-                                <th>Last Active</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-
-                        <?php
-                        foreach ($profile_list as $value) {
-                            
-                            echo '<td class="name">'.$value->name.'</td>';
-                            
-                            echo '<td></td>';
-                            echo '<td></td>';
-                            echo '<td></td>';
-
-                            echo '<td>
-                                <a class="btn btn-xs btn-warning edit" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</a>
-                                </td>';
-
-                            echo '</tr>';
-                        }
-                        ?>
-
-                    </table>
+                <div id="box-body" class="box-body"> 
+                    <div class="tab" id="control-tab">
+                        <div class="control-box">
+                            <div class="btn control-btn" id="create-profile"><i class="fa fa-plus"> สร้าง</i></div>
+                            <div class="btn control-btn" id="delete-profile"><i class="fa fa-minus"> ลบ</i></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-</div>
-
-
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add Tracking Page</h4>
-            </div>
-
-            <div class="modal-body">
-                <h2> ใส่ชื่อของ Page</h2>
-                <div class="callout callout-info" style="margin-bottom: 0!important;">
-                    <h4><i class="fa fa-info"></i> Note:</h4>
-                    <span> 
-                        ชื่อต้องมาจาก url ของหน้า Page นั้นๆ เช่น  <br>
-
-                        https://www.facebook.com/<b>komchadluek</b>/?ref=ts&fref=ts <br><br>ชื่อที่ต้องใส่คือ<h4> <b>komchadluek</b></h4>
-                    </span> 
+    <div id="createModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4><span class="fa fa-user-plus"></span> Create Profile</h4>
                 </div>
-
-                <br>
-
-                <form action="<?php echo base_url(); ?>editPageList/save" method="post" id="modal_add_id">
-                    <div class="input-group">
-                        <input type="text" name="pageName" class="form-control input-lg" placeholder="Page Name...">
-
+                <div class="modal-body create-modal-body">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active nav-tab-custom"><a href="#tab_2" data-toggle="tab">Create by myself</a></li>
+                            <li class="nav-tab-custom"><a href="#tab_1" data-toggle="tab">Connect with Account</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="tab_2">
+                                <?php echo validation_errors(); ?>
+                                <?php echo form_open('Home_ctrl/createProfile'); ?>
+                                    <div class="form-group has-feedback">
+                                        <input name="profile_name" class="form-control" placeholder="Profile Name" required>
+                                        <span class="fa fa-envelope form-control-feedback"></span>
+                                    </div>
+                                    <div class="form-group has-feedback">
+                                        <input name="fb_mypage" class="form-control" placeholder="Owner Page">
+                                        <span class="fa fa-envelope form-control-feedback"></span>
+                                    </div>
+                                    <input name="user_id" hidden value="<?=$_SESSION['login_user_id']?>">
+                                    <button class="btn btn-default btn-block register-btn" type="submit">Submit</button>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="tab_1">
+                                <button class="btn btn-default btn-block facebook-btn" type="submit">
+                                    <i class="facebook-btn-icon fa  fa-facebook-official"></i> Connect with facebook
+                                </button>
+                            </div>
+                        </div>
                     </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn_save" id="btn_add">Save changes</button>
                 </div>
-                </form>
-            </div>   
+            </div>
+        </div>
+    </div>
 
+    <div id="deleteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4><span class="fa fa-user-plus"></span> Delete Profile</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="delete-text">ยืนยันที่จะลบ Profile ?</p>
+                    <p id="profile_name"></p>
+                    <?php echo validation_errors(); ?>
+                    <?php echo form_open('Home_ctrl/deleteProfile'); ?>
+                        <input id="delete_user_id" name="user_id" hidden value="<?=$_SESSION['login_user_id']?>">
+                        <input id="delete_profile_id" name="profile_id" hidden value="">
+                        <button class="btn btn-default register-btn" type="submit" id="delete_btn">Submit</button>
+                    </form>  
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-
-
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Edit Page : <span id="editModal_name"></span></h4>
-            </div>
-
-            <div class="modal-body">
-
-                <form action="<?php echo base_url(); ?>editPageList/edit" method="post" id="modal_edit_id">
-                    <input id="editModal_is_active" name="is_active" hidden />
-                <input id="editModal_id" name="page_id" hidden />
-            <div class="input-group">
-                <span class="input-group-addon">Link</span>
-                <input id="editModal_link" type="text" class="form-control input-lg" name="link" placeholder="Link..." />
-            </div>   
-
-            <div class="input-group">
-                <span class="input-group-addon">Website</span>
-                <input id="editModal_website" type="text" class="form-control input-lg" name="website" placeholder="Website..." />
-            </div>
-            <br>
-            <div class="input-group">
-                <input type="checkbox" class="icheckbox_flat-green" name="is_owner" id="editModal_is_owner">
-                <span>Owner</span>
-            </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary btn_save" id="btn_edit">Save changes</button>
-        </div>
-        </form>
-        </div>
-</div>
-</div>
-</div>
-
-
-
 
 <!-- jQuery 2.2.3 -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<?php echo(base_url());?>assets/admin-lite/bootstrap/js/bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="<?php echo(base_url());?>assets/admin-lite/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="<?php echo(base_url());?>assets/admin-lite/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<?php echo(base_url());?>assets/admin-lite/dist/js/demo.js"></script>
 <!-- iCheck for checkboxes and radio inputs -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/iCheck/icheck.min.js"></script>
 
-
 <script>
+    function renderButton( data ) 
+    {
+        data.forEach(function(element) {
+            var profile_id = element.id;
+            var profile_name = element.profile_name;
+            var html = '<button profileID="'+profile_id+'" class="tablinks" onclick="openTab(event, '+"'"+profile_id+"_table'"+')">'+profile_name+'</button>';
+            $("#control-tab").append( html );
+        }, this);
+       
+    }
 
-    $('.edit').on('click',function(){
-        var this_p = $(this).parents('tr');
-        var this_name = this_p.find('.name').text(); 
-        var this_link = this_p.find('.link').text(); 
-        var this_website = this_p.find('.website').text(); 
-        var this_id = this_p.find('.id').text(); 
-        var this_is_active = this_p.find('.status span').text(); 
+    function renderRow( data , profile_id )
+    {
+        var myTable = "#"+profile_id+"_table";
+        $(myTable).find('table').append( '<tr class="separator-tab fb-tab">'+
+                                            '<td colspan="5"><i class="fa fa-facebook"></i></td>'+
+                                        '</tr>' );
 
-        $("#editModal_id").val( this_id );
-        $("#editModal_name").text( this_name );
-        $("#editModal_link").val( this_link );
-        $("#editModal_website").val(this_website);
-        $("#editModal_is_active").val(this_is_active);
+        data.forEach(function(element) {  
+            var html = '<tr>'+
+                            '<td><img src="'+element.picture+'"></td>'+
+                            '<td>'+element.name+'</td>'+
+                            '<td>'+element.fan_count+'</td>'+
+                            '<td><i class="fa fa-thumb-up"></i></td>'+
+                            '<td>my page</td>'+
+                        '</tr>';
+            $(myTable).find('table ').append( html );
+        }, this);
 
-        if( this_name.search('Owner')==0)
-        { 
-            $('#editModal_is_owner').iCheck('check'); 
+    }
+
+    function renderTab( data ) 
+    {
+        data.forEach(function(element) {  
+            var profile_id = element.id;  
+            var html =  '<div id="'+profile_id+'_table" class="tabcontent">'+
+                            '<table class="table">'+
+                            '</table>'+
+                        '</div>';
+            $("#box-body").append( html );
+            renderRow( element.page_list , profile_id );
+        }, this);
+    }
+  
+    function ajaxPagelist()
+	{
+        var user_id = <?=$this->session->all_userdata()['login_user_id'];?>;
+		$.ajax({
+				url:  "<?php echo(base_url());?>ajaxProfileAll",   //the url where you want to fetch the data 
+				type: 'post', //type of request POST or GET   
+				dataType: 'json',
+				async: true, 
+				data: { 
+					'user_id': user_id
+				},
+				success:function(data)	
+				{
+                    console.log( data );
+					renderButton(data);
+                    renderTab(data);
+                    hideTab();
+				}
+			});
+	}
+
+    function openTab(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
         }
-        else { 
-            $('#editModal_is_owner').iCheck('uncheck');  
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
+
+        // Show the current tab, and add an "active" class to the link that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    ajaxPagelist();
+
+    function hideTab() {
+        $("#box-body").find('.tabcontent').not(":first").attr('hidden',true);
+    }
+   
+
+
+    $('#create-profile').on( 'click' , function(){
+        $("#createModal").modal()
     });
 
-    $('#btn_edit').click( function(){
-        $('#btn_edit').prop('disabled',true);
-        $('#modal_edit_id').submit();
-    })
-
-    $('#btn_add').click( function(){
-        $('#btn_add').prop('disabled',true);
-        $('#modal_add_id').submit();
-    })
+    $('#delete-profile').on( 'click' , function(){
+        $("#deleteModal").modal();
+        var profild_id =  $("#control-tab").find('.active').attr('profileid');
+        if ( typeof profild_id !==  "undefined" ) {
+            var profile_name = $("#control-tab").find('.active').text()
+            $('#delete_profile_id').val( profild_id );
+            $('#delete-text').text( 'ยืนยันที่จะลบ Profile ?' );
+            $('#profile_name').text( profile_name );
+            $('#delete_btn').attr('hidden' , false );
+        }
+        else{
+            $('#delete-text').text( 'กรุณาเลือก Profile ที่ต้องการลบ' );
+            $('#profile_name').text( '' );
+            $('#delete_btn').attr('hidden' , true );
+        }
+    });
 
 </script>    
 </body>

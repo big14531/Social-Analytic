@@ -94,6 +94,19 @@ class Posts_model extends CI_Model
 		$this->db->where('user_owner', $user_id);
 		$this->db->order_by('id', 'ASC');
 		$result = $this->db->get( 'fb_profile' );
+		return $result->result();
+	}
+
+	
+	public function getAllProfile( $user_id )
+	{
+		$result = array();
+		$this->db->select('list.* , profile.id as profile_id , profile.profile_name ' );
+		$this->db->from('fb_profile as profile'); 
+		$this->db->join('fb_r_profile_page as relate', 'profile.id = relate.profile_id');
+		$this->db->join('fb_page_list as list', 'relate.page_id = list.id');
+		$this->db->where('profile.user_owner', $user_id);
+		$result = $this->db->get();
 
 		return $result->result();
 	}
@@ -101,7 +114,6 @@ class Posts_model extends CI_Model
 	public function getPagebyProfile( $user_id , $profile_id )
 	{
 		$result = array();
-		
 		$this->db->select('*');
 		$this->db->from('fb_profile as profile'); 
 		$this->db->join('fb_r_profile_page as relate', 'profile.id = relate.profile_id');
@@ -874,6 +886,11 @@ class Posts_model extends CI_Model
 		$this->db->update( 'fb_user' , $array );
 	}
 
+	public function createProfile( $data )
+	{
+		$check = $this->db->insert( 'fb_profile' , $data );
+		return $check;
+	}
 	/////////////////////////////////////////////////////////////////////////////
 
 
