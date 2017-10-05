@@ -92,19 +92,37 @@ class FacebookCurlHttpClient implements FacebookHttpClientInterface
      */
     public function openConnection($url, $method, $body, array $headers, $timeOut)
     {
+        /*original option*/
+        // $options = [
+        //     CURLOPT_CUSTOMREQUEST => $method,
+        //     CURLOPT_HTTPHEADER => $this->compileRequestHeaders($headers),
+        //     CURLOPT_URL => $url,
+        //     CURLOPT_CONNECTTIMEOUT => 10,
+        //     CURLOPT_TIMEOUT => $timeOut,
+        //     CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
+        //     CURLOPT_HEADER => true, // Enable header processing
+        //     CURLOPT_SSL_VERIFYHOST => 2,
+        //     CURLOPT_SSL_VERIFYPEER => true,
+        //     CURLOPT_CAINFO => __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem',
+        // ];
+
+        //edit by phol 2017-09-01
         $options = [
-            CURLOPT_CUSTOMREQUEST => $method,
-            CURLOPT_HTTPHEADER => $this->compileRequestHeaders($headers),
-            CURLOPT_URL => $url,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => $timeOut,
-            CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
-            CURLOPT_HEADER => true, // Enable header processing
-            CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_CAINFO => __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem',
+          CURLOPT_CUSTOMREQUEST => $method,
+          CURLOPT_HTTPHEADER => $this->compileRequestHeaders($headers),
+          CURLOPT_URL => $url,
+          CURLOPT_CONNECTTIMEOUT => 5,
+          CURLOPT_TIMEOUT => $timeOut,
+          CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
+          CURLOPT_PROXY =>'192.168.52.125:3128',
+          CURLOPT_SSL_VERIFYHOST => FALSE,
+          CURLOPT_HEADER => true, // Enable header processing
+          //CURLOPT_SSL_VERIFYHOST => 2,
+          CURLOPT_SSL_VERIFYPEER => true,
+          CURLOPT_CAINFO => __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem',
         ];
-		
+
+
         if ($method !== "GET") {
             $options[CURLOPT_POSTFIELDS] = $body;
         }

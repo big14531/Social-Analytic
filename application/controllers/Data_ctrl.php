@@ -396,7 +396,6 @@ class Data_ctrl extends CI_Controller
 		return true;
 	}
 
-
 	public function social_clean_str_keyword($str)
 	{
 		$str=str_replace(array('“','”',"'",'"',"’","‘"),'',$str);
@@ -435,8 +434,7 @@ class Data_ctrl extends CI_Controller
 	}
 
 	public function processKeyword()
-	{
-		
+	{		
 		// Load Post 1 hour ago
 		$min_date = date( "Y-m-d H:i:s" , strtotime( "1 hour ago" ) );
 		$max_date = date( "Y-m-d H:i:s" );
@@ -445,8 +443,15 @@ class Data_ctrl extends CI_Controller
 
 		// loop post
 		$long_text = [];
+		$listpost_notrepeatly =[];
 		foreach ($post_list as $key => $value) 
 		{
+			// Check Repeatly post
+			if ( in_array( $value->link , $listpost_notrepeatly ) ) 
+			{
+				continue;
+			}
+
 			// get all text from post
 			$result =[];
 			$keyword1 = [];
@@ -454,9 +459,12 @@ class Data_ctrl extends CI_Controller
 			$text = $value->name." ".$value->message." ".$value->description;
 			$keyword1 = $this->custom_get_keyword($text);
 			$long_text = array_merge( $long_text , array_unique( $keyword1 ) );
+			array_push( $listpost_notrepeatly , $value->link );
 			
-
+			
 		}
+		
+
 		$long_text = array_count_values( $long_text );	
 		asort( $long_text );
 

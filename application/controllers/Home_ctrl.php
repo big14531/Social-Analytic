@@ -59,7 +59,7 @@ class Home_ctrl extends CI_Controller
 		foreach ($keyword as $key => $value) 
 		{
 			$post_like = [];
-			$post_like = $this->Posts_model->getBestReactionPostbyKeywordandTime( $value->keyword , $min_date , $max_date );
+			$post_like = $this->Posts_model->getPostbyKeywordandTime( $value->keyword , $min_date , $max_date );
 			$page_like = $this->Posts_model->getPagebyKeywordandTime( $value->keyword , $min_date , $max_date );
 			array_push( $post_array , [ $post_like , $page_like ] );
 		}

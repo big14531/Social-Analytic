@@ -376,7 +376,7 @@ class Posts_model extends CI_Model
 	{
 		$result = array();
 		$result = $this->db->query( " SET sql_mode = ''; " );
-		$this->db->select( '*,sum(intensive) as count' );
+		$this->db->select( '*,count(intensive) as count' );
 		$this->db->from('keyword');
 		$this->db->where('created_time >',$min_date);
 		$this->db->where('created_time <',$max_date);
@@ -682,17 +682,17 @@ class Posts_model extends CI_Model
 		return $result->result();
 	}
 
-	public function getBestReactionPostbyKeywordandTime ( $keyword , $min_date , $max_date )
+	public function getPostbyKeywordandTime ( $keyword , $min_date , $max_date )
 	{
 		$result = array();
-		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as reaction" );
+		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as reaction " );
 		$this->db->from('fb_facebook_post as post');
 		// $this->db->join('fb_page_list as list', 'post.page_id = list.page_id' );
 		$this->db->where('created_time >',$min_date);
 		$this->db->where('created_time <',$max_date);
 		$this->db->where( "(message LIKE '%".$keyword."%' OR name LIKE '%".$keyword."%' OR description LIKE '%".$keyword."%')", NULL, FALSE );
+		$this->db->group_by('link');
 		$this->db->order_by('engage', 'DESC'); 
-		$this->db->limit( 2 );
 
 		// echo $this->db->get_compiled_select();
 		// exit();
