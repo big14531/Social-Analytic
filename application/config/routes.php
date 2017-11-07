@@ -53,17 +53,6 @@ $route['default_controller'] = 'home_ctrl/socialDeck';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-////////////////////////////////////////
-//              Test Zone             //
-////////////////////////////////////////
-$route['exp'] = 'test_ctrl/getTestPost';
-
-$route['test'] = 'data_ctrl/updateRenectPostForTimeline';
-$route['googletrend'] = 'data_ctrl/googletrend';
-
-
-
-
 
 ////////////////////////////////////////
 //         Setting Global Zone        //
