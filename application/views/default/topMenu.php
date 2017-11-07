@@ -38,7 +38,35 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class="dropdown messages-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-cogs"></i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <ul class="menu">
+                      <li>
+                        <a href="<?=base_url();?>editFacebookListUser">
+                          <div class="pull-left"><i class="fa fa-facebook"></i></div>
+                          <h4>จัดการ Facebook ที่ติดตาม</h4>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="<?=base_url();?>editInstagramListUser">
+                          <div class="pull-left"><i class="fa fa-instagram"></i></div>
+                          <h4>จัดการ Instragram ที่ติดตาม</h4>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="<?=base_url();?>editTwitterListUser">
+                          <div class="pull-left"><i class="fa fa-twitter"></i></div>
+                          <h4>จัดการ Twitter ที่ติดตาม</h4>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
             </ul>
         </div>
     </nav>

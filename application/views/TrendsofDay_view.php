@@ -43,8 +43,9 @@
         width:100%;
     }
     .item-image{
-        height:100px;
-        padding:0px;
+        overflow: hidden;
+        height: 100px;
+        padding: 0px;
         text-align: center;
     }
     .item-image>img{
@@ -66,7 +67,7 @@
         font-size: 14px;
     }
     .keyword-text{
-        font-size: 2em;
+        font-size: 1em;
     }
     .status-bar{
         display: inline-flex;
@@ -160,6 +161,17 @@
             var page_item = post_array[index][1];
             if( post_item.length )
             {
+                // check if message is
+                var item = post_item[0];
+                if( post_item[0].name=="" && post_item[0].description=="" )
+                {
+                    var item = post_item[1];
+                }
+                
+               
+
+
+
                 var page_icon_html = '';
                 page_item.forEach(function(element) 
                 {
@@ -167,28 +179,28 @@
                 }, this);
 
                 var html =  '<li>'+
-                            '<div class="rank-number col-md-1">'+number+'</div>'+
-                            '<div class="item-image col-md-2">'+
-                                '<img class="item-image" src="'+post_item[0].picture+'" alt="">'+
-                            '</div>'+
-                            '<div class="item-detail col-md-9">'+
-                                '<div class="keyword-text">'+keyword_item.keyword+
-                                    '<div class="count-text">'+( keyword_item.count)+' posts</div> '+
+                                '<div class="rank-number col-md-1">'+number+'</div>'+
+                                '<div class="item-image col-md-2">'+
+                                    '<img class="item-image" src="'+item.picture+'" alt="">'+
                                 '</div>'+
-                                '<div class="status-bar">'+
+                                '<div class="item-detail col-md-9">'+
+                                    '<div class="post-example">'+
+                                        '<div class="post-head">'+
+                                            '<a href="'+item.permalink_url+'" target="_blank">'+item.name+'</a>'+
+                                        '</div>'+
+                                        '<div class="post-description">'+item.description+'</div>'+
+                                    '</div>'+
+                                    '<div class="keyword-text">จำนวน Post เกี่ยวข้อง : '+
+                                        '<div class="count-text">'+( post_item.length )+' posts</div> '+
+                                    '</div>'+
+                                    '<div class="status-bar">'+
+                                        '<div class="page-logo" >'+
+                                            page_icon_html+
+                                        '</div>'+
+                                    '</div>'+
                                     
-                                    '<div class="page-logo" >'+
-                                        page_icon_html+
-                                    '</div>'+
                                 '</div>'+
-                                '<div class="post-example">'+
-                                    '<div class="post-head">'+
-                                        '<a href="'+post_item[0].permalink_url+'" target="_blank">'+post_item[0].name+'</a>'+
-                                    '</div>'+
-                                    '<div class="post-description">'+post_item[0].description+'</div>'+
-                                    '</div>'+
-                            '</div>'+
-                        '</li>';
+                            '</li>';
                 number +=1;
                 appendItem( html );
                 

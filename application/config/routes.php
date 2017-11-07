@@ -62,6 +62,16 @@ $route['test'] = 'data_ctrl/updateRenectPostForTimeline';
 $route['googletrend'] = 'data_ctrl/googletrend';
 
 
+
+
+
+////////////////////////////////////////
+//         Setting Global Zone        //
+////////////////////////////////////////
+$route['editFacebookListUser'] = 'global_ctrl/editFacebookListUser';
+$route['editInstagramListUser'] = 'global_ctrl/editInstagramListUser';
+$route['editTwitterListUser'] = 'global_ctrl/editTwitterListUser';
+
 ////////////////////////////////////////
 //              Process Zone             //
 ////////////////////////////////////////

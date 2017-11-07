@@ -133,17 +133,15 @@
 				</a>
 			</li>
 
-
-			<!-- Action menu -->
-			<li class="header">แอดมิน</li>
-
 			<?php 
 			// echo $_SESSION['permission_admin'];
 			if ($_SESSION['permission_manager']) 
 			{
-				echo '<li class="treeview">
+				echo '
+				<li class="header">แอดมิน</li>
+				<li class="treeview">
 				<a href="'.base_url().'editPageList">
-					<i class="fa fa-edit"></i> <span>จัดการเพจ</span>
+					<i class="fa fa-edit"></i> <span>จัดการเพจทั้งหมด</span>
 					<span class="pull-right-container">
 						<!-- <small class="label pull-right bg-green">16</small> -->
 					</span>

@@ -45,9 +45,9 @@ class Home_ctrl extends CI_Controller
 	* 
 	*/
 	public function trends()
-	{
+	{ 
 		$this->load->view( 'TrendsofDay_view' );
-	}
+	} 
 
 	public function ajaxGetTrendsData()
 	{
@@ -61,10 +61,24 @@ class Home_ctrl extends CI_Controller
 			$post_like = [];
 			$post_like = $this->Posts_model->getPostbyKeywordandTime( $value->keyword , $min_date , $max_date );
 			$page_like = $this->Posts_model->getPagebyKeywordandTime( $value->keyword , $min_date , $max_date );
-			array_push( $post_array , [ $post_like , $page_like ] );
+			$post_count = count( $post_like );
+			$keyword[$key]->count =  $post_count;
+			array_push( $post_array , [ $post_like , $page_like , $post_count] );
 		}
 
-		echo json_encode( [$keyword ,$post_array] );
+		// Sort array
+		usort($keyword, function($a, $b) {
+			return $b->count - $a->count;
+		});
+		usort($post_array, function($a, $b) {
+			return $b[2] - $a[2];
+		});
+	
+
+		$keyword_result = array_slice($keyword,0,20);
+		$post_array_result = array_slice($post_array,0,20);
+
+		echo json_encode( [$keyword_result ,$post_array_result] );
 	}
 
 	/* ---------------- Dashboard Zone ---------------- */
@@ -95,6 +109,7 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( array( $postData,$page_detail ) );
 	}
 
+
 	/**
 	* [ajaxDashboardRankPost description]
 	*
@@ -107,7 +122,6 @@ class Home_ctrl extends CI_Controller
 		$page_id = $this->input->post('page_id');
 		$min_date = $this->input->post('min_date');
 		$max_date = $this->input->post('max_date');
-
 
 		$top_array = $this->Posts_model->getTopPostbyPageIDandDate( $page_id , $min_date , $max_date );
 		$min_array = $this->Posts_model->getMinPostbyPageIDandDate( $page_id , $min_date , $max_date );

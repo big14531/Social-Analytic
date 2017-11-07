@@ -382,7 +382,7 @@ class Posts_model extends CI_Model
 		$this->db->where('created_time <',$max_date);
 		$this->db->group_by( 'keyword' );
 		$this->db->order_by( 'count' , 'DESC' );
-		$this->db->limit( 20 );
+		$this->db->limit( 100 );
 		$result = $this->db->get();
 
 		return $result->result();
@@ -684,14 +684,14 @@ class Posts_model extends CI_Model
 
 	public function getPostbyKeywordandTime ( $keyword , $min_date , $max_date )
 	{
-		$result = array();
-		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as reaction " );
+		$result = array(); 
+		$this->db->select( "* ,( post.shares+post.comments+post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as engage , ( post.likes+post.love+post.wow+post.haha+post.sad+post.angry ) as reaction" );
 		$this->db->from('fb_facebook_post as post');
-		// $this->db->join('fb_page_list as list', 'post.page_id = list.page_id' );
 		$this->db->where('created_time >',$min_date);
 		$this->db->where('created_time <',$max_date);
 		$this->db->where( "(message LIKE '%".$keyword."%' OR name LIKE '%".$keyword."%' OR description LIKE '%".$keyword."%')", NULL, FALSE );
-		$this->db->group_by('link');
+		$this->db->group_by( 'post.page_id' );
+		$this->db->group_by( 'post.link' );
 		$this->db->order_by('engage', 'DESC'); 
 
 		// echo $this->db->get_compiled_select();

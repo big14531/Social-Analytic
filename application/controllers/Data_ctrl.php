@@ -459,15 +459,13 @@ class Data_ctrl extends CI_Controller
 			$text = $value->name." ".$value->message." ".$value->description;
 			$keyword1 = $this->custom_get_keyword($text);
 			$long_text = array_merge( $long_text , array_unique( $keyword1 ) );
-			array_push( $listpost_notrepeatly , $value->link );
-			
-			
+			array_push( $listpost_notrepeatly , $value->link );	
 		}
 		
 
 		$long_text = array_count_values( $long_text );	
 		asort( $long_text );
-
+ 
 		// Format Data
 		$resultFromFacebook = [];
 		foreach ($long_text as $key => $value) 
