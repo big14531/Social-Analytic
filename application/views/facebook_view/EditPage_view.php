@@ -29,7 +29,7 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Edit Tracking Page List<small> page list</small>
+            แก้ไขเพจ Facebook ที่ติดตาม 
         </h1>
     </section>
 
@@ -39,11 +39,11 @@
             <div class="box">
                 <div class="box-header">
                     <a class="btn btn-info " data-toggle="modal" data-target="#myModal">
-                        <i class="fa fa-edit"></i> Add Tracking page
+                        <i class="fa fa-edit"></i> เพิ่มเพจ
                     </a>
                     
                     <a class="btn btn-warning " data-toggle="modal" data-target="#createCatModal">
-                        <i class="fa fa-edit"></i> Create Category
+                        <i class="fa fa-edit"></i> เพิ่ม Category
                     </a>
                 </div>
 
@@ -111,13 +111,13 @@
                             if( $value->is_active ){
                                 echo '<td>
                                             <a class="btn btn-xs btn-warning edit" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</a>
-                                            <a class="btn btn-xs btn-danger" href="'.base_url().'editPageList/toggle/'.$value->id.'/'.$value->is_active.'"><i class="fa fa-close"></i> Disable</a>
+                                            <a class="btn btn-xs btn-danger" href="'.base_url().'facebook/editPageList/toggle/'.$value->id.'/'.$value->is_active.'"><i class="fa fa-close"></i> Disable</a>
                                             </td>';
                             }
                             else{
                                 echo '<td>
                                             <a class="btn btn-xs btn-warning edit" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</a>
-                                            <a class="btn btn-xs btn-success" href="'.base_url().'editPageList/toggle/'.$value->id.'/'.$value->is_active.'"><i class="fa fa-check"></i> Active</a>
+                                            <a class="btn btn-xs btn-success" href="'.base_url().'facebook/editPageList/toggle/'.$value->id.'/'.$value->is_active.'"><i class="fa fa-check"></i> Active</a>
                                             </td>';
                             }
 
@@ -164,7 +164,7 @@
 
                 <br>
 
-                <form action="<?php echo base_url(); ?>editPageList/save" method="post" id="modal_add_id">
+                <form action="<?php echo base_url(); ?>facebook/editPageList/save" method="post" id="modal_add_id">
                     <div class="input-group input-box">
                         <input type="text" name="pageName" class="form-control" placeholder="ชื่อเพจ...">
                     </div>
@@ -193,7 +193,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="<?php echo base_url(); ?>editPageList/addCategory" method="post" id="modal_cat_id">
+                <form action="<?php echo base_url(); ?>facebook/editPageList/addCategory" method="post" id="modal_cat_id">
                     
                     <div class="input-group input-box">
                         <input type="text" class="form-control" name="category_list" placeholder="Category..." />
@@ -219,7 +219,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="<?php echo base_url(); ?>editPageList/edit" method="post" id="modal_edit_id">
+                <form action="<?php echo base_url(); ?>facebook/editPageList/edit" method="post" id="modal_edit_id">
                     <input id="editModal_is_active" name="is_active" hidden />
                     <input id="editModal_id" name="page_id" hidden />
                     <div class="input-group input-box">
@@ -269,7 +269,7 @@
 
 <script>
     $.ajax({
-        url:  "<?php echo(base_url());?>ajaxGetPageCategory",   //the url where you want to fetch the data 
+        url:  "<?php echo(base_url());?>facebook/ajaxGetPageCategory",   //the url where you want to fetch the data 
         type: 'post', //type of request POST or GET   
         dataType: 'json',
         async: false, 
