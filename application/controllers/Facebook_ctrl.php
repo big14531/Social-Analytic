@@ -11,8 +11,6 @@ class Facebook_ctrl extends CI_Controller
 	function __construct()
 	{
 		parent::__construct(); 
-		$this->load->library('THSplitLib/segment'); 
-        $this->load->library('Kcl_facebook_analytic'); 
         $this->load->model('Posts_model');
 		$this->load->model('FB_model');
 		$this->load->helper('date');

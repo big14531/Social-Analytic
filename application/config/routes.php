@@ -66,6 +66,10 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'validation_ctrl/index';
 $route['logout'] = 'validation_ctrl/logout';
 
+/*---------- Chat url  ----------*/
+$route['ajaxSendChat'] = 'Global_ctrl/ajaxSendChat';
+$route['ajaxGetChat'] = 'Global_ctrl/ajaxGetChat';
+
 /*---------- edit page  ----------*/
 $route['facebook/editFacebookListUser']     = 'Facebook_ctrl/pagelist';
 $route['facebook/editPageList/save']        = 'Facebook_ctrl/addPagelist';
