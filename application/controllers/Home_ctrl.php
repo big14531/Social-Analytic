@@ -33,7 +33,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function allFeed()
 	{
-		$this->load->view( 'AllFeed_view' );
+		$this->load->view( 'facebook_view/AllFeed_view' );
 	}
 
 	/* ---------------- trends Zone ---------------- */
@@ -46,7 +46,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function trends()
 	{ 
-		$this->load->view( 'TrendsofDay_view' );
+		$this->load->view( 'facebook_view/TrendsofDay_view' );
 	} 
 
 	public function ajaxGetTrendsData()
@@ -91,7 +91,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function dashboard()
 	{
-		$this->load->view( 'Homepage_view' );
+		$this->load->view( 'facebook_view/Homepage_view' );
 	}
 
 	public function ajaxDashboard()
@@ -136,7 +136,7 @@ class Home_ctrl extends CI_Controller
 	/* ---------------- analytic List Zone ---------------- */
 	public function analyticList()
 	{
-		$this->load->view( 'AnalyticList_view' );
+		$this->load->view( 'facebook_view/AnalyticList_view' );
 	}
 
 	public function ajaxAnalyticList()
@@ -178,7 +178,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function socialDeck()
 	{
-		$this->load->view( 'SocialDeck_view' );
+		$this->load->view( 'facebook_view/SocialDeck_view' );
 	}
 
 	/**
@@ -309,7 +309,7 @@ class Home_ctrl extends CI_Controller
 
 	public function ownerDashboard()
 	{
-		$this->load->view( 'OwnerDashboard_view' );
+		$this->load->view( 'facebook_view/OwnerDashboard_view' );
 	}
 
 	public function ajaxOwnerDashboard()
@@ -369,7 +369,7 @@ class Home_ctrl extends CI_Controller
 	{
 		$session = urldecode($session);
 		$data['session'] = $session;
-		$view = $this->load->view( 'SessionDashboard_view' , $data );
+		$view = $this->load->view( 'facebook_view/SessionDashboard_view' , $data );
 	}
 
 	public function ajaxSessionDashboard()
@@ -406,7 +406,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function rankPosts()
 	{
-		$this->load->view( 'RankPost_view' );
+		$this->load->view( 'facebook_view/RankPost_view' );
 	}	
 
 	/**
@@ -469,7 +469,7 @@ class Home_ctrl extends CI_Controller
 		checkManagerAutho($this->session->all_userdata());
 		$result = $this->Posts_model->getPagelist();
 		$data['page_list'] = $result;
-		$this->load->view( 'Pagelist_view' ,  $data );   
+		$this->load->view( 'facebook_view/Pagelist_view' ,  $data );   
 	}
 
 	/**
@@ -569,45 +569,6 @@ class Home_ctrl extends CI_Controller
 		echo json_encode( $result );
 	}
 
-	/* ---------------- PostList_view Zone ---------------- */
-
-	/**
-	* [postList description]
-	*
-	*		Load postList View
-	* 
-	*/
-	public function postList()
-	{ 
-		$result = $this->Posts_model->getActivePagelist();
-		$data['page_list'] = $result;
-
-		$this->load->view( 'PostList_view' ,  $data ); 
-	}
-
-	/**
-	* [ajaxPostList description]
-	*
-	* 		Get All post by page name
-	*
-	*       *****   Used by "postList" and "postGraph" ******
-	* 
-	* @return [array] [echo json]
-	*/
-	public function ajaxPostList()
-	{
-		$result = array();
-
-		$page_id = $_POST["page_id"];
-		$min_date = date( $_POST["min_date"] );
-		$max_date =  date( $_POST["max_date"] );
-
-		$rawData = $this->Posts_model->getPostsbyPageNameandTime( $page_id , $min_date , $max_date);
-
-		$result = $rawData->result();
-
-		echo json_encode($result);
-	}
 
 	/* ---------------- PostGraph_view Section ---------------- */
 
@@ -622,7 +583,7 @@ class Home_ctrl extends CI_Controller
 		$result = $this->Posts_model->getActivePagelist();
 		$data['page_list'] = $result;
 
-		$this->load->view( 'PostGraph_view' ,  $data ); 
+		$this->load->view( 'facebook_view/PostGraph_view' ,  $data ); 
 	}
 
 
@@ -637,7 +598,7 @@ class Home_ctrl extends CI_Controller
 	public function postAnalytic( $page_id , $post_id , $keyword1 )
 	{
 		$data['id'] = array( 'page_id' => $page_id , 'post_id' => $post_id , 'keyword' => $keyword1 );
-		$this->load->view( 'PostAnalytic_view' ,  $data ); 
+		$this->load->view( 'facebook_view/PostAnalytic_view' ,  $data ); 
 	}
 
 	/**
@@ -932,7 +893,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function showPageTable()
 	{
-		$this->load->view( 'PageTable_view' );
+		$this->load->view( 'facebook_view/PageTable_view' );
 	}
 
 	/**
@@ -964,7 +925,7 @@ class Home_ctrl extends CI_Controller
 	{
 		$result = $this->Posts_model->getActivePagelist();
 		$data['page_list'] = $result;
-		$this->load->view( 'GrowthPage_view',$data );
+		$this->load->view( 'facebook_view/GrowthPage_view',$data );
 	}
 
 	/**
@@ -1031,7 +992,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function postManageList()
 	{
-		$this->load->view( 'ManagePosts_view' );
+		$this->load->view( 'facebook_view/ManagePosts_view' );
 	}
 
 	/**
@@ -1076,7 +1037,7 @@ class Home_ctrl extends CI_Controller
 	*/
 	public function summaryTable()
 	{
-		$this->load->view( 'SummaryPost_view' );
+		$this->load->view( 'facebook_view/SummaryPost_view' );
 	}
 
 	public function ajaxSummaryPost()
@@ -1109,7 +1070,7 @@ class Home_ctrl extends CI_Controller
 	public function userPage()
 	{
 		checkAdminAutho($this->session->all_userdata());
-		$this->load->view( 'UserEdit_view' );
+		$this->load->view( 'facebook_view/UserEdit_view' );
 	} 
 
 	public function initialize()

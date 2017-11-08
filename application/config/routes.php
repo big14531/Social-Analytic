@@ -62,6 +62,10 @@ $route['translate_uri_dashes'] = FALSE;
 //         Setting Global Zone        //
 ////////////////////////////////////////
 
+/*---------- login page  ----------*/
+$route['login'] = 'validation_ctrl/index';
+$route['logout'] = 'validation_ctrl/logout';
+
 /*---------- edit page  ----------*/
 $route['facebook/editFacebookListUser']     = 'Facebook_ctrl/pagelist';
 $route['facebook/editPageList/save']        = 'Facebook_ctrl/addPagelist';
@@ -70,15 +74,82 @@ $route['facebook/editPageList/edit']        = 'Facebook_ctrl/editPagelist';
 $route['facebook/editPageList/addCategory'] = 'Facebook_ctrl/addCategory';
 $route['facebook/editPageList/toggle/(:num)/(:num)'] = 'Facebook_ctrl/toggleIsActivePage/$1/$2';
 
+/*---------- post table  ----------*/
+$route['facebook/postList'] = 'Facebook_ctrl/postList';
+$route['facebook/ajaxPostList'] = 'Facebook_ctrl/ajaxPostList';
+
+/*---------- utility ajax ----------*/
+$route['facebook/ajaxGetActivePage'] = 'Facebook_ctrl/ajaxGetActivePage';
+
+/*---------- analytic ----------*/
+$route['facebook/postAnalytic/(:num)/(:num)/(:any)'] = 'home_ctrl/postAnalytic/$1/$2/$3';
+$route['facebook/ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';
 
 
 
 
+/*---------- allfeed ----------*/
+$route['facebook/allFeed'] = 'home_ctrl/allFeed';
+$route['facebook/ajaxGetNewPostListbyPageID'] = 'home_ctrl/ajaxGetNewPostListbyPageID';
+$route['facebook/ajaxGetNewPostListbyCat'] = 'home_ctrl/ajaxGetNewPostListbyCat';
+$route['facebook/ajaxGetNewHighlightbyPageID'] = 'home_ctrl/ajaxGetNewHighlightbyPageID';
+
+/*---------- trends ----------*/
+$route['facebook/trends'] = 'home_ctrl/trends';
+$route['facebook/ajaxGetTrendsData'] = 'home_ctrl/ajaxGetTrendsData';
+
+
+/*---------- socialdesk ----------*/
+$route['facebook/socialDeck'] = 'home_ctrl/socialDeck';
+$route['facebook/ajaxFirstTimePost'] = 'home_ctrl/ajaxFirstTimePost';
+$route['facebook/ajaxUpdatePost'] = 'home_ctrl/ajaxUpdatePost';
+$route['facebook/ajaxEditPageCard'] = 'home_ctrl/ajaxEditPageCard';
+$route['facebook/ajaxGetNewPost'] = 'home_ctrl/ajaxGetNewPost';
+$route['facebook/ajaxGetHighlightPost'] = 'home_ctrl/ajaxGetHighlightPost';
+
+
+/*---------- analyticList ----------*/
+$route['facebook/analyticList'] = 'home_ctrl/analyticList';
+$route['facebook/ajaxAnalyticList'] = 'home_ctrl/ajaxAnalyticList';
+
+/*---------- dashboard ----------*/
+$route['facebook/dashboard'] = 'home_ctrl/dashboard';
+$route['facebook/ajaxDashboard'] = 'home_ctrl/ajaxDashboard';
+$route['facebook/ajaxDashboardRankPost'] = 'home_ctrl/ajaxDashboardRankPost';
+
+/*---------- owner dashboard ----------*/
+$route['facebook/ownerDashboard'] = 'home_ctrl/ownerDashboard';
+$route['facebook/ajaxOwnerDashboard'] = 'home_ctrl/ajaxOwnerDashboard';
+$route['facebook/sessionDashboard/(:any)'] = 'home_ctrl/sessionDashboard/$1';
+$route['facebook/ajaxSessionDashboard'] = 'home_ctrl/ajaxSessionDashboard';
+
+
+/*---------- ranks post ----------*/
+$route['facebook/rankPosts'] = 'home_ctrl/rankPosts';
+$route['facebook/ajaxRankPost'] = 'home_ctrl/ajaxRankPost';
+
+/*---------- post graph  ----------*/
+$route['facebook/postGraph'] = 'home_ctrl/postGraph';
+
+/*---------- page table  ----------*/
+$route['facebook/showPageTable'] = 'home_ctrl/showPageTable';
+$route['facebook/ajaxPageTable'] = 'home_ctrl/ajaxPageTable';
+
+/*---------- growth table  ----------*/
+$route['facebook/growthPage'] = 'home_ctrl/growthPage';
+$route['facebook/ajaxGrowthPage'] = 'home_ctrl/ajaxGrowthPage';
+
+
+/*---------- deleted post page  ----------*/
+$route['facebook/postManageList'] = 'home_ctrl/postManageList';
+$route['facebook/ajaxManageList'] = 'home_ctrl/ajaxManageList';
+$route['facebook/ajaxSetActivePost'] = 'home_ctrl/ajaxSetActivePost';
+
+/*---------- summary post page  ----------*/
+$route['facebook/summaryTable'] = 'home_ctrl/summaryTable';
+$route['facebook/ajaxSummaryPost'] = 'home_ctrl/ajaxSummaryPost';
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- //
-
-
-
 
 
 
@@ -105,89 +176,6 @@ $route['crontab-data-crawler'] = 'data_ctrl/contabDataCrawler';
 
 /*---------- processKeyword ----------*/
 $route['processKeyword'] = 'data_ctrl/processKeyword';
-
-////////////////////////////////////////
-//              View Zone             //
-////////////////////////////////////////
-
-$route['login'] = 'validation_ctrl/index';
-$route['logout'] = 'validation_ctrl/logout';
-
-/*---------- allfeed ----------*/
-$route['allFeed'] = 'home_ctrl/allFeed';
-$route['ajaxGetNewPostListbyPageID'] = 'home_ctrl/ajaxGetNewPostListbyPageID';
-$route['ajaxGetNewPostListbyCat'] = 'home_ctrl/ajaxGetNewPostListbyCat';
-$route['ajaxGetNewHighlightbyPageID'] = 'home_ctrl/ajaxGetNewHighlightbyPageID';
-
-/*---------- trends ----------*/
-$route['trends'] = 'home_ctrl/trends';
-$route['ajaxGetTrendsData'] = 'home_ctrl/ajaxGetTrendsData';
-
-
-/*---------- socialdesk ----------*/
-$route['socialDeck'] = 'home_ctrl/socialDeck';
-$route['ajaxFirstTimePost'] = 'home_ctrl/ajaxFirstTimePost';
-$route['ajaxUpdatePost'] = 'home_ctrl/ajaxUpdatePost';
-$route['ajaxEditPageCard'] = 'home_ctrl/ajaxEditPageCard';
-$route['ajaxGetNewPost'] = 'home_ctrl/ajaxGetNewPost';
-$route['ajaxGetHighlightPost'] = 'home_ctrl/ajaxGetHighlightPost';
-
-
-/*---------- analyticList ----------*/
-$route['analyticList'] = 'home_ctrl/analyticList';
-$route['ajaxAnalyticList'] = 'home_ctrl/ajaxAnalyticList';
-
-/*---------- dashboard ----------*/
-$route['dashboard'] = 'home_ctrl/dashboard';
-$route['ajaxDashboard'] = 'home_ctrl/ajaxDashboard';
-$route['ajaxDashboardRankPost'] = 'home_ctrl/ajaxDashboardRankPost';
-/*---------- utility ajax ----------*/
-$route['ajaxGetActivePage'] = 'home_ctrl/ajaxGetActivePage';
-
-/*---------- owner dashboard ----------*/
-$route['ownerDashboard'] = 'home_ctrl/ownerDashboard';
-$route['ajaxOwnerDashboard'] = 'home_ctrl/ajaxOwnerDashboard';
-$route['sessionDashboard/(:any)'] = 'home_ctrl/sessionDashboard/$1';
-$route['ajaxSessionDashboard'] = 'home_ctrl/ajaxSessionDashboard';
-/*---------- analytic ----------*/
-$route['postAnalytic/(:num)/(:num)/(:any)'] = 'home_ctrl/postAnalytic/$1/$2/$3';
-$route['ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';
-
-/*---------- ranks post ----------*/
-$route['rankPosts'] = 'home_ctrl/rankPosts';
-$route['ajaxRankPost'] = 'home_ctrl/ajaxRankPost';
-
-/*---------- post graph  ----------*/
-$route['postGraph'] = 'home_ctrl/postGraph';
-
-/*---------- post table  ----------*/
-$route['postList'] = 'home_ctrl/postList';
-$route['ajaxPostList'] = 'home_ctrl/ajaxPostList';
-
-/*---------- page table  ----------*/
-$route['showPageTable'] = 'home_ctrl/showPageTable';
-$route['ajaxPageTable'] = 'home_ctrl/ajaxPageTable';
-
-/*---------- growth table  ----------*/
-$route['growthPage'] = 'home_ctrl/growthPage';
-$route['ajaxGrowthPage'] = 'home_ctrl/ajaxGrowthPage';
-
-/*---------- edit page  ----------*/
-$route['ajaxGetPageCategory'] = 'home_ctrl/ajaxGetPageCategory';
-$route['editPageList'] = 'home_ctrl/pagelist';
-$route['editPageList/save'] = 'home_ctrl/addPagelist';
-$route['editPageList/edit'] = 'home_ctrl/editPagelist';
-$route['editPageList/addCategory'] = 'home_ctrl/addCategory';
-$route['editPageList/toggle/(:num)/(:num)'] = 'home_ctrl/toggleIsActivePage/$1/$2';
-
-/*---------- deleted post page  ----------*/
-$route['postManageList'] = 'home_ctrl/postManageList';
-$route['ajaxManageList'] = 'home_ctrl/ajaxManageList';
-$route['ajaxSetActivePost'] = 'home_ctrl/ajaxSetActivePost';
-
-/*---------- summary post page  ----------*/
-$route['summaryTable'] = 'home_ctrl/summaryTable';
-$route['ajaxSummaryPost'] = 'home_ctrl/ajaxSummaryPost';
 
 
 ////////////////////////////////////////

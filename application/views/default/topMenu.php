@@ -38,7 +38,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown messages-menu">
+                <li class="dropdown tasks-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-cogs"></i>
                 </a>
@@ -48,19 +48,19 @@
                       <li>
                         <a href="<?=base_url();?>facebook/editFacebookListUser">
                           <div class="pull-left"><i class="fa fa-facebook"></i></div>
-                          <h4>จัดการ Facebook ที่ติดตาม</h4>
+                          จัดการ Facebook ที่ติดตาม
                         </a>
                       </li>
                       <li>
                         <a href="<?=base_url();?>instagram/editInstagramListUser">
                           <div class="pull-left"><i class="fa fa-instagram"></i></div>
-                          <h4>จัดการ Instragram ที่ติดตาม</h4>
+                          จัดการ Instragram ที่ติดตาม
                         </a>
                       </li>
                       <li>
                         <a href="<?=base_url();?>twitter/editTwitterListUser">
                           <div class="pull-left"><i class="fa fa-twitter"></i></div>
-                          <h4>จัดการ Twitter ที่ติดตาม</h4>
+                          จัดการ Twitter ที่ติดตาม
                         </a>
                       </li>
                     </ul>

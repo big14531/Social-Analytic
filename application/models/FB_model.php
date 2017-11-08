@@ -24,6 +24,7 @@ class FB_model extends CI_Model
 		$this->db->join('fb_page_list as page', 'user.page_id = page.page_id' ,'left');
 		$this->db->join('fb_page_category as cat', 'page.category_list = cat.id' ,'left');
 		$this->db->where( 'user.user_id' , $user_id );
+		$this->db->where( 'page.is_active' , 1 );
 		$result = $this->db->get();	
 
 		return $result->result();

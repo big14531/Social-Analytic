@@ -15,7 +15,7 @@
 				</a>
 				<ul class="treeview-menu">
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>socialDeck">
+						<a href="<?php echo base_url(); ?>facebook/socialDeck">
 							<i class="fa fa-feed"></i> <span>ติดตาม 4 เพจ</span>
 							<span class="pull-right-container">
 								<!-- <small class="label pull-right bg-green">16</small> -->
@@ -24,7 +24,7 @@
 					</li>
 				
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>allFeed">
+						<a href="<?php echo base_url(); ?>facebook/allFeed">
 							<i class="fa fa-eye"></i> <span>ติดตามรวม</span>
 							<span class="pull-right-container">
 								<!-- <small class="label pull-right bg-green">16</small> -->
@@ -32,14 +32,14 @@
 						</a>
 					</li>
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>rankPosts">
+						<a href="<?php echo base_url(); ?>facebook/rankPosts">
 							<i class="fa fa-trophy"></i> <span>จัดอันดับโพสต์</span>
 							<span class="pull-right-container">
 							</span>
 						</a>
 					</li>
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>trends">
+						<a href="<?php echo base_url(); ?>facebook/trends">
 							<i class="fa fa-heartbeat"></i> <span>Trends ต่อวัน</span>
 							<span class="pull-right-container">
 							</span>
@@ -58,7 +58,7 @@
 				<ul class="treeview-menu">
 
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>postList">
+						<a href="<?php echo base_url(); ?>facebook/postList">
 							<i class="fa fa-comments"></i> 
 							<span>โพสต์ทั้งหมด</span>
 							<span class="pull-right-container">
@@ -68,7 +68,7 @@
 					</li>
 
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>showPageTable">
+						<a href="<?php echo base_url(); ?>facebook/showPageTable">
 							<i class="fa fa-flag"></i> <span>เพจทั้งหมด</span>
 							<span class="pull-right-container">
 								<!-- <small class="label pull-right bg-green">16</small> -->
@@ -77,7 +77,7 @@
 					</li>
 
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>analyticList">
+						<a href="<?php echo base_url(); ?>facebook/analyticList">
 							<i class="fa fa-object-ungroup"></i> <span>ตารางเปรียบเทียบโพสต์</span>
 							<span class="pull-right-container">
 								<!-- <small class="label pull-right bg-green">16</small> -->
@@ -86,7 +86,7 @@
 					</li>
 
 					<li class="treeview">
-						<a href="<?php echo base_url(); ?>summaryTable">
+						<a href="<?php echo base_url(); ?>facebook/summaryTable">
 							<i class="fa fa-calendar"></i> <span>ตารางข้อมูลต่อเวลา</span>
 							<span class="pull-right-container">
 								<!-- <small class="label pull-right bg-green">16</small> -->
@@ -97,7 +97,7 @@
 			</li>
 
 			<li class="treeview">
-				<a href="<?php echo base_url(); ?>ownerDashboard">
+				<a href="<?php echo base_url(); ?>facebook/ownerDashboard">
 					<i class="fa fa-home" aria-hidden="true"></i> <span>แดชบอร์ด คมชัดลึก</span>
 					<span class="pull-right-container">
 						<!-- <small class="label pull-right bg-green">16</small> -->
@@ -106,7 +106,7 @@
 			</li>
 
 			<li class="treeview">
-				<a href="<?php echo base_url(); ?>dashboard">
+				<a href="<?php echo base_url(); ?>facebook/dashboard">
 					<i class="fa fa-dashboard"></i> <span>แดชบอร์ด อื่นๆ</span>
 					<span class="pull-right-container">
 						<!-- <small class="label pull-right bg-green">16</small> -->
@@ -115,7 +115,7 @@
 			</li>
 
 			<li class="treeview">
-				<a href="<?php echo base_url(); ?>growthPage">
+				<a href="<?php echo base_url(); ?>facebook/growthPage">
 					<i class="fa fa-line-chart"></i> <span>กราฟภาพรวม</span>
 					<span class="pull-right-container">
 						<!-- <small class="label pull-right bg-green">16</small> -->
@@ -125,7 +125,7 @@
 
 
 			<li class="treeview">
-				<a href="<?php echo base_url(); ?>postGraph">
+				<a href="<?php echo base_url(); ?>facebook/postGraph">
 					<i class="fa fa-dot-circle-o "></i> <span>กราฟเวลาโพสต์</span>
 					<span class="pull-right-container">
 						<!-- <small class="label pull-right bg-green">16</small> -->

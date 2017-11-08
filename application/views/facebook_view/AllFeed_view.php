@@ -539,7 +539,7 @@
 	{		
 		// Create Page Selector and set global page variables
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetActivePage",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: false, 

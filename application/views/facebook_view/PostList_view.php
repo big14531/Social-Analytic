@@ -295,12 +295,13 @@
 		function ajaxCreatePageCard()
 		{		
 			$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetActivePage",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
 				success:function(data)
 				{
+					console.log( 'data' );
 					createSelector(data);
 				}
 			});
@@ -349,7 +350,7 @@
 				parseInt (value.sad )+  
 				parseInt (value.angry );
 
-				var analytic_link = "<?php echo base_url() ?>"+"postAnalytic/"+value.page_id+"/"+value.post_id;
+				var analytic_link = "<?php echo base_url() ?>"+"facebook/postAnalytic/"+value.page_id+"/"+value.post_id;
 
 				var created_time = convertTime( value.created_time );
 				var last_update_time = convertTime( value.last_update_time );
@@ -408,7 +409,7 @@
 			$('#search-btn').prop('disabled',true);
 			$.ajax(
 			{
-					url:  "<?php echo(base_url());?>ajaxPostList",   //the url where you want to fetch the data 
+					url:  "<?php echo(base_url());?>facebook/ajaxPostList",   //the url where you want to fetch the data 
 					type: 'post', //type of request POST or GET   
 					data: { 
 						'page_id': page_id, 
