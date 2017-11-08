@@ -31,6 +31,20 @@
     .flot-text {
         color: #b8c7ce !important;
     }
+    .direct-chat-msg {
+        width: 100%;
+    }
+    .direct-chat-img {
+        padding: 8px 0px;
+        font-size: 1.9em;
+        border-radius: 50%;
+        float: left;
+        width: 40px;
+        height: 40px;
+        background: #d2d6de;
+        color: #1a2226;
+        text-align: center;
+    }
     .navbar-nav>.tasks-menu>.dropdown-menu {
         width: 350px;
         border-radius: 0px 0px 10px 10px;
