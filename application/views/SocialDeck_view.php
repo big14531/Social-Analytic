@@ -366,7 +366,7 @@
 	{
 		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ];
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetNewPost",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetNewPost",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
@@ -389,7 +389,7 @@
 	{
 		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ];
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetHighlightPost",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetHighlightPost",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
@@ -408,7 +408,7 @@
 	function ajaxCreatePageCard()
 	{		
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetActivePage",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: false, 
@@ -423,7 +423,7 @@
 	{		
 		var page_id = [ $("#selector-0").val() , $("#selector-1").val() , $("#selector-2").val() , $("#selector-3").val() ]
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxFirstTimePost",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxFirstTimePost",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
@@ -441,7 +441,7 @@
 	function ajaxEditPageCard( page_id , target )
 	{	
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxEditPageCard",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxEditPageCard",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
@@ -466,7 +466,7 @@
 			return this.id.substr( 5 );
 		}).get();
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxUpdatePost",
+			url:  "<?php echo(base_url());?>facebook/ajaxUpdatePost",
 			type: 'post',
 			dataType: 'json',
 			async: true, 

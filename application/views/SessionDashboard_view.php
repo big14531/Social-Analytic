@@ -539,7 +539,7 @@
 	function ajaxDashboard( page_id , min_date , max_date , session ) 
 	{
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxSessionDashboard",
+			url:  "<?php echo(base_url());?>facebook/ajaxSessionDashboard",
 			type: 'post', 
 			data: { 
 				'page_id': page_id, 

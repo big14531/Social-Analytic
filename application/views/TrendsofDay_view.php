@@ -245,7 +245,7 @@
     function createCategorySelector() 
 	{
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxGetPageCategory",   //the url where you want to fetch the data 
+			url:  "<?php echo(base_url());?>facebook/ajaxGetPageCategory",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET   
 			dataType: 'json',
 			async: false, 
@@ -260,7 +260,7 @@
     function getTrendsData( min_date , max_date ) 
     {
         $.ajax({
-			url:  "<?php echo(base_url());?>ajaxGetTrendsData",
+			url:  "<?php echo(base_url());?>facebook/ajaxGetTrendsData",
 			type: 'post', 
 			dataType: 'json',
 			async: false, 

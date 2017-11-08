@@ -356,7 +356,7 @@
 	function ajaxDashboardRankPost( page_id , min_date , max_date )
 	{
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxDashboardRankPost",   //the url where you want to fetch the data 
+			url:  "<?php echo(base_url());?>facebook/ajaxDashboardRankPost",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET   
 			data: { 
 				'page_id': page_id,
@@ -390,7 +390,7 @@
 	function ajaxDashboard( page_id , min_date , max_date )
 	{		
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxDashboard",   //the url where you want to fetch the data 
+			url:  "<?php echo(base_url());?>facebook/ajaxDashboard",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET   
 			data: { 
 				'page_id': page_id, 

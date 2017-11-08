@@ -285,7 +285,7 @@
 		$('#search-btn').addClass('disabled');
 		$('#search-btn').prop('disabled',true);
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxPostList",   //the url where you want to fetch the data 
+			url:  "<?php echo(base_url());?>facebook/ajaxPostList",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET   
 			data: { 
 				'page_id': page_id, 

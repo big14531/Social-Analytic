@@ -269,7 +269,7 @@
 
 <script>
     $.ajax({
-        url:  "<?php echo(base_url());?>ajaxGetPageCategory",   //the url where you want to fetch the data 
+        url:  "<?php echo(base_url());?>facebook/ajaxGetPageCategory",   //the url where you want to fetch the data 
         type: 'post', //type of request POST or GET   
         dataType: 'json',
         async: false, 

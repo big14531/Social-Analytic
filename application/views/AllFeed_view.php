@@ -454,7 +454,7 @@
 	function ajaxGetNewHighlight()
 	{
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetNewHighlightbyPageID",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetNewHighlightbyPageID",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
@@ -472,7 +472,7 @@
 	function ajaxGetNewPostList( category_name )
 	{
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetNewPostListbyCat",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetNewPostListbyCat",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
@@ -497,7 +497,7 @@
 	function ajaxGetNewPost()
 	{
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetNewPostListbyPageID",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetNewPostListbyPageID",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: true, 
@@ -519,7 +519,7 @@
 			return this.id.substr( 5 );
 		}).get();
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxUpdatePost",
+			url:  "<?php echo(base_url());?>facebook/ajaxUpdatePost",
 			type: 'post',
 			dataType: 'json',
 			async: true, 
@@ -539,7 +539,7 @@
 	{		
 		// Create Page Selector and set global page variables
 		$.ajax({
-				url:  "<?php echo(base_url());?>ajaxGetActivePage",   //the url where you want to fetch the data 
+				url:  "<?php echo(base_url());?>facebook/ajaxGetActivePage",   //the url where you want to fetch the data 
 				type: 'post', //type of request POST or GET   
 				dataType: 'json',
 				async: false, 
@@ -554,7 +554,7 @@
 	function createCategorySelector() 
 	{
 		$.ajax({
-			url:  "<?php echo(base_url());?>ajaxGetPageCategory",   //the url where you want to fetch the data 
+			url:  "<?php echo(base_url());?>facebook/ajaxGetPageCategory",   //the url where you want to fetch the data 
 			type: 'post', //type of request POST or GET   
 			dataType: 'json',
 			async: false, 
