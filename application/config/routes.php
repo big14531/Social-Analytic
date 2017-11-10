@@ -54,7 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['facebook'] = 'home_ctrl/socialDeck';
-
+$route['twitter'] = 'twitter_ctrl/index';
 
 
 
@@ -66,12 +66,32 @@ $route['facebook'] = 'home_ctrl/socialDeck';
 $route['login'] = 'validation_ctrl/index';
 $route['logout'] = 'validation_ctrl/logout';
 
+
+
+
+
+////////////////////////////////////////  
+//                                    //
+//            GLOBAL  URL             //                
+//                                    //
+////////////////////////////////////////
+
 /*---------- Chat url  ----------*/
 $route['ajaxSendChat'] = 'Global_ctrl/ajaxSendChat';
 $route['ajaxGetChat'] = 'Global_ctrl/ajaxGetChat';
 $route['chatPage'] = 'Global_ctrl/chatPage';
 
-/*---------- edit page  ----------*/
+/*---------- edit twitter  ----------*/
+$route['twitter/editTwitterListUser']     = 'Twitter_ctrl/twitterList';
+
+////////////////////////////////////////  
+//                                    //
+//            FACEBOOK  URL           //                
+//                                    //
+////////////////////////////////////////
+
+
+/*---------- edit facebook page  ----------*/
 $route['facebook/editFacebookListUser']     = 'Facebook_ctrl/pagelist';
 $route['facebook/editPageList/save']        = 'Facebook_ctrl/addPagelist';
 $route['facebook/ajaxGetPageCategory']      = 'Facebook_ctrl/ajaxGetPageCategory';
@@ -89,9 +109,6 @@ $route['facebook/ajaxGetActivePage'] = 'Facebook_ctrl/ajaxGetActivePage';
 /*---------- analytic ----------*/
 $route['facebook/postAnalytic/(:num)/(:num)/(:any)'] = 'home_ctrl/postAnalytic/$1/$2/$3';
 $route['facebook/ajaxAnalyticPost'] = 'home_ctrl/ajaxAnalyticPost';
-
-
-
 
 /*---------- allfeed ----------*/
 $route['facebook/allFeed'] = 'home_ctrl/allFeed';

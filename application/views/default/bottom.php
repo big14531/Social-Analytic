@@ -5,8 +5,7 @@
 </div>
 
 
-<!-- Social-Analytic JS -->
-<script src="<?php echo(base_url());?>assets/js/social-analytic.js"></script>
+
 <!-- jQuery 2.2.3 -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -46,6 +45,8 @@
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="<?php echo(base_url());?>assets/admin-lite/plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- Social-Analytic JS -->
+<script src="<?php echo(base_url());?>assets/js/social-analytic.js?v=<?=time();?>"></script>
 
 
 <?php include 'chat.php';?>

@@ -170,3 +170,8 @@
             transform: scale3D(0, 0, 1);
         } 
     }
+
+    .nav>.active>a {
+        background: rgb(75, 75, 75)!important;
+        color: #f6f6f6;
+    }

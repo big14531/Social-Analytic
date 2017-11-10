@@ -16,13 +16,12 @@
         </button>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="<?=base_url();?>facebook">Facebook</a></li>
-            <li><a href="<?=base_url();?>twitter">Twitter</a></li>
-            <li><a href="<?=base_url();?>instagram">Instagram</a></li>
+          <ul class="nav navbar-nav" id="nav-tab">
+            <li id="facebook-tab"><a href="<?=base_url();?>facebook"><i class="fa fa-facebook"></i> Facebook</a></li>
+            <li id="twitter-tab"><a href="<?=base_url();?>twitter"><i class="fa fa-instagram"></i> Twitter</a></li>
+            <li id="instagram-tab"><a href="<?=base_url();?>instagram"><i class="fa fa-twitter"></i> Instagram</a></li>
           </ul>
         </div>
-
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
@@ -83,6 +82,5 @@
                 </li>
             </ul>
         </div>
-        
     </nav>
 </header>

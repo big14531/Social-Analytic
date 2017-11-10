@@ -2,7 +2,12 @@
 	<!-- sidebar: style can be found in sidebar.less -->
 	<section class="sidebar">
 		<ul class="sidebar-menu">
-			<!-- Main menu -->
+			<?php 
+				$url = explode	( '/', $_SERVER['REQUEST_URI'] ); 
+				if( $url[2] === 'facebook' ){
+				
+			?>
+			<!-- FACEBOOK MENU   -->
 			<li class="header">เมนูหลัก</li>
 
 			<li class="treeview">
@@ -94,16 +99,13 @@
 					</li>
 				</ul>
 			</li>
-
 			<li class="treeview">
 				<a href="<?php echo base_url(); ?>facebook/ownerDashboard">
 					<i class="fa fa-home" aria-hidden="true"></i> <span>แดชบอร์ด คมชัดลึก</span>
 					<span class="pull-right-container">
-						<!-- <small class="label pull-right bg-green">16</small> -->
 					</span>
 				</a>
 			</li>
-
 			<li class="treeview">
 				<a href="<?php echo base_url(); ?>facebook/dashboard">
 					<i class="fa fa-dashboard"></i> <span>แดชบอร์ด อื่นๆ</span>
@@ -112,7 +114,6 @@
 					</span>
 				</a>
 			</li>
-
 			<li class="treeview">
 				<a href="<?php echo base_url(); ?>facebook/growthPage">
 					<i class="fa fa-line-chart"></i> <span>กราฟภาพรวม</span>
@@ -121,8 +122,6 @@
 					</span>
 				</a>
 			</li>
-
-
 			<li class="treeview">
 				<a href="<?php echo base_url(); ?>facebook/postGraph">
 					<i class="fa fa-dot-circle-o "></i> <span>กราฟเวลาโพสต์</span>
@@ -131,8 +130,25 @@
 					</span>
 				</a>
 			</li>
+			<!-- END FACEBOOK MENU   -->
+			<?php
+				}
+				if( $url[2] === 'twitter' ){
+			?>
+			<!-- TWITTER MENU   -->
+			<li class="header">เมนูหลัก</li>
 
+			<li class="treeview">
+				<a href="<?php echo base_url(); ?>twitter/tweetList">
+					<i class="fa fa-table "></i> <span>ทวิตทั้งหมด</span>
+					<span class="pull-right-container">
+					</span>
+				</a>
+			</li>
+			
+			<!-- END TWITTER MENU   -->
 			<?php 
+				}
 			// echo $_SESSION['permission_admin'];
 			if ($_SESSION['permission_manager']) 
 			{
@@ -164,7 +180,7 @@
 	if ($_SESSION['permission_admin']) {
 		echo '<li class="treeview"><a href="userPage"><i class="fa fa-user"></i> <span>จัดการผู้ใช้งาน</span><span class="pull-right-container"></span></a></li>';
 
-		echo '<li class="treeview"><a href="chatPage"><i class="fa fa-comment"></i> <span>ระบบแจ้งปัญหา</span><span class="pull-right-container"></span></a></li>';
+		echo '<li class="treeview"><a href="'.base_url().'chatPage"><i class="fa fa-comment"></i> <span>ระบบแจ้งปัญหา</span><span class="pull-right-container"></span></a></li>';
 
 	}
 
