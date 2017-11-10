@@ -3,14 +3,13 @@
 <?php $this->load->view( 'default/sideMenu') ?>
 
 
-<link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=5">
+<link rel="stylesheet" href="<?php echo(base_url());?>assets/css/feed-style.css?version=<?=time();?>">
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/css/jquery.mCustomScrollbar.min.css">
 <!-- Select2 -->
 <link rel="stylesheet" href="<?php echo(base_url());?>assets/admin-lite/plugins/select2/select2.min.css">
 
 <!-- Internal CSS Zone -->
 <style>
-	html,body{ margin:0; padding:0; height:100%; width:100%; font-family: 'Kanit', sans-serif;}
     .post-number{
         color:#FFF!;
     }

@@ -4,7 +4,7 @@
 
 html{}
 body,html{margin:0; padding:0;}
-body{font:400 12px/18px 'helvetica','Open Sans', sans-serif; background:#4B4B4B; color:#626262;}
+body{background:#4B4B4B; color:#626262;}
 
 /* RESET CSS */
 .h1{color:#135e82; font-size:20px; font-weight:300; padding:0 0 15px 0; margin:0; line-height:16px;}

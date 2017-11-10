@@ -18,8 +18,8 @@
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav" id="nav-tab">
             <li id="facebook-tab"><a href="<?=base_url();?>facebook"><i class="fa fa-facebook"></i> Facebook</a></li>
-            <li id="twitter-tab"><a href="<?=base_url();?>twitter"><i class="fa fa-instagram"></i> Twitter</a></li>
-            <li id="instagram-tab"><a href="<?=base_url();?>instagram"><i class="fa fa-twitter"></i> Instagram</a></li>
+            <li id="twitter-tab"><a href="<?=base_url();?>twitter"><i class="fa fa-twitter"></i> Twitter</a></li>
+            <li id="instagram-tab"><a href="<?=base_url();?>instagram"><i class="fa fa-instagram"></i> Instagram</a></li>
           </ul>
         </div>
 
