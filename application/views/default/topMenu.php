@@ -10,6 +10,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
         </a>
+
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+            <i class="fa fa-compass"></i>
+        </button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="<?=base_url();?>facebook">Facebook</a></li>
+            <li><a href="<?=base_url();?>twitter">Twitter</a></li>
+            <li><a href="<?=base_url();?>instagram">Instagram</a></li>
+          </ul>
+        </div>
+
+
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- User Account: style can be found in dropdown.less -->
@@ -39,35 +53,36 @@
                     </ul>
                 </li>
                 <li class="dropdown tasks-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-cogs"></i>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <ul class="menu">
-                      <li>
-                        <a href="<?=base_url();?>facebook/editFacebookListUser">
-                          <div class="pull-left"><i class="fa fa-facebook"></i></div>
-                          จัดการ Facebook ที่ติดตาม
-                        </a>
-                      </li>
-                      <li>
-                        <a href="<?=base_url();?>instagram/editInstagramListUser">
-                          <div class="pull-left"><i class="fa fa-instagram"></i></div>
-                          จัดการ Instragram ที่ติดตาม
-                        </a>
-                      </li>
-                      <li>
-                        <a href="<?=base_url();?>twitter/editTwitterListUser">
-                          <div class="pull-left"><i class="fa fa-twitter"></i></div>
-                          จัดการ Twitter ที่ติดตาม
-                        </a>
-                      </li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-cogs"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <ul class="menu">
+                            <li>
+                                <a href="<?=base_url();?>facebook/editFacebookListUser">
+                                <div class="pull-left"><i class="fa fa-facebook"></i></div>
+                                จัดการ Facebook ที่ติดตาม
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?=base_url();?>instagram/editInstagramListUser">
+                                <div class="pull-left"><i class="fa fa-instagram"></i></div>
+                                จัดการ Instragram ที่ติดตาม
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?=base_url();?>twitter/editTwitterListUser">
+                                <div class="pull-left"><i class="fa fa-twitter"></i></div>
+                                จัดการ Twitter ที่ติดตาม
+                                </a>
+                            </li>
+                            </ul>
+                        </li>
                     </ul>
-                  </li>
-                </ul>
-              </li>
+                </li>
             </ul>
         </div>
+        
     </nav>
 </header>

@@ -53,7 +53,7 @@ $route['default_controller'] = 'home_ctrl/socialDeck';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-
+$route['facebook'] = 'home_ctrl/socialDeck';
 
 
 
