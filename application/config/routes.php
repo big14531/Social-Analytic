@@ -69,6 +69,7 @@ $route['logout'] = 'validation_ctrl/logout';
 /*---------- Chat url  ----------*/
 $route['ajaxSendChat'] = 'Global_ctrl/ajaxSendChat';
 $route['ajaxGetChat'] = 'Global_ctrl/ajaxGetChat';
+$route['chatPage'] = 'Global_ctrl/chatPage';
 
 /*---------- edit page  ----------*/
 $route['facebook/editFacebookListUser']     = 'Facebook_ctrl/pagelist';

@@ -164,7 +164,7 @@
 	if ($_SESSION['permission_admin']) {
 		echo '<li class="treeview"><a href="userPage"><i class="fa fa-user"></i> <span>จัดการผู้ใช้งาน</span><span class="pull-right-container"></span></a></li>';
 
-		echo '<li class="treeview"><a href="chatSystem"><i class="fa fa-comment"></i> <span>ระบบแจ้งปัญหา</span><span class="pull-right-container"></span></a></li>';
+		echo '<li class="treeview"><a href="chatPage"><i class="fa fa-comment"></i> <span>ระบบแจ้งปัญหา</span><span class="pull-right-container"></span></a></li>';
 
 	}
 
