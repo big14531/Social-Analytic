@@ -54,7 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['facebook'] = 'home_ctrl/socialDeck';
-$route['twitter'] = 'twitter_ctrl/index';
+$route['twitter'] = 'twitter_ctrl/testLibrary';
 
 
 

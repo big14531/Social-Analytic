@@ -42,10 +42,10 @@ class Global_ctrl extends CI_Controller
 		echo json_encode( $result );
 	}
 
-
 	public function chatPage()
 	{
 		$this->load->view( 'admin_view/ChatPage_view' ); 
 	}
+
 }
 ?>

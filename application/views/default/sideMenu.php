@@ -150,28 +150,41 @@
 			<?php 
 				}
 			// echo $_SESSION['permission_admin'];
-			if ($_SESSION['permission_manager']) 
+			if ($_SESSION['permission_admin']) 
 			{
 				echo '
 				<li class="header">แอดมิน</li>
-				<li class="treeview">
-				<a href="'.base_url().'editPageList">
-					<i class="fa fa-edit"></i> <span>จัดการเพจทั้งหมด</span>
-					<span class="pull-right-container">
-						<!-- <small class="label pull-right bg-green">16</small> -->
-					</span>
-				</a>
-			</li>';
+					<li class="treeview">
+					<a href="'.base_url().'editPageList">
+						<i class="fa fa-facebook"></i> <span>จัดการเพจ Facebook</span>
+						<span class="pull-right-container">
+							<!-- <small class="label pull-right bg-green">16</small> -->
+						</span>
+					</a>
+				</li>';
 
-			echo '<li class="treeview">
-			<a href="'.base_url().'postManageList">
-				<i class="fa fa-tasks"></i> <span>จัดการโพสต์</span>
-				<span class="pull-right-container">
-					<!-- <small class="label pull-right bg-green">16</small> -->
-				</span>
-			</a>
-		</li>';
-	}
+				echo '
+				<li class="treeview">
+					<a href="'.base_url().'tweetManageList">
+						<i class="fa fa-twitter"></i> <span>จัดการ Twitter</span>
+						<span class="pull-right-container">
+							<!-- <small class="label pull-right bg-green">16</small> -->
+						</span>
+					</a>
+				</li>';
+
+				echo '
+				<li class="treeview">
+					<a href="'.base_url().'postManageList">
+						<i class="fa fa-tasks"></i> <span>จัดการโพสต์</span>
+						<span class="pull-right-container">
+							<!-- <small class="label pull-right bg-green">16</small> -->
+						</span>
+					</a>
+				</li>';
+
+
+		}
 	?>
 
 

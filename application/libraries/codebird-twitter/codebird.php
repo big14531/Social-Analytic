@@ -1857,10 +1857,15 @@ class Codebird
     // try to fetch the file
     if ($this->_use_curl) {
       $connection = $this->_getCurlInitialization($url);
+
+
+      
       $this->_curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
       $this->_curl_setopt($connection, CURLOPT_HEADER, 0);
+      
       // no SSL validation for downloading media
       $this->_curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, 1);
+
       $this->_curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, 2);
       $this->_curl_setopt($connection, CURLOPT_TIMEOUT_MS, $this->_timeouts['remote']);
       $this->_curl_setopt($connection, CURLOPT_CONNECTTIMEOUT_MS, $this->_timeouts['remote'] / 2);
@@ -2073,6 +2078,12 @@ class Codebird
       }
     }
     //print_r($request_headers);exit();
+
+    // ADD BY YUTCHAII
+    $this->_curl_setopt($connection, CURLOPT_PROXY,'192.168.52.125:3128');
+    $this->_curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, FALSE);
+
+
     $this->_curl_setopt($connection, CURLOPT_HTTPHEADER, $request_headers);
     $this->_curl_setopt($connection, CURLOPT_TIMEOUT_MS, $this->_timeouts['request']);
     $this->_curl_setopt($connection, CURLOPT_CONNECTTIMEOUT_MS, $this->_timeouts['connect']);
