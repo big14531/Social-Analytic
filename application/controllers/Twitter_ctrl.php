@@ -38,5 +38,10 @@ class Twitter_ctrl extends CI_Controller
 		$result = $this->kcl_twitter_sdk->searchTweet( $keyword );
 		print_r( $result );
 	}
+	
+	public function insertTwitterUser(  )
+	{
+		# code...
+	}
 }
 ?>    
