@@ -1233,6 +1233,8 @@ class Codebird
     ];
     $url        = self::$_endpoints['oauth'] . 'oauth2/token';
     $connection = $this->_getCurlInitialization($url);
+    $this->_curl_setopt($connection, CURLOPT_PROXY,'192.168.52.125:3128');
+    $this->_curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, FALSE);
     $this->_curl_setopt($connection, CURLOPT_POST, 1);
     $this->_curl_setopt($connection, CURLOPT_POSTFIELDS, $post_fields);
 

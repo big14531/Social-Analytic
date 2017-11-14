@@ -54,7 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['facebook'] = 'home_ctrl/socialDeck';
-$route['twitter'] = 'twitter_ctrl/testLibrary';
+$route['twitter'] = 'twitter_ctrl/twitterList';
 
 
 
@@ -83,6 +83,18 @@ $route['chatPage'] = 'Global_ctrl/chatPage';
 
 /*---------- edit twitter  ----------*/
 $route['twitter/editTwitterListUser']     = 'Twitter_ctrl/twitterList';
+
+
+////////////////////////////////////////  
+//                                    //
+//            TWITTER  URL            //                
+//                                    //
+////////////////////////////////////////
+$route['twitter/getUserDetail/(:any)'] = 'twitter_ctrl/getUserDetail/$1';
+$route['twitter/getUserTimeline/(:any)'] = 'twitter_ctrl/getUserTimeline/$1';
+$route['twitter/getSearchTweet/(:any)'] = 'twitter_ctrl/getSearchTweet/$1';
+
+
 
 ////////////////////////////////////////  
 //                                    //

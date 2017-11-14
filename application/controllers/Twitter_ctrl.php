@@ -21,10 +21,22 @@ class Twitter_ctrl extends CI_Controller
         $this->load->view( 'twitter_view/EditTwitter_view' );
 	}
 	
-	public function testLibrary()
+	public function getUserDetail( $name )
 	{
-		$result = $this->kcl_twitter_sdk->get_user();
+		$result = $this->kcl_twitter_sdk->getUser( $name );
+		print_r( $result );
+	}
+
+	public function getUserTimeline( $name )
+	{
+		$result = $this->kcl_twitter_sdk->getTweetTimeline( $name );
+		print_r( $result );
+	}
+
+	public function getSearchTweet( $keyword )
+	{
+		$result = $this->kcl_twitter_sdk->searchTweet( $keyword );
 		print_r( $result );
 	}
 }
-?>
+?>    
